@@ -8,7 +8,7 @@ name = rpg
 flags = -lsfml-graphics -lsfml-window -lsfml-system
 
 build_program:
-	@mkdir $(build_dir) && $(cc) $(flags) $(source_dir)/*.cpp -o $(build_dir)/$(name)
+	@mkdir -p $(build_dir) && $(cc) $(flags) $(source_dir)/*.cpp -o $(build_dir)/$(name)
 
 run:
 	@./$(build_dir)/$(name)
