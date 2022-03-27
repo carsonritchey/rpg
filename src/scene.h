@@ -6,13 +6,16 @@
 
 class Scene {
     public:
-        Scene();
+        Scene(sf::RenderWindow* window);
         virtual ~Scene();
 
-        virtual void update() = 0;
-        virtual void render() = 0;
-
         std::vector<sf::Texture> textures;
+        sf::RenderWindow* window;
+
+        virtual void update(const float& dt) = 0;
+        virtual void render() = 0;
+        virtual void close_scene() = 0;
+
 };
 
 #endif 

@@ -11,6 +11,9 @@ Game::Game() {
 
     this->window->setFramerateLimit(FRAMES_PER_SECOND);
     this->window->setVerticalSyncEnabled(VSYNC_CHOICE);
+
+    // initial scene
+    this->scenes.push(new GameScene(this->window));
 }
 
 // frees memory
@@ -23,8 +26,10 @@ void Game::close() {
 
     this->window->close();
 
-    while(!this->scenes.empty())
+    while(!this->scenes.empty()) {
+        delete this->scenes.top();
         this->scenes.pop();
+    }
 }
 
 // how long the previous fram took
@@ -33,17 +38,15 @@ void Game::tick_dt() {
 }
 
 void Game::update() {
-
+    if(!this->scenes.empty())
+        this->scenes.top()->update(this->dt);
 }
 
 void Game::render() {
-    // clears screen
     this->window->clear();
 
-    // calls render() for current scene
     if(!this->scenes.empty())
         this->scenes.top()->render();
 
-    // displays render to screen
     this->window->display();
 }

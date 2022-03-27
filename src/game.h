@@ -4,7 +4,7 @@
 #include <SFML/Graphics.hpp>
 #include <stack>
 
-#include "scene.h"
+#include "gameScene.h"
 
 class Game {
     public:

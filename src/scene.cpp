@@ -1,7 +1,7 @@
 #include "scene.h"
 
-Scene::Scene() {
-
+Scene::Scene(sf::RenderWindow* window) {
+    this->window = window;
 }
 
 Scene::~Scene() {
