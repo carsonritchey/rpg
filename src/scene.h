@@ -2,7 +2,7 @@
 #define SCENE_H
 
 #include <SFML/Graphics.hpp>
-#include <vector.h>
+#include <vector>
 
 class Scene {
     public:

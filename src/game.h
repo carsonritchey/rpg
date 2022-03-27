@@ -2,6 +2,9 @@
 #define GAME_H
 
 #include <SFML/Graphics.hpp>
+#include <stack>
+
+#include "scene.h"
 
 class Game {
     public:
@@ -10,11 +13,17 @@ class Game {
         sf::RenderWindow* window;
         sf::VideoMode videoMode;
 
+        sf::Clock dtClock;
+        float dt;
+
+        std::stack<Scene*> scenes;
+
         Game();
         virtual ~Game();
 
         void update();
         void render();
+        void tick_dt();
 
         // exists game loop
         void close();
