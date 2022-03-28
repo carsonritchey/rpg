@@ -5,25 +5,27 @@
 #include <string>
 #include <sstream>
 
-#define WINDOW_WIDTH 1080
+#define WINDOW_WIDTH 1072
 #define WINDOW_HEIGHT 720
 
 #define GAME_VIEW_WIDTH 800
 #define GAME_VIEW_HEIGHT 600
 
 #define TILE_SIZE 16
-#define ZOOM_FACTOR 2
+#define ZOOM_FACTOR 1
 
 #define SEPERATOR ,
 #define EMPTY -1
 
 void closeMap(int**);
-void drawGrid(sf::RenderWindow* window);
+void drawGrid(sf::RenderWindow*);
+void highlight(sf::RenderWindow*);
 int** loadMap(std::string);
 void writeMap(int**, std::string);
 
 int map_w = -1;
 int map_h = -1;
+sf::Vector2i mouse_pos;
 
 int main() {
 	sf::RenderWindow window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "lvledit");
@@ -31,11 +33,6 @@ int main() {
     sf::View view(sf::Vector2f(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2), sf::Vector2f(WINDOW_WIDTH / ZOOM_FACTOR, WINDOW_HEIGHT / ZOOM_FACTOR));
 
 	int** map = loadMap(std::string("overworld.dat"));
-
-    sf::Texture texture;
-    texture.loadFromFile("/archive/pictures/random_pics/miku on github.png");
-    sf::Sprite sprite;
-    sprite.setTexture(texture);
 
 	while(window.isOpen()) {
 		sf::Event event;
@@ -53,10 +50,12 @@ int main() {
         if(sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
             view.move(0, TILE_SIZE);
 
+        mouse_pos = sf::Mouse::getPosition(window);
+
         window.setView(view);
 		window.clear();
-        window.draw(sprite);
 
+        highlight(&window);
         drawGrid(&window);
 		window.display();
 	}	
@@ -76,7 +75,7 @@ void closeMap(int** map) {
 }
 
 void drawGrid(sf::RenderWindow* window) {
-    sf::Color color(255, 255, 255, 100);
+    sf::Color color(255, 255, 255, 150);
 
     for(float i = 0; i < WINDOW_WIDTH; i += TILE_SIZE) {
         sf::Vertex line[] = {
@@ -94,6 +93,15 @@ void drawGrid(sf::RenderWindow* window) {
 
         window->draw(line, 2, sf::Lines);
     }
+}
+
+void highlight(sf::RenderWindow* window) {
+    sf::RectangleShape rect;
+    rect.setSize(sf::Vector2f(TILE_SIZE, TILE_SIZE));
+    rect.setPosition((int)(mouse_pos.x / TILE_SIZE) * TILE_SIZE, (int)(mouse_pos.y / TILE_SIZE) * TILE_SIZE);
+    rect.setFillColor(sf::Color(50, 50, 255, 200));
+
+    window->draw(rect);
 }
 
 // reads data from given file into an int array 
