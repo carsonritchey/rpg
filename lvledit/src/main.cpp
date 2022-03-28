@@ -19,8 +19,9 @@
 
 void closeMap(int**);
 void drawGrid(sf::RenderWindow*);
+void drawHighlight(sf::RenderWindow*);
+void drawMapBackground(sf::RenderWindow*);
 void drawText(sf::RenderWindow*);
-void highlight(sf::RenderWindow*);
 int** loadMap(std::string);
 void writeMap(int**, std::string);
 
@@ -65,7 +66,8 @@ int main() {
 
         window.setView(view);
 
-        highlight(&window);
+        drawMapBackground(&window);
+        drawHighlight(&window);
         drawGrid(&window);
         drawText(&window);
 		window.display();
@@ -106,6 +108,29 @@ void drawGrid(sf::RenderWindow* window) {
     }
 }
 
+void drawHighlight(sf::RenderWindow* window) {
+    int x = (int)(view_mouse_pos.x / TILE_SIZE) * TILE_SIZE;
+    if(x < 0 || x > (map_w - 1) * TILE_SIZE) return;
+    int y = (int)(view_mouse_pos.y / TILE_SIZE) * TILE_SIZE;
+    if(y < 0 || y > (map_h - 1) * TILE_SIZE) return;
+    
+
+    sf::RectangleShape rect;
+    rect.setSize(sf::Vector2f(TILE_SIZE, TILE_SIZE));
+    rect.setPosition(x, y);
+    rect.setFillColor(sf::Color(50, 50, 255, 200));
+
+    window->draw(rect);
+}
+
+void drawMapBackground(sf::RenderWindow* window) {
+    sf::RectangleShape rect;
+    rect.setSize(sf::Vector2f(map_w * TILE_SIZE, map_h * TILE_SIZE));
+    rect.setFillColor(sf::Color(20, 20, 20));
+
+    window->draw(rect);
+}
+
 void drawText(sf::RenderWindow* window) {
     sf::Text text;
     text.setFont(font);
@@ -126,20 +151,7 @@ void drawText(sf::RenderWindow* window) {
     window->draw(text);
 }
 
-void highlight(sf::RenderWindow* window) {
-    int x = (int)(view_mouse_pos.x / TILE_SIZE) * TILE_SIZE;
-    if(x < 0 || x > (map_w - 1) * TILE_SIZE) return;
-    int y = (int)(view_mouse_pos.y / TILE_SIZE) * TILE_SIZE;
-    if(y < 0 || y > (map_h - 1) * TILE_SIZE) return;
-    
 
-    sf::RectangleShape rect;
-    rect.setSize(sf::Vector2f(TILE_SIZE, TILE_SIZE));
-    rect.setPosition(x, y);
-    rect.setFillColor(sf::Color(50, 50, 255, 200));
-
-    window->draw(rect);
-}
 
 // reads data from given file into an int array 
 int** loadMap(std::string path) {
