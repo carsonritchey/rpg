@@ -14,10 +14,23 @@
 void closeMap(int**);
 int** loadMap(std::string);
 
+int map_w = -1;
+int map_h = -1;
+
 int main() {
 	sf::RenderWindow window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "lvledit");
 
-	loadMap(std::string("overworld.dat"));
+	int** map = loadMap(std::string("overworld.dat"));
+
+	for(int i = 0; i < map_w; i++) {
+		for(int j = 0; j < map_h; j++) {
+			std::cout << map[i][j] << " ";
+		}
+
+		std::cout << "\n";
+	}
+
+	closeMap(map);
 
 	while(window.isOpen()) {
 		sf::Event event;
@@ -32,6 +45,7 @@ int main() {
 	}	
 }
 
+// reads data from given file into an int array 
 int** loadMap(std::string path) {
 	std::string line;
 	std::ifstream file;
@@ -46,13 +60,21 @@ int** loadMap(std::string path) {
 	ss >> s;
 	int h = std::stoi(s);
 
-	int** array = new int*[h];
-	for(int i = 0; i < h; i++)
-		array[i] = new int[w];
+	int** map = new int*[h];
+	int n = 0;
+	for(int i = 0; i < h; i++) {
+		map[i] = new int[w];
+		for(int j = 0; j < w; j++) {
+			map[i][j] = n++;
+		}
+	}
 
-	return array;
+	map_w = w;
+	map_h = h;
+	return map;
 }
 
+// frees map array 
 void closeMap(int** map) {
 	int l = sizeof(map) / sizeof(map[0]);
 
@@ -60,4 +82,7 @@ void closeMap(int** map) {
 		delete[] map[i];
 
 	delete[] map;
+
+	map_w = -1;
+	map_h = -1;
 }
