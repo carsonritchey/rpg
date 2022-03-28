@@ -19,20 +19,29 @@
 
 void closeMap(int**);
 void drawGrid(sf::RenderWindow*);
+void drawText(sf::RenderWindow*);
 void highlight(sf::RenderWindow*);
 int** loadMap(std::string);
 void writeMap(int**, std::string);
 
 int map_w = -1;
 int map_h = -1;
-sf::Vector2i mouse_pos;
+sf::Vector2f view_mouse_pos;
+
+sf::Font font;
 
 int main() {
 	sf::RenderWindow window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "lvledit");
     window.setFramerateLimit(30);
-    sf::View view(sf::Vector2f(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2), sf::Vector2f(WINDOW_WIDTH / ZOOM_FACTOR, WINDOW_HEIGHT / ZOOM_FACTOR));
 
 	int** map = loadMap(std::string("overworld.dat"));
+    sf::View view(sf::Vector2f(map_w * TILE_SIZE / 2, map_h * TILE_SIZE / 2), sf::Vector2f(WINDOW_WIDTH / ZOOM_FACTOR, WINDOW_HEIGHT / ZOOM_FACTOR));
+
+    if(!font.loadFromFile("../art/PressStart2P.ttf")) {
+        std::cout << "unable to load font..." << std::endl;
+        return -1;
+    }
+
 
 	while(window.isOpen()) {
 		sf::Event event;
@@ -50,13 +59,15 @@ int main() {
         if(sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
             view.move(0, TILE_SIZE);
 
-        mouse_pos = sf::Mouse::getPosition(window);
+        view_mouse_pos = window.mapPixelToCoords(sf::Mouse::getPosition(window));
+
+		window.clear();
 
         window.setView(view);
-		window.clear();
 
         highlight(&window);
         drawGrid(&window);
+        drawText(&window);
 		window.display();
 	}	
 
@@ -77,28 +88,54 @@ void closeMap(int** map) {
 void drawGrid(sf::RenderWindow* window) {
     sf::Color color(255, 255, 255, 150);
 
-    for(float i = 0; i < WINDOW_WIDTH; i += TILE_SIZE) {
+    for(float i = 0; i <= map_w * TILE_SIZE; i += TILE_SIZE) {
         sf::Vertex line[] = {
             {{i, 0}, color},
-            {{i, WINDOW_HEIGHT}, color}
+            {{i, (float)map_h * TILE_SIZE}, color}
         };
 
         window->draw(line, 2, sf::Lines);
     }
-    for(float j = 0; j < WINDOW_HEIGHT; j += TILE_SIZE) {
+    for(float j = 0; j <= map_h * TILE_SIZE; j += TILE_SIZE) {
         sf::Vertex line[] = {
             {{0, j}, color},
-            {{WINDOW_WIDTH, j}, color}
+            {{(float)map_w * TILE_SIZE, j}, color}
         };
 
         window->draw(line, 2, sf::Lines);
     }
 }
 
+void drawText(sf::RenderWindow* window) {
+    sf::Text text;
+    text.setFont(font);
+
+    std::string s;
+    int x = (int)(view_mouse_pos.x / TILE_SIZE) * TILE_SIZE;
+    int y = (int)(view_mouse_pos.y / TILE_SIZE) * TILE_SIZE;
+    if(x < 0 || x > (map_w - 1) * TILE_SIZE || y < 0 || y > (map_h - 1) * TILE_SIZE)
+        s = "tx:\nty:";
+    else
+        s = "tx:" + std::to_string((int)view_mouse_pos.x / TILE_SIZE) + "\nty:" + std::to_string((int)view_mouse_pos.y / TILE_SIZE);
+
+    text.setString(s);
+    
+    text.setCharacterSize(TILE_SIZE);
+    text.setFillColor(sf::Color(255, 255, 0, 200));
+
+    window->draw(text);
+}
+
 void highlight(sf::RenderWindow* window) {
+    int x = (int)(view_mouse_pos.x / TILE_SIZE) * TILE_SIZE;
+    if(x < 0 || x > (map_w - 1) * TILE_SIZE) return;
+    int y = (int)(view_mouse_pos.y / TILE_SIZE) * TILE_SIZE;
+    if(y < 0 || y > (map_h - 1) * TILE_SIZE) return;
+    
+
     sf::RectangleShape rect;
     rect.setSize(sf::Vector2f(TILE_SIZE, TILE_SIZE));
-    rect.setPosition((int)(mouse_pos.x / TILE_SIZE) * TILE_SIZE, (int)(mouse_pos.y / TILE_SIZE) * TILE_SIZE);
+    rect.setPosition(x, y);
     rect.setFillColor(sf::Color(50, 50, 255, 200));
 
     window->draw(rect);
