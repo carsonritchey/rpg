@@ -51,27 +51,44 @@ int main() {
 		while(window.pollEvent(event)) {
 			if(event.type == sf::Event::Closed)
 				window.close();
+
+			// zooming
+			if(event.type == sf::Event::KeyPressed) {
+				if(event.key.code == sf::Keyboard::Z)
+					view.zoom(2);
+				if(event.key.code == sf::Keyboard::X)
+					view.zoom(.5);
+			}
 		}
 
 		// scrolling with keyboard
-        if(sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+        if(sf::Keyboard::isKeyPressed(sf::Keyboard::Left) ||
+				sf::Keyboard::isKeyPressed(sf::Keyboard::A))
             view.move(-TILE_SIZE, 0);
-        if(sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+        if(sf::Keyboard::isKeyPressed(sf::Keyboard::Right) ||
+				sf::Keyboard::isKeyPressed(sf::Keyboard::D))
             view.move(TILE_SIZE, 0);
-        if(sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+        if(sf::Keyboard::isKeyPressed(sf::Keyboard::Up) ||
+				sf::Keyboard::isKeyPressed(sf::Keyboard::W))
             view.move(0, -TILE_SIZE);
-        if(sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
+        if(sf::Keyboard::isKeyPressed(sf::Keyboard::Down) ||
+				sf::Keyboard::isKeyPressed(sf::Keyboard::S))
             view.move(0, TILE_SIZE);
 
         view_mouse_pos = window.mapPixelToCoords(sf::Mouse::getPosition(window));
 
 		// placing and removing tiles
 		if(sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
-			sf::Sprite sprite;
-			sprite.setTexture(textures[0]);
-			sprite.setPosition((int)(view_mouse_pos.x / TILE_SIZE) * TILE_SIZE, (int)(view_mouse_pos.y / TILE_SIZE) * TILE_SIZE);
+			int x = (int)(view_mouse_pos.x / TILE_SIZE) * TILE_SIZE;
+			int y = (int)(view_mouse_pos.y / TILE_SIZE) * TILE_SIZE;
+			if(x >= 0 && x <= (map_w - 1) * TILE_SIZE &&
+			   y >= 0 && y <= (map_h - 1) * TILE_SIZE){
+				sf::Sprite sprite;
+				sprite.setTexture(textures[0]);
+				sprite.setPosition(x, y);
 
-			sprites.push_back(sprite);
+				sprites.push_back(sprite);
+			}
 		} else if(sf::Mouse::isButtonPressed(sf::Mouse::Right)) {
 			for(int i = 0; i < sprites.size(); i++) {
 				sf::Vector2f v = sprites[i].getPosition();
