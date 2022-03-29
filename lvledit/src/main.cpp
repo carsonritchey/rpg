@@ -6,11 +6,11 @@
 #include <sstream>
 #include <vector>
 
-#define WINDOW_WIDTH 1072
-#define WINDOW_HEIGHT 720
+#define WINDOW_WIDTH 1072 * 2
+#define WINDOW_HEIGHT 720 * 2
 
 #define TILE_SIZE 16
-#define ZOOM_FACTOR 1
+#define ZOOM_FACTOR 2
 
 #define SEPERATOR ,
 #define EMPTY -1
@@ -39,13 +39,6 @@ int main() {
 
     std::vector<sf::Texture> textures = loadTextures("../art/tiles/overworld.png");
     std::vector<sf::Sprite> sprites;
-    for(int i = 0; i < map_w; i++) {
-        sf::Sprite sprite;
-        sprite.setTexture(textures[0]);
-        sprite.setPosition(i * TILE_SIZE, 0);
-
-        sprites.push_back(sprite);
-    }
 
     if(!font.loadFromFile("../art/PressStart2P.ttf")) {
         std::cout << "unable to load font..." << std::endl;
@@ -60,6 +53,7 @@ int main() {
 				window.close();
 		}
 
+		// scrolling with keyboard
         if(sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
             view.move(-TILE_SIZE, 0);
         if(sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
@@ -70,6 +64,24 @@ int main() {
             view.move(0, TILE_SIZE);
 
         view_mouse_pos = window.mapPixelToCoords(sf::Mouse::getPosition(window));
+
+		// placing and removing tiles
+		if(sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
+			sf::Sprite sprite;
+			sprite.setTexture(textures[0]);
+			sprite.setPosition((int)(view_mouse_pos.x / TILE_SIZE) * TILE_SIZE, (int)(view_mouse_pos.y / TILE_SIZE) * TILE_SIZE);
+
+			sprites.push_back(sprite);
+		} else if(sf::Mouse::isButtonPressed(sf::Mouse::Right)) {
+			for(int i = 0; i < sprites.size(); i++) {
+				sf::Vector2f v = sprites[i].getPosition();
+
+				if(v.x == (int)(view_mouse_pos.x / TILE_SIZE) * TILE_SIZE &&
+					v.y == (int)(view_mouse_pos.y / TILE_SIZE) * TILE_SIZE) {
+						sprites.erase(sprites.begin() + i);
+				}
+			}
+		}
 
         // drawing
 		window.clear();
