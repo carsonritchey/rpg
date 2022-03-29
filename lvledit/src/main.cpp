@@ -6,8 +6,8 @@
 #include <sstream>
 #include <vector>
 
-#define WINDOW_WIDTH 1072 * 2
-#define WINDOW_HEIGHT 720 * 2
+#define WINDOW_WIDTH 1072
+#define WINDOW_HEIGHT 720
 
 #define TILE_SIZE 16
 #define ZOOM_FACTOR 1
@@ -90,11 +90,14 @@ int main() {
 			int y = (int)(view_mouse_pos.y / TILE_SIZE) * TILE_SIZE;
 			if(x >= 0 && x <= (map_w - 1) * TILE_SIZE &&
 			   y >= 0 && y <= (map_h - 1) * TILE_SIZE){
-				sf::Sprite sprite;
-				sprite.setTexture(textures[currentTileIndex]);
-				sprite.setPosition(x, y);
+                if(map[x / TILE_SIZE][y / TILE_SIZE] == EMPTY) {
+                    sf::Sprite sprite;
+                    sprite.setTexture(textures[currentTileIndex]);
+                    sprite.setPosition(x, y);
 
-				sprites.push_back(sprite);
+                    map[x / TILE_SIZE][y / TILE_SIZE] = currentTileIndex;
+                    sprites.push_back(sprite);
+                }
 			}
 		} else if(sf::Mouse::isButtonPressed(sf::Mouse::Right)) {
 			for(int i = 0; i < sprites.size(); i++) {
@@ -103,6 +106,7 @@ int main() {
 				if(v.x == (int)(view_mouse_pos.x / TILE_SIZE) * TILE_SIZE &&
 					v.y == (int)(view_mouse_pos.y / TILE_SIZE) * TILE_SIZE) {
 						sprites.erase(sprites.begin() + i);
+                        map[(int)v.x / TILE_SIZE][(int)v.y / TILE_SIZE] = EMPTY;
 				}
 			}
 		}
@@ -120,6 +124,8 @@ int main() {
         drawGrid(&window);
         drawText(textures, &window);
 		
+        std::cout << sprites.size() << std::endl;
+
         window.display();
 	}	
 
@@ -210,9 +216,9 @@ void drawText(std::vector<sf::Texture> textures, sf::RenderWindow* window) {
 // returns an vector of textures from the given spritesheet
 std::vector<sf::Texture> loadTextures(std::string file) {
         std::vector<sf::Texture> v;
-        for(int i = 0; i < 32; i += TILE_SIZE) {
+        for(int i = 0; i < 4; i++) {
             sf::Texture texture;
-            texture.loadFromFile(file, sf::IntRect(i, 0, i + TILE_SIZE, TILE_SIZE));
+            texture.loadFromFile(file, sf::IntRect(i * TILE_SIZE, 0, TILE_SIZE, TILE_SIZE));
 
             v.push_back(texture);
         }
