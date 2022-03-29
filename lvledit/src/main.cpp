@@ -4,12 +4,10 @@
 #include <fstream>
 #include <string>
 #include <sstream>
+#include <vector>
 
 #define WINDOW_WIDTH 1072
 #define WINDOW_HEIGHT 720
-
-#define GAME_VIEW_WIDTH 800
-#define GAME_VIEW_HEIGHT 600
 
 #define TILE_SIZE 16
 #define ZOOM_FACTOR 1
@@ -22,6 +20,7 @@ void drawGrid(sf::RenderWindow*);
 void drawHighlight(sf::RenderWindow*);
 void drawMapBackground(sf::RenderWindow*);
 void drawText(sf::RenderWindow*);
+std::vector<sf::Texture> loadTextures(std::string);
 int** loadMap(std::string);
 void writeMap(int**, std::string);
 
@@ -37,6 +36,16 @@ int main() {
 
 	int** map = loadMap(std::string("overworld.dat"));
     sf::View view(sf::Vector2f(map_w * TILE_SIZE / 2, map_h * TILE_SIZE / 2), sf::Vector2f(WINDOW_WIDTH / ZOOM_FACTOR, WINDOW_HEIGHT / ZOOM_FACTOR));
+
+    std::vector<sf::Texture> textures = loadTextures("../art/tiles/overworld.png");
+    std::vector<sf::Sprite> sprites;
+    for(int i = 0; i < map_w; i++) {
+        sf::Sprite sprite;
+        sprite.setTexture(textures[0]);
+        sprite.setPosition(i * TILE_SIZE, 0);
+
+        sprites.push_back(sprite);
+    }
 
     if(!font.loadFromFile("../art/PressStart2P.ttf")) {
         std::cout << "unable to load font..." << std::endl;
@@ -62,15 +71,20 @@ int main() {
 
         view_mouse_pos = window.mapPixelToCoords(sf::Mouse::getPosition(window));
 
+        // drawing
 		window.clear();
-
         window.setView(view);
 
         drawMapBackground(&window);
+
+        for(int i = 0; i < sprites.size(); i++)
+            window.draw(sprites[i]);
+
         drawHighlight(&window);
         drawGrid(&window);
         drawText(&window);
-		window.display();
+		
+        window.display();
 	}	
 
 	closeMap(map);
@@ -144,14 +158,25 @@ void drawText(sf::RenderWindow* window) {
         s = "tx:" + std::to_string((int)view_mouse_pos.x / TILE_SIZE) + "\nty:" + std::to_string((int)view_mouse_pos.y / TILE_SIZE);
 
     text.setString(s);
-    
+
     text.setCharacterSize(TILE_SIZE);
     text.setFillColor(sf::Color(255, 255, 0, 200));
 
     window->draw(text);
 }
 
+// returns an vector of textures from the given spritesheet
+std::vector<sf::Texture> loadTextures(std::string file) {
+        std::vector<sf::Texture> v;
+        for(int i = 0; i < 32; i += TILE_SIZE) {
+            sf::Texture texture;
+            texture.loadFromFile(file, sf::IntRect(i, 0, i + TILE_SIZE, TILE_SIZE));
 
+            v.push_back(texture);
+        }
+
+        return v;
+}
 
 // reads data from given file into an int array 
 int** loadMap(std::string path) {
