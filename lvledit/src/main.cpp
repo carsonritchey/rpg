@@ -10,7 +10,7 @@
 #define WINDOW_HEIGHT 720 * 2
 
 #define TILE_SIZE 16
-#define ZOOM_FACTOR 2
+#define ZOOM_FACTOR 1
 
 #define SEPERATOR ,
 #define EMPTY -1
@@ -19,7 +19,7 @@ void closeMap(int**);
 void drawGrid(sf::RenderWindow*);
 void drawHighlight(sf::RenderWindow*);
 void drawMapBackground(sf::RenderWindow*);
-void drawText(sf::RenderWindow*);
+void drawText(std::vector<sf::Texture>, sf::RenderWindow*);
 std::vector<sf::Texture> loadTextures(std::string);
 int** loadMap(std::string);
 void writeMap(int**, std::string);
@@ -27,6 +27,8 @@ void writeMap(int**, std::string);
 int map_w = -1;
 int map_h = -1;
 sf::Vector2f view_mouse_pos;
+
+int currentTileIndex = 0;
 
 sf::Font font;
 
@@ -56,8 +58,13 @@ int main() {
 			if(event.type == sf::Event::KeyPressed) {
 				if(event.key.code == sf::Keyboard::Z)
 					view.zoom(2);
-				if(event.key.code == sf::Keyboard::X)
+				else if(event.key.code == sf::Keyboard::X)
 					view.zoom(.5);
+				else if(event.key.code == sf::Keyboard::Q)
+					currentTileIndex--;
+				else if(event.key.code == sf::Keyboard::E)
+					currentTileIndex++;
+
 			}
 		}
 
@@ -84,7 +91,7 @@ int main() {
 			if(x >= 0 && x <= (map_w - 1) * TILE_SIZE &&
 			   y >= 0 && y <= (map_h - 1) * TILE_SIZE){
 				sf::Sprite sprite;
-				sprite.setTexture(textures[0]);
+				sprite.setTexture(textures[currentTileIndex]);
 				sprite.setPosition(x, y);
 
 				sprites.push_back(sprite);
@@ -111,7 +118,7 @@ int main() {
 
         drawHighlight(&window);
         drawGrid(&window);
-        drawText(&window);
+        drawText(textures, &window);
 		
         window.display();
 	}	
@@ -174,23 +181,28 @@ void drawMapBackground(sf::RenderWindow* window) {
     window->draw(rect);
 }
 
-void drawText(sf::RenderWindow* window) {
+void drawText(std::vector<sf::Texture> textures, sf::RenderWindow* window) {
     sf::Text text;
     text.setFont(font);
 
-    std::string s;
+    std::string s = "tile:\n";
     int x = (int)(view_mouse_pos.x / TILE_SIZE) * TILE_SIZE;
     int y = (int)(view_mouse_pos.y / TILE_SIZE) * TILE_SIZE;
     if(x < 0 || x > (map_w - 1) * TILE_SIZE || y < 0 || y > (map_h - 1) * TILE_SIZE)
-        s = "tx:\nty:";
+        s += "tx:\nty:";
     else
-        s = "tx:" + std::to_string((int)view_mouse_pos.x / TILE_SIZE) + "\nty:" + std::to_string((int)view_mouse_pos.y / TILE_SIZE);
+        s += "tx:" + std::to_string((int)view_mouse_pos.x / TILE_SIZE) + "\nty:" + std::to_string((int)view_mouse_pos.y / TILE_SIZE);
 
     text.setString(s);
 
     text.setCharacterSize(TILE_SIZE);
     text.setFillColor(sf::Color(255, 255, 0, 200));
 
+	sf::Sprite currentTile;
+	currentTile.setTexture(textures[currentTileIndex]);
+	currentTile.setPosition(5 * TILE_SIZE, 0);
+
+	window->draw(currentTile);
     window->draw(text);
 }
 
