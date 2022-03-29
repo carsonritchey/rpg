@@ -185,7 +185,7 @@ void drawText(std::vector<sf::Texture> textures, sf::RenderWindow* window) {
     sf::Text text;
     text.setFont(font);
 
-    std::string s = "tile:\n";
+    std::string s;
     int x = (int)(view_mouse_pos.x / TILE_SIZE) * TILE_SIZE;
     int y = (int)(view_mouse_pos.y / TILE_SIZE) * TILE_SIZE;
     if(x < 0 || x > (map_w - 1) * TILE_SIZE || y < 0 || y > (map_h - 1) * TILE_SIZE)
@@ -197,10 +197,11 @@ void drawText(std::vector<sf::Texture> textures, sf::RenderWindow* window) {
 
     text.setCharacterSize(TILE_SIZE);
     text.setFillColor(sf::Color(255, 255, 0, 200));
+	text.setPosition(window->mapPixelToCoords(sf::Vector2i(0, 0)));
 
 	sf::Sprite currentTile;
+	currentTile.setPosition(window->mapPixelToCoords(sf::Vector2i(0, 2 * TILE_SIZE)));
 	currentTile.setTexture(textures[currentTileIndex]);
-	currentTile.setPosition(5 * TILE_SIZE, 0);
 
 	window->draw(currentTile);
     window->draw(text);
