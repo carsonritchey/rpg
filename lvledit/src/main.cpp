@@ -21,7 +21,7 @@ void drawHighlight(sf::RenderWindow*);
 void drawMapBackground(sf::RenderWindow*);
 void drawText(std::vector<sf::Texture>, sf::RenderWindow*);
 std::vector<sf::Texture> loadTextures(std::string);
-int** loadMap(std::string);
+int** loadMap(std::string, std::vector<sf::Sprite>*);
 void writeMap(int**, std::string);
 
 int map_w = -1;
@@ -29,6 +29,7 @@ int map_h = -1;
 sf::Vector2f view_mouse_pos;
 
 int currentTileIndex = 0;
+std::vector<sf::Texture> textures;
 
 sf::Font font;
 
@@ -36,12 +37,12 @@ int main() {
 	sf::RenderWindow window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "lvledit");
     window.setFramerateLimit(30);
 
-	int** map = loadMap(std::string("overworld.dat"));
+    textures = loadTextures("../art/tiles/overworld.png");
+    std::vector<sf::Sprite> sprites;
+	int** map = loadMap(std::string("overworld.dat"), &sprites);
 
     sf::View view(sf::Vector2f(map_w * TILE_SIZE / 2, map_h * TILE_SIZE / 2), sf::Vector2f(WINDOW_WIDTH / ZOOM_FACTOR, WINDOW_HEIGHT / ZOOM_FACTOR));
 
-    std::vector<sf::Texture> textures = loadTextures("../art/tiles/overworld.png");
-    std::vector<sf::Sprite> sprites;
 
     if(!font.loadFromFile("../art/PressStart2P.ttf")) {
         std::cout << "unable to load font..." << std::endl;
@@ -128,7 +129,7 @@ int main() {
         window.display();
 	}	
 
-    //writeMap(map, "overworld.dat");
+    writeMap(map, "overworld.dat");
 	closeMap(map);
 }
 
@@ -227,14 +228,14 @@ std::vector<sf::Texture> loadTextures(std::string file) {
 }
 
 // reads data from given file into an int array 
-int** loadMap(std::string path) {
+int** loadMap(std::string path, std::vector<sf::Sprite>* sprites) {
 	std::string line;
 	std::ifstream file;
 	file.open(path);
 
-	std::getline(file, line);
-	std::stringstream ss(line);
 	std::string s;
+	while(std::getline(file, line)) s += line + "\n";
+	std::stringstream ss(s);
 
 	ss >> s;
 	int w = std::stoi(s);
@@ -245,12 +246,23 @@ int** loadMap(std::string path) {
 	for(int i = 0; i < h; i++) {
 		map[i] = new int[w];
 		for(int j = 0; j < w; j++) {
-			map[i][j] = EMPTY;
+			ss >> s;
+			int texture_index = std::stoi(s);
+
+			map[i][j] = texture_index; 
+
+			if(texture_index == EMPTY) continue;
+			sf::Sprite sprite;
+			sprite.setTexture(textures[texture_index]);
+			sprite.setPosition(j * TILE_SIZE, i * TILE_SIZE);
+			sprites->push_back(sprite);
 		}
 	}
 
 	map_w = w;
 	map_h = h;
+
+	std::cout << sprites->size() << std::endl;
 
     file.close();
 	return map;
