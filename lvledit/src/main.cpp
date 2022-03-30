@@ -37,6 +37,7 @@ int main() {
     window.setFramerateLimit(30);
 
 	int** map = loadMap(std::string("overworld.dat"));
+
     sf::View view(sf::Vector2f(map_w * TILE_SIZE / 2, map_h * TILE_SIZE / 2), sf::Vector2f(WINDOW_WIDTH / ZOOM_FACTOR, WINDOW_HEIGHT / ZOOM_FACTOR));
 
     std::vector<sf::Texture> textures = loadTextures("../art/tiles/overworld.png");
@@ -124,8 +125,6 @@ int main() {
         drawGrid(&window);
         drawText(textures, &window);
 		
-        std::cout << sprites.size() << std::endl;
-
         window.display();
 	}	
 
@@ -251,5 +250,16 @@ int** loadMap(std::string path) {
 
 	map_w = w;
 	map_h = h;
+
+    file.close();
 	return map;
+}
+
+void writeMap(int** map, std::string path) {
+    std::ofstream file;
+    file.open(path, std::ios::out | std::ios::trunc);
+
+    file << map_w << " " << map_h << std::endl;
+
+    file.close();
 }
