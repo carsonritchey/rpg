@@ -11,25 +11,28 @@
 
 #define TILE_SIZE 16
 #define ZOOM_FACTOR 1
+#define LAYERS 2
 
-#define SEPERATOR ,
 #define EMPTY -1
 
-void closeMap(int**);
+void closeMap(int***);
 void drawGrid(sf::RenderWindow*);
 void drawHighlight(sf::RenderWindow*);
 void drawMapBackground(sf::RenderWindow*);
 void drawText(std::vector<sf::Texture>, sf::RenderWindow*);
 std::vector<sf::Texture> loadTextures(std::string);
-int** loadMap(std::string, std::vector<sf::Sprite>*);
-void writeMap(int**, std::string);
+int*** loadMap(std::string);
+void writeMap(int***, std::string);
 
 int map_w = -1;
 int map_h = -1;
 sf::Vector2f view_mouse_pos;
 
 int currentTileIndex = 0;
+int current_layer = 0;
 std::vector<sf::Texture> textures;
+std::vector<sf::Sprite> bg_tiles;
+std::vector<sf::Sprite> fg_tiles;
 
 sf::Font font;
 
@@ -38,8 +41,7 @@ int main() {
     window.setFramerateLimit(30);
 
     textures = loadTextures("../art/tiles/overworld.png");
-    std::vector<sf::Sprite> sprites;
-	int** map = loadMap(std::string("overworld.dat"), &sprites);
+	int*** map = loadMap(std::string("overworld.dat"));
 
     sf::View view(sf::Vector2f(map_w * TILE_SIZE / 2, map_h * TILE_SIZE / 2), sf::Vector2f(WINDOW_WIDTH / ZOOM_FACTOR, WINDOW_HEIGHT / ZOOM_FACTOR));
 
@@ -58,14 +60,16 @@ int main() {
 
 			// zooming
 			if(event.type == sf::Event::KeyPressed) {
-				if(event.key.code == sf::Keyboard::Z)
+				if(event.key.code == sf::Keyboard::Z)      // zoom out
 					view.zoom(2);
-				else if(event.key.code == sf::Keyboard::X)
+				else if(event.key.code == sf::Keyboard::X) // zoom in
 					view.zoom(.5);
-				else if(event.key.code == sf::Keyboard::Q)
+				else if(event.key.code == sf::Keyboard::Q) // switch tile left
 					currentTileIndex--;
-				else if(event.key.code == sf::Keyboard::E)
+				else if(event.key.code == sf::Keyboard::E) // switch tile right
 					currentTileIndex++;
+                else if(event.key.code == sf::Keyboard::C) // move up layer
+                    current_layer = (current_layer + 1) % LAYERS;
 
 			}
 		}
@@ -86,32 +90,45 @@ int main() {
 
         view_mouse_pos = window.mapPixelToCoords(sf::Mouse::getPosition(window));
 
-		// placing and removing tiles
+		// placing tiles
 		if(sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
 			int x = (int)(view_mouse_pos.x / TILE_SIZE) * TILE_SIZE;
 			int y = (int)(view_mouse_pos.y / TILE_SIZE) * TILE_SIZE;
 			if(x >= 0 && x <= (map_w - 1) * TILE_SIZE &&
 			   y >= 0 && y <= (map_h - 1) * TILE_SIZE){
-                if(map[x / TILE_SIZE][y / TILE_SIZE] == EMPTY) {
+                if(map[x / TILE_SIZE][y / TILE_SIZE][current_layer] == EMPTY) {
                     sf::Sprite sprite;
                     sprite.setTexture(textures[currentTileIndex]);
                     sprite.setPosition(x, y);
 
-                    map[x / TILE_SIZE][y / TILE_SIZE] = currentTileIndex;
-                    sprites.push_back(sprite);
+                    map[x / TILE_SIZE][y / TILE_SIZE][current_layer] = currentTileIndex;
+                    bg_tiles.push_back(sprite);
                 }
 			}
+        // removing tiles
 		} else if(sf::Mouse::isButtonPressed(sf::Mouse::Right)) {
-			for(int i = 0; i < sprites.size(); i++) {
-				sf::Vector2f v = sprites[i].getPosition();
+            if(current_layer == 0) {
+                for(int i = 0; i < bg_tiles.size(); i++) {
+                    sf::Vector2f v = bg_tiles[i].getPosition();
 
-				if(v.x == (int)(view_mouse_pos.x / TILE_SIZE) * TILE_SIZE &&
-					v.y == (int)(view_mouse_pos.y / TILE_SIZE) * TILE_SIZE) {
-						sprites.erase(sprites.begin() + i);
-                        map[(int)v.x / TILE_SIZE][(int)v.y / TILE_SIZE] = EMPTY;
-				}
-			}
-		}
+                    if(v.x == (int)(view_mouse_pos.x / TILE_SIZE) * TILE_SIZE &&
+                        v.y == (int)(view_mouse_pos.y / TILE_SIZE) * TILE_SIZE) {
+                            bg_tiles.erase(bg_tiles.begin() + i);
+                            map[(int)v.x / TILE_SIZE][(int)v.y / TILE_SIZE][current_layer] = EMPTY;
+                    }
+                }
+            } else {
+                for(int i = 0; i < fg_tiles.size(); i++) {
+                    sf::Vector2f v = fg_tiles[i].getPosition();
+
+                    if(v.x == (int)(view_mouse_pos.x / TILE_SIZE) * TILE_SIZE &&
+                        v.y == (int)(view_mouse_pos.y / TILE_SIZE) * TILE_SIZE) {
+                            fg_tiles.erase(fg_tiles.begin() + i);
+                            map[(int)v.x / TILE_SIZE][(int)v.y / TILE_SIZE][current_layer] = EMPTY;
+                    }
+                }
+            }
+        }
 
         // drawing
 		window.clear();
@@ -119,8 +136,10 @@ int main() {
 
         drawMapBackground(&window);
 
-        for(int i = 0; i < sprites.size(); i++)
-            window.draw(sprites[i]);
+        for(int i = 0; i < bg_tiles.size(); i++)
+            window.draw(bg_tiles[i]);
+        for(int i = 0; i < fg_tiles.size(); i++)
+            window.draw(fg_tiles[i]);
 
         drawHighlight(&window);
         drawGrid(&window);
@@ -134,9 +153,13 @@ int main() {
 }
 
 // frees map array 
-void closeMap(int** map) {
-	for(int i = 0; i < map_h; i++)
+void closeMap(int*** map) {
+	for(int i = 0; i < map_h; i++) {
+        for(int j = 0; j < map_w; j++) {
+            delete[] map[i][j];
+        }
 		delete[] map[i];
+    }
 
 	delete[] map;
 
@@ -199,6 +222,8 @@ void drawText(std::vector<sf::Texture> textures, sf::RenderWindow* window) {
         s += "tx:\nty:";
     else
         s += "tx:" + std::to_string((int)view_mouse_pos.x / TILE_SIZE) + "\nty:" + std::to_string((int)view_mouse_pos.y / TILE_SIZE);
+    
+    s += "\n" + std::to_string(current_layer);
 
     text.setString(s);
 
@@ -207,7 +232,7 @@ void drawText(std::vector<sf::Texture> textures, sf::RenderWindow* window) {
 	text.setPosition(window->mapPixelToCoords(sf::Vector2i(0, 0)));
 
 	sf::Sprite currentTile;
-	currentTile.setPosition(window->mapPixelToCoords(sf::Vector2i(0, 2 * TILE_SIZE)));
+	currentTile.setPosition(window->mapPixelToCoords(sf::Vector2i(0, 3 * TILE_SIZE)));
 	currentTile.setTexture(textures[currentTileIndex]);
 
 	window->draw(currentTile);
@@ -228,7 +253,7 @@ std::vector<sf::Texture> loadTextures(std::string file) {
 }
 
 // reads data from given file into an int array 
-int** loadMap(std::string path, std::vector<sf::Sprite>* sprites) {
+int*** loadMap(std::string path) {
 	std::string line;
 	std::ifstream file;
 	file.open(path);
@@ -242,20 +267,25 @@ int** loadMap(std::string path, std::vector<sf::Sprite>* sprites) {
 	ss >> s;
 	int h = std::stoi(s);
 
-	int** map = new int*[h];
+	int*** map = new int**[h];
 	for(int i = 0; i < h; i++) {
-		map[i] = new int[w];
+		map[i] = new int*[w];
 		for(int j = 0; j < w; j++) {
-			ss >> s;
-			int texture_index = std::stoi(s);
+            map[i][j] = new int[LAYERS];
+            for(int k = 0; k < LAYERS; k++) {
+                ss >> s;
+                int texture_index = std::stoi(s);
+                map[i][j][k] = texture_index;
 
-			map[i][j] = texture_index; 
+                if(texture_index == EMPTY) continue;
 
-			if(texture_index == EMPTY) continue;
-			sf::Sprite sprite;
-			sprite.setTexture(textures[texture_index]);
-			sprite.setPosition(i * TILE_SIZE, j * TILE_SIZE);
-			sprites->push_back(sprite);
+                sf::Sprite sprite;
+                sprite.setTexture(textures[texture_index]);
+                sprite.setPosition(i * TILE_SIZE, j * TILE_SIZE);
+                if(k == 0)
+                     bg_tiles.push_back(sprite);
+                else fg_tiles.push_back(sprite);
+            }
 		}
 	}
 
@@ -266,14 +296,16 @@ int** loadMap(std::string path, std::vector<sf::Sprite>* sprites) {
 	return map;
 }
 
-void writeMap(int** map, std::string path) {
+void writeMap(int*** map, std::string path) {
     std::ofstream file;
     file.open(path, std::ios::out | std::ios::trunc);
 
     file << map_w << " " << map_h << std::endl;
     for(int i = 0; i < map_h; i++) {
         for(int j = 0; j < map_w; j++) {
-            file << map[i][j] << " ";
+            for(int k = 0; k < LAYERS; k++) {
+                file << map[i][j][k] << " ";
+            }
         }
         file << std::endl;
     }
