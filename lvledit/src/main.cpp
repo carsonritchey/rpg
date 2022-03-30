@@ -128,6 +128,7 @@ int main() {
         window.display();
 	}	
 
+    //writeMap(map, "overworld.dat");
 	closeMap(map);
 }
 
@@ -260,6 +261,12 @@ void writeMap(int** map, std::string path) {
     file.open(path, std::ios::out | std::ios::trunc);
 
     file << map_w << " " << map_h << std::endl;
+    for(int i = 0; i < map_h; i++) {
+        for(int j = 0; j < map_w; j++) {
+            file << map[j][i] << " ";
+        }
+        file << std::endl;
+    }
 
     file.close();
 }
