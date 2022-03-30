@@ -254,15 +254,13 @@ int** loadMap(std::string path, std::vector<sf::Sprite>* sprites) {
 			if(texture_index == EMPTY) continue;
 			sf::Sprite sprite;
 			sprite.setTexture(textures[texture_index]);
-			sprite.setPosition(j * TILE_SIZE, i * TILE_SIZE);
+			sprite.setPosition(i * TILE_SIZE, j * TILE_SIZE);
 			sprites->push_back(sprite);
 		}
 	}
 
 	map_w = w;
 	map_h = h;
-
-	std::cout << sprites->size() << std::endl;
 
     file.close();
 	return map;
@@ -275,7 +273,7 @@ void writeMap(int** map, std::string path) {
     file << map_w << " " << map_h << std::endl;
     for(int i = 0; i < map_h; i++) {
         for(int j = 0; j < map_w; j++) {
-            file << map[j][i] << " ";
+            file << map[i][j] << " ";
         }
         file << std::endl;
     }
