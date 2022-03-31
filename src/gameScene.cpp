@@ -17,13 +17,13 @@ void GameScene::update(const float& dt) {
 }
 
 void GameScene::render() {
-    sf::Sprite sprite;
-    sf::Texture texture;
-    texture.loadFromFile("art/tiles/overworld.png");
-    sprite.setTexture(texture);
-    sprite.setPosition(window->mapPixelToCoords(sf::Vector2i(0, 0))); 
+	for(auto sprite : this->map.bg_sprites) {
+		window->draw(sprite.second);
+	}
+	for(auto sprite : this->map.fg_sprites) {
+		window->draw(sprite.second);
+	}
 
-    window->draw(sprite);
 }
 
 void GameScene::close_scene() {

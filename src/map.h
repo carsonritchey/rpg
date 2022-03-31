@@ -3,9 +3,11 @@
 
 #include <SFML/Graphics.hpp>
 #include <vector>
+#include <map>
 
 class Map {
     private:
+		sf::Sprite createSprite(int, int, int);
         void loadTextures(std::string);
         void loadMap(std::string);
 
@@ -25,7 +27,8 @@ class Map {
         int map_w, map_h;
         int** tile_collision;
         std::vector<sf::Texture> textures;
-        std::vector<sf::Sprite>  bg_tiles;
+		std::map<int, sf::Sprite> bg_sprites;
+		std::map<int, sf::Sprite> fg_sprites;
 
         // functions
         void init(std::string, std::string);
