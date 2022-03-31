@@ -8,25 +8,27 @@
 
 class Game {
     public:
-        bool running = true;
+        // constructor & deconstructor
+        Game();
+        virtual ~Game();
 
-        sf::RenderWindow* window;
-        sf::VideoMode videoMode;
+        // variables 
+        bool running = true;
 
         sf::Clock dtClock;
         float dt;
 
         std::stack<Scene*> scenes;
 
-        Game();
-        virtual ~Game();
+        // functions
+        void close();
+
+        sf::RenderWindow* window;
+        sf::View* view;
 
         void update();
         void render();
         void tick_dt();
-
-        // exists game loop
-        void close();
 };
 
 #endif
