@@ -6,8 +6,8 @@
 #include <sstream>
 #include <vector>
 
-#define WINDOW_WIDTH 1072
-#define WINDOW_HEIGHT 720
+#define WINDOW_WIDTH 1072 * 2
+#define WINDOW_HEIGHT 720 * 2
 
 #define TILE_SIZE 16
 #define ZOOM_FACTOR 1
@@ -242,7 +242,7 @@ void drawText(std::vector<sf::Texture> textures, sf::RenderWindow* window) {
 // returns an vector of textures from the given spritesheet
 std::vector<sf::Texture> loadTextures(std::string file) {
         std::vector<sf::Texture> v;
-        for(int i = 0; i < 4; i++) {
+        for(int i = 0; i < 12; i++) {
             sf::Texture texture;
             texture.loadFromFile(file, sf::IntRect(i * TILE_SIZE, 0, TILE_SIZE, TILE_SIZE));
 
