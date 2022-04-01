@@ -22,6 +22,7 @@ class TitleScene : public Scene {
 
 		sf::Font font;
 		sf::Text text;
+		sf::Text text_backdrop;
 };
 
 #endif

@@ -6,7 +6,7 @@ Game::Game() {
     this->dt = 0.f;
 
     this->window = new sf::RenderWindow(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), WINDOW_NAME, sf::Style::Titlebar | sf::Style::Close);
-    this->view   = new sf::View(sf::FloatRect(0.f, 0.f, (float)WINDOW_WIDTH / ZOOM_FACTOR, (float)WINDOW_HEIGHT / ZOOM_FACTOR));
+    this->view   = new sf::View(sf::FloatRect(0.f, 0.f, (float)WINDOW_WIDTH, (float)WINDOW_HEIGH));
 
     this->window->setFramerateLimit(FRAMES_PER_SECOND);
     this->window->setVerticalSyncEnabled(VSYNC_CHOICE);
@@ -41,28 +41,23 @@ void Game::update() {
     if(!this->scenes.empty())
         this->scenes.top()->update(this->dt);
 
-	
 	// temp scene moving 
-	if(sf::Keyboard::isKeyPressed(sf::Keyboard::Left) ||
-			sf::Keyboard::isKeyPressed(sf::Keyboard::A))
+	if(sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
 		this->view->move(-TILE_SIZE, 0);
-	if(sf::Keyboard::isKeyPressed(sf::Keyboard::Right) ||
-			sf::Keyboard::isKeyPressed(sf::Keyboard::D))
+	if(sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
 		this->view->move(TILE_SIZE, 0);
-	if(sf::Keyboard::isKeyPressed(sf::Keyboard::Up) ||
-			sf::Keyboard::isKeyPressed(sf::Keyboard::W))
+	if(sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
 		this->view->move(0, -TILE_SIZE);
-	if(sf::Keyboard::isKeyPressed(sf::Keyboard::Down) ||
-			sf::Keyboard::isKeyPressed(sf::Keyboard::S))
+	if(sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
 		this->view->move(0, TILE_SIZE);
 }
 
 void Game::render() {
     this->window->clear();
-    this->window->setView(*this->view);
 
     if(!this->scenes.empty())
         this->scenes.top()->render();
 
+    this->window->setView(*this->view);
     this->window->display();
 }

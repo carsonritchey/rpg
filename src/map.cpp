@@ -19,7 +19,8 @@ sf::Sprite Map::createSprite(int texture_index, int x, int y) {
 	sf::Sprite sprite;
 	sprite.setTexture(this->textures[texture_index]);
 
-	sprite.setPosition(x * TILE_SIZE, y * TILE_SIZE);
+	sprite.setPosition(x * TILE_SIZE * ZOOM_FACTOR, y * TILE_SIZE * ZOOM_FACTOR);
+    sprite.scale(ZOOM_FACTOR, ZOOM_FACTOR);
 
 	return sprite;
 }
