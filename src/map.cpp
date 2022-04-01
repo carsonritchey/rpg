@@ -6,7 +6,6 @@
 #include <string>
 #include <sstream>
 #include <vector>
-#include <unordered_map>
 
 Map::Map() {
 
@@ -19,6 +18,7 @@ Map::~Map() {
 sf::Sprite Map::createSprite(int texture_index, int x, int y) {
 	sf::Sprite sprite;
 	sprite.setTexture(this->textures[texture_index]);
+
 	sprite.setPosition(x * TILE_SIZE, y * TILE_SIZE);
 
 	return sprite;
@@ -53,8 +53,6 @@ void Map::loadMap(std::string path) {
     ss >> s; 
     this->map_h = std::stoi(s);
 
-	std::cout << "w:" << map_w << " h:" << map_h << std::endl;
-
     for(int i = 0; i < map_h; i++) {
         for(int j = 0; j < map_w; j++) {
 			for(int k = 0; k < LAYERS; k++) {
@@ -62,10 +60,11 @@ void Map::loadMap(std::string path) {
 				int texture_index = std::stoi(s);
 
 				if(texture_index == EMPTY) continue;
+
 				// background
 				if(k == 0) {
-					//std::cout << map_w * i + j << ": " << texture_index << std::endl;
 					this->bg_sprites[map_w * i + j] = createSprite(texture_index, i, j);
+				// foreground
 				} else {
 					this->fg_sprites[map_w * i + j] = createSprite(texture_index, i, j);
 				}

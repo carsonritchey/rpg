@@ -4,7 +4,7 @@
 #include <SFML/Graphics.hpp>
 #include <stack>
 
-#include "gameScene.h"
+#include "titleScene.h"
 
 class Game {
     public:
@@ -15,6 +15,9 @@ class Game {
         // variables 
         bool running = true;
 
+        sf::RenderWindow* window;
+        sf::View* view;
+
         sf::Clock dtClock;
         float dt;
 
@@ -22,9 +25,6 @@ class Game {
 
         // functions
         void close();
-
-        sf::RenderWindow* window;
-        sf::View* view;
 
         void update();
         void render();
