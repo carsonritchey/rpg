@@ -47,13 +47,6 @@ void TitleScene::render() {
 		window->draw(sprite.second);
 	}
 
-    sf::Texture texture;
-    texture.loadFromFile("/archive/pictures/random_pics/BARACK OBAMA HATSUNE MIKU.png");
-    sf::Sprite sprite;
-    sprite.setTexture(texture);
-    sprite.setPosition(100, 100);
-
-    window->draw(sprite);
     window->draw(text_backdrop);
 	window->draw(text);
 }
