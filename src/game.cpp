@@ -6,7 +6,7 @@ Game::Game() {
     this->dt = 0.f;
 
     this->window = new sf::RenderWindow(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), WINDOW_NAME, sf::Style::Titlebar | sf::Style::Close);
-    this->view   = new sf::View(sf::FloatRect(0.f, 0.f, (float)WINDOW_WIDTH, (float)WINDOW_HEIGH));
+    this->view   = new sf::View(sf::FloatRect(0.f, 0.f, (float)WINDOW_WIDTH, (float)WINDOW_HEIGHT));
 
     this->window->setFramerateLimit(FRAMES_PER_SECOND);
     this->window->setVerticalSyncEnabled(VSYNC_CHOICE);
@@ -29,6 +29,24 @@ void Game::close() {
     while(!this->scenes.empty()) {
         delete this->scenes.top();
         this->scenes.pop();
+    }
+}
+
+void Game::drawDebugInfo() {
+    for(int i = 0; i < WINDOW_WIDTH; i += TILE_SIZE * ZOOM_FACTOR) {
+        sf::Vertex line[] = {
+            sf::Vertex(sf::Vector2f(i, 0)),
+            sf::Vertex(sf::Vector2f(i, WINDOW_HEIGHT))
+        };
+        this->window->draw(line, 2, sf::Lines);
+    }
+
+    for(int j = 0; j < WINDOW_HEIGHT; j += TILE_SIZE * ZOOM_FACTOR) {
+        sf::Vertex line[] = {
+            sf::Vertex(sf::Vector2f(0, j)),
+            sf::Vertex(sf::Vector2f(WINDOW_WIDTH, j))
+        };
+        this->window->draw(line, 2, sf::Lines);
     }
 }
 
@@ -57,6 +75,9 @@ void Game::render() {
 
     if(!this->scenes.empty())
         this->scenes.top()->render();
+
+    if(this->debug)
+        this->drawDebugInfo();
 
     this->window->setView(*this->view);
     this->window->display();
