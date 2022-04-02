@@ -1,8 +1,7 @@
 #include "titleScene.h"
 #include "conf.h"
 #include "map.h"
-
-#include <iostream>
+#include "entity.h"
 
 TitleScene::TitleScene(sf::RenderWindow* window) : Scene(window) {
     this->map.init(this->map_path, this->texture_path);
@@ -47,14 +46,7 @@ void TitleScene::render() {
 		window->draw(sprite.second);
 	}
 
-    sf::Texture texture;
-    texture.loadFromFile("art/sprites/among.png");
-    sf::Sprite sprite;
-    sprite.setTexture(texture);
-    sprite.scale(ZOOM_FACTOR, ZOOM_FACTOR); 
-    sprite.setPosition(0, 2 * TILE_SIZE * ZOOM_FACTOR);
 
-    window->draw(sprite);
     window->draw(text_backdrop);
 	window->draw(text);
 }
