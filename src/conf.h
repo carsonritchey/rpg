@@ -8,3 +8,4 @@
 #define VSYNC_CHOICE false
 #define EMPTY -1
 #define WINDOW_NAME "rpg filler"
+#define VERSION "version 0.1"

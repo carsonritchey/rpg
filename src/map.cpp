@@ -25,6 +25,20 @@ sf::Sprite Map::createSprite(int texture_index, int x, int y) {
 	return sprite;
 }
 
+void Map::drawMap(sf::RenderWindow* window, int x, int y) {
+    int buffer = 2;
+
+    int xbound = std::min(map_w, x + buffer + (WINDOW_WIDTH / (TILE_SIZE * ZOOM_FACTOR)));
+    int ybound = std::min(map_h, y + buffer + (WINDOW_HEIGHT / (TILE_SIZE * ZOOM_FACTOR)));
+
+    for(int j = std::max(0, y - buffer); j < ybound; j++) {
+        for(int i = std::max(0, x - buffer); i < xbound; i++) {
+            window->draw(this->bg_sprites[map_w * i + j]);
+            window->draw(this->fg_sprites[map_w * i + j]);
+        }
+    }
+}
+
 void Map::init(std::string map_path, std::string texture_path) {
     Map::loadTextures(texture_path);
     Map::loadMap(map_path);

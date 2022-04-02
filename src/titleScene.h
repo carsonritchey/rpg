@@ -5,6 +5,12 @@
 #include "map.h"
 
 class TitleScene : public Scene {
+    private:
+		sf::Font font;
+		sf::Text text;
+		sf::Text text_backdrop;
+        sf::Text version_text;
+
     public:
 		// functions 
         TitleScene(sf::RenderWindow* window);
@@ -19,10 +25,6 @@ class TitleScene : public Scene {
 
         std::string texture_path = "art/tiles/overworld.png";
         std::string map_path = "lvledit/title_map.dat";
-
-		sf::Font font;
-		sf::Text text;
-		sf::Text text_backdrop;
 };
 
 #endif

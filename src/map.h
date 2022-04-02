@@ -31,6 +31,7 @@ class Map {
 		std::map<int, sf::Sprite> fg_sprites;
 
         // functions
+        void drawMap(sf::RenderWindow*, int, int);
         void init(std::string, std::string);
 };
 

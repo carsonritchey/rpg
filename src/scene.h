@@ -15,7 +15,6 @@ class Scene {
         virtual void update(const float& dt) = 0;
         virtual void render() = 0;
         virtual void close_scene() = 0;
-
 };
 
 #endif 

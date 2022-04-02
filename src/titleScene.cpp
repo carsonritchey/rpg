@@ -14,12 +14,15 @@ TitleScene::TitleScene(sf::RenderWindow* window) : Scene(window) {
     
 	this->text.setFont(font);
     this->text_backdrop.setFont(font);
+    this->version_text.setFont(font);
 
 	this->text.setString(WINDOW_NAME);
 	this->text_backdrop.setString(WINDOW_NAME);
+    this->version_text.setString(VERSION);
 
 	this->text.setCharacterSize(font_size);
 	this->text_backdrop.setCharacterSize(font_size);
+    this->version_text.setCharacterSize(TILE_SIZE * ZOOM_FACTOR / 4);
 
 	this->text.setStyle(sf::Text::Bold);
 	this->text_backdrop.setStyle(sf::Text::Bold);
@@ -28,6 +31,7 @@ TitleScene::TitleScene(sf::RenderWindow* window) : Scene(window) {
 
 	this->text.setPosition(2 * TILE_SIZE * ZOOM_FACTOR, 1 * TILE_SIZE * ZOOM_FACTOR);
 	this->text_backdrop.setPosition(2 * TILE_SIZE * ZOOM_FACTOR + 5, 1 * TILE_SIZE * ZOOM_FACTOR - 5);
+    this->version_text.setPosition(((WINDOW_WIDTH / (TILE_SIZE * ZOOM_FACTOR)) - 3) * TILE_SIZE * ZOOM_FACTOR, 0);
 }
 
 TitleScene::~TitleScene() {
@@ -39,16 +43,11 @@ void TitleScene::update(const float& dt) {
 }
 
 void TitleScene::render() {
-	for(auto sprite : this->map.bg_sprites) {
-		window->draw(sprite.second);
-	}
-	for(auto sprite : this->map.fg_sprites) {
-		window->draw(sprite.second);
-	}
+    this->map.drawMap(window, 0, 0);
 
-
-    window->draw(text_backdrop);
-	window->draw(text);
+    window->draw(this->text_backdrop);
+	window->draw(this->text);
+    window->draw(this->version_text);
 }
 
 void TitleScene::close_scene() {
