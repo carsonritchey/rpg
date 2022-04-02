@@ -1,6 +1,8 @@
 #include "conf.h"
 #include "game.h"
 
+#include <string>
+
 Game::Game() {
     this->running = true;
     this->dt = 0.f;
@@ -32,6 +34,7 @@ void Game::close() {
     }
 }
 
+// not pretty code because it shouldn't be running anyways
 void Game::drawDebugInfo() {
     for(int i = 0; i < WINDOW_WIDTH; i += TILE_SIZE * ZOOM_FACTOR) {
         sf::Vertex line[] = {
@@ -48,6 +51,21 @@ void Game::drawDebugInfo() {
         };
         this->window->draw(line, 2, sf::Lines);
     }
+
+    sf::Font font;
+    font.loadFromFile("art/PressStart2P.ttf");
+    sf::Text text;
+    text.setFont(font);
+    std::string s("fps:");
+    char fps[64];
+    sprintf(fps, "%.2f\n", 1 / this->dt);
+    s += fps;
+
+    text.setString(s);
+    text.setFillColor(sf::Color(0, 0, 0, 255 / 2));
+    text.setCharacterSize(TILE_SIZE * ZOOM_FACTOR / 4);
+
+    this->window->draw(text);
 }
 
 // how long the previous frame took
@@ -56,8 +74,9 @@ void Game::tick_dt() {
 }
 
 void Game::update() {
-    if(!this->scenes.empty())
+    if(!this->scenes.empty()) {
         this->scenes.top()->update(this->dt);
+    }
 
 	// temp scene moving 
 	if(sf::Keyboard::isKeyPressed(sf::Keyboard::Left))

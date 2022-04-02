@@ -7,7 +7,7 @@
 TitleScene::TitleScene(sf::RenderWindow* window) : Scene(window) {
     this->map.init(this->map_path, this->texture_path);
 
-    int font_size = 100;
+    int font_size = TILE_SIZE * ZOOM_FACTOR;
 
 	this->font.loadFromFile("art/PressStart2P.ttf");
     // disable anti-aliasing hack 
@@ -27,8 +27,8 @@ TitleScene::TitleScene(sf::RenderWindow* window) : Scene(window) {
 
     this->text_backdrop.setFillColor(sf::Color::Black);
 
-	this->text.setPosition(10, 10);
-	this->text_backdrop.setPosition(15, 5);
+	this->text.setPosition(2 * TILE_SIZE * ZOOM_FACTOR, 1 * TILE_SIZE * ZOOM_FACTOR);
+	this->text_backdrop.setPosition(2 * TILE_SIZE * ZOOM_FACTOR + 5, 1 * TILE_SIZE * ZOOM_FACTOR - 5);
 }
 
 TitleScene::~TitleScene() {
@@ -47,6 +47,14 @@ void TitleScene::render() {
 		window->draw(sprite.second);
 	}
 
+    sf::Texture texture;
+    texture.loadFromFile("art/sprites/among.png");
+    sf::Sprite sprite;
+    sprite.setTexture(texture);
+    sprite.scale(ZOOM_FACTOR, ZOOM_FACTOR); 
+    sprite.setPosition(0, 2 * TILE_SIZE * ZOOM_FACTOR);
+
+    window->draw(sprite);
     window->draw(text_backdrop);
 	window->draw(text);
 }
