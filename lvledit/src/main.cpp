@@ -242,11 +242,17 @@ void drawText(std::vector<sf::Texture> textures, sf::RenderWindow* window) {
 // returns an vector of textures from the given spritesheet
 std::vector<sf::Texture> loadTextures(std::string file) {
         std::vector<sf::Texture> v;
-        for(int i = 0; i < 12; i++) {
-            sf::Texture texture;
-            texture.loadFromFile(file, sf::IntRect(i * TILE_SIZE, 0, TILE_SIZE, TILE_SIZE));
 
-            v.push_back(texture);
+        sf::Image image;
+        image.loadFromFile(file);
+        sf::Vector2u size = image.getSize();
+        for(int j = 0; j < (int)size.y; j += TILE_SIZE) {
+            for(int i = 0; i < (int)size.x; i += TILE_SIZE) {
+                sf::Texture texture;
+                texture.loadFromFile(file, sf::IntRect(i, j, TILE_SIZE, TILE_SIZE));
+
+                v.push_back(texture);
+            }
         }
 
         return v;
