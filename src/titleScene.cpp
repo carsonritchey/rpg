@@ -1,7 +1,9 @@
 #include "titleScene.h"
 #include "conf.h"
 #include "map.h"
-#include "entity.h"
+#include "player.h"
+
+Player player("art/sprites/among.png");
 
 TitleScene::TitleScene(sf::RenderWindow* window) : Scene(window) {
     this->map.init(this->map_path, this->texture_path);
@@ -38,8 +40,8 @@ TitleScene::~TitleScene() {
 
 }
 
-void TitleScene::update(const float& dt) {
-
+void TitleScene::update(const float& dt, const sf::Event* event) {
+	player.update(event);
 }
 
 void TitleScene::render() {
@@ -48,6 +50,8 @@ void TitleScene::render() {
     window->draw(this->text_backdrop);
 	window->draw(this->text);
     window->draw(this->version_text);
+
+	window->draw(player.sprite);
 }
 
 void TitleScene::close_scene() {

@@ -12,9 +12,11 @@ class Entity {
         void loadTextures();
 
     public:
+		// functions 
         Entity(std::string);
         virtual ~Entity();
 
+		// variables 
         std::vector<sf::Texture> textures;
         sf::Sprite sprite; 
 

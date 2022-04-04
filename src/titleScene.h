@@ -16,7 +16,7 @@ class TitleScene : public Scene {
         TitleScene(sf::RenderWindow* window);
         virtual ~TitleScene();
 
-        void update(const float& dt);
+        void update(const float& dt, const sf::Event* event);
         void render();
         void close_scene();
 

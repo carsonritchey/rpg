@@ -74,19 +74,17 @@ void Game::tick_dt() {
 }
 
 void Game::update() {
-    if(!this->scenes.empty()) {
-        this->scenes.top()->update(this->dt);
-    }
+	sf::Event event;
+	while(this->window->pollEvent(event)) {
+		if(event.type == sf::Event::Closed) {
+			this->close();
+			return;
+		}
+	}
 
-	// temp scene moving 
-	if(sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
-		this->view->move(-TILE_SIZE, 0);
-	if(sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
-		this->view->move(TILE_SIZE, 0);
-	if(sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
-		this->view->move(0, -TILE_SIZE);
-	if(sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
-		this->view->move(0, TILE_SIZE);
+    if(!this->scenes.empty()) {
+        this->scenes.top()->update(this->dt, &event);
+    }
 }
 
 void Game::render() {
