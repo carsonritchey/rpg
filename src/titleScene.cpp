@@ -41,7 +41,7 @@ TitleScene::~TitleScene() {
 }
 
 void TitleScene::update(const float& dt, const sf::Event* event) {
-	player.update(event);
+	player.update(dt, event);
 }
 
 void TitleScene::render() {

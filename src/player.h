@@ -14,9 +14,14 @@ class Player : public Entity {
         virtual ~Player();
 
         // variables
+		bool up    = false;
+		bool down  = false;
+		bool left  = false;
+		bool right = false;
+		const float mvnt_speed = TILE_SIZE;
 
         // functions
-		void update(const sf::Event*);
+		void update(const float, const sf::Event*);
 };
 
 #endif

@@ -14,7 +14,7 @@ class Game {
 
         // variables 
         bool running = true;
-        bool debug   = true;
+        bool debug   = false;
 
         sf::RenderWindow* window;
         sf::View* view;

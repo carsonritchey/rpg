@@ -4,9 +4,6 @@
 #include <string>
 
 Game::Game() {
-    this->running = true;
-    this->dt = 0.f;
-
     this->window = new sf::RenderWindow(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), WINDOW_NAME, sf::Style::Titlebar | sf::Style::Close);
     this->view   = new sf::View(sf::FloatRect(0.f, 0.f, (float)WINDOW_WIDTH, (float)WINDOW_HEIGHT));
 
