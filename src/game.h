@@ -5,6 +5,7 @@
 #include <stack>
 
 #include "titleScene.h"
+#include "gameScene.h"
 
 class Game {
     public:

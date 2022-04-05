@@ -80,7 +80,10 @@ void Game::update() {
 	}
 
     if(!this->scenes.empty()) {
-        this->scenes.top()->update(this->dt, &event);
+        int code = this->scenes.top()->update(this->dt, &event);
+
+        if(code == RETURN_CODE_EXIT) this->close(); 
+        else if(code == RETURN_CODE_START) this->scenes.push(new GameScene(this->window));
     }
 }
 

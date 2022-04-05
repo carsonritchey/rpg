@@ -1,5 +1,5 @@
-#ifndef GAMESCENE_H
-#define GAMESCENE_H
+#ifndef TITLESCENE_H
+#define TITLESCENE_H
 
 #include "scene.h"
 #include "map.h"
@@ -11,12 +11,19 @@ class TitleScene : public Scene {
 		sf::Text text_backdrop;
         sf::Text version_text;
 
+        std::string start_string = "start game!";
+        sf::Text start_text;
+        std::string exit_string = "exit";
+        sf::Text exit_text;
+
+        int text_select = 0;
+
     public:
 		// functions 
         TitleScene(sf::RenderWindow* window);
         virtual ~TitleScene();
 
-        void update(const float& dt, const sf::Event* event);
+        int update(const float& dt, const sf::Event* event);
         void render();
         void close_scene();
 

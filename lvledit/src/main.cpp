@@ -15,6 +15,8 @@
 
 #define EMPTY -1
 
+std::string MAP_PATH = "overworld_map.dat";
+
 void closeMap(int***);
 void drawGrid(sf::RenderWindow*);
 void drawHighlight(sf::RenderWindow*);
@@ -41,7 +43,7 @@ int main() {
     window.setFramerateLimit(30);
 
     textures = loadTextures("../art/tiles/overworld.png");
-	int*** map = loadMap(std::string("overworld.dat"));
+	int*** map = loadMap(MAP_PATH);
 
     sf::View view(sf::Vector2f(map_w * TILE_SIZE / 2, map_h * TILE_SIZE / 2), sf::Vector2f(WINDOW_WIDTH / ZOOM_FACTOR, WINDOW_HEIGHT / ZOOM_FACTOR));
 
@@ -148,7 +150,7 @@ int main() {
         window.display();
 	}	
 
-    writeMap(map, "overworld.dat");
+    writeMap(map, MAP_PATH);
 	closeMap(map);
 }
 
