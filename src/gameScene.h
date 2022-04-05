@@ -3,6 +3,8 @@
 
 #include "scene.h"
 #include "map.h"
+#include "player.h"
+#include "conf.h"
 
 class GameScene : public Scene {
     private:
@@ -17,6 +19,7 @@ class GameScene : public Scene {
         void close_scene();
 
 		// variables 
+		Player player{"art/sprites/duck.png"};
         Map map;
 
         std::string texture_path = "art/tiles/overworld.png";
