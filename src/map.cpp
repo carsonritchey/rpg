@@ -25,6 +25,7 @@ sf::Sprite Map::createSprite(int texture_index, int x, int y) {
 	return sprite;
 }
 
+// drawing maps that fit the screen and won't be moved (i.e. title screen)
 void Map::drawMap(sf::RenderWindow* window, int x, int y) {
     int buffer = 2;
 
@@ -39,18 +40,40 @@ void Map::drawMap(sf::RenderWindow* window, int x, int y) {
     }
 }
 
+// drwawing maps that won't fit the screen and need to be moved via the view
+void Map::drawMap(sf::RenderWindow* window, sf::View* view, int x, int y) {
+    int buffer = 2;
+
+    int xbound = std::min(map_w, x + buffer + (WINDOW_WIDTH / (TILE_SIZE * ZOOM_FACTOR)));
+    int ybound = std::min(map_h, y + buffer + (WINDOW_HEIGHT / (TILE_SIZE * ZOOM_FACTOR)));
+
+    for(int j = std::max(0, y - buffer); j < ybound; j++) {
+        for(int i = std::max(0, x - buffer); i < xbound; i++) {
+            window->draw(this->bg_sprites[map_w * i + j]);
+            window->draw(this->fg_sprites[map_w * i + j]);
+        }
+    }
+
+    view->setCenter(x * TILE_REAL + WINDOW_WIDTH / 2, y * TILE_REAL + WINDOW_HEIGHT / 2);
+}
+
 void Map::init(std::string map_path, std::string texture_path) {
     Map::loadTextures(texture_path);
     Map::loadMap(map_path);
 }
 
 void Map::loadTextures(std::string path) {
-    int TEMP_TEXTURE_LOADING_LENGTH = 16;
-    for(int i = 0; i < TEMP_TEXTURE_LOADING_LENGTH; i++) {
-        sf::Texture texture;
-        texture.loadFromFile(path, sf::IntRect(i * TILE_SIZE, 0, TILE_SIZE, TILE_SIZE));
+    sf::Image image;
+    image.loadFromFile(path);
+    sf::Vector2u size = image.getSize();
 
-        this->textures.push_back(texture);
+    for(int j = 0; j < (int)size.y; j+= TILE_SIZE) {
+        for(int i = 0; i < (int)size.x; i+= TILE_SIZE) {
+            sf::Texture texture;
+            texture.loadFromFile(path, sf::IntRect(i, j, TILE_SIZE, TILE_SIZE));
+
+            this->textures.push_back(texture);
+        }
     }
 }
 
@@ -80,7 +103,7 @@ void Map::loadMap(std::string path) {
 				if(k == 0) {
 					this->bg_sprites[map_w * i + j] = createSprite(texture_index, i, j);
 				// foreground
-				} else {
+				} else if(k == 1) {
 					this->fg_sprites[map_w * i + j] = createSprite(texture_index, i, j);
 				}
 			}

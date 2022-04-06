@@ -32,6 +32,7 @@ class Map {
 
         // functions
         void drawMap(sf::RenderWindow*, int, int);
+        void drawMap(sf::RenderWindow*, sf::View*, int, int);
         void init(std::string, std::string);
 };
 
