@@ -22,13 +22,16 @@ void drawGrid(sf::RenderWindow*);
 void drawHighlight(sf::RenderWindow*);
 void drawMapBackground(sf::RenderWindow*);
 void drawText(std::vector<sf::Texture>, sf::RenderWindow*);
+void generateFile(std::string, int, int);
 std::vector<sf::Texture> loadTextures(std::string);
-int*** loadMap(std::string);
+void loadMap(std::string);
 void writeMap(int***, std::string);
 
 int map_w = -1;
 int map_h = -1;
 sf::Vector2f view_mouse_pos;
+int*** map;
+
 
 int currentTileIndex = 0;
 int current_layer = 0;
@@ -43,7 +46,7 @@ int main() {
     window.setFramerateLimit(30);
 
     textures = loadTextures("../art/tiles/overworld.png");
-	int*** map = loadMap(MAP_PATH);
+	loadMap(MAP_PATH);
 
     sf::View view(sf::Vector2f(map_w * TILE_SIZE / 2, map_h * TILE_SIZE / 2), sf::Vector2f(WINDOW_WIDTH / ZOOM_FACTOR, WINDOW_HEIGHT / ZOOM_FACTOR));
 
@@ -110,7 +113,7 @@ int main() {
         // removing tiles
 		} else if(sf::Mouse::isButtonPressed(sf::Mouse::Right)) {
             if(current_layer == 0) {
-                for(int i = 0; i < bg_tiles.size(); i++) {
+                for(int i = 0; i < (int)bg_tiles.size(); i++) {
                     sf::Vector2f v = bg_tiles[i].getPosition();
 
                     if(v.x == (int)(view_mouse_pos.x / TILE_SIZE) * TILE_SIZE &&
@@ -120,7 +123,7 @@ int main() {
                     }
                 }
             } else {
-                for(int i = 0; i < fg_tiles.size(); i++) {
+                for(int i = 0; i < (int)fg_tiles.size(); i++) {
                     sf::Vector2f v = fg_tiles[i].getPosition();
 
                     if(v.x == (int)(view_mouse_pos.x / TILE_SIZE) * TILE_SIZE &&
@@ -138,9 +141,9 @@ int main() {
 
         drawMapBackground(&window);
 
-        for(int i = 0; i < bg_tiles.size(); i++)
+        for(int i = 0; i < (int)bg_tiles.size(); i++)
             window.draw(bg_tiles[i]);
-        for(int i = 0; i < fg_tiles.size(); i++)
+        for(int i = 0; i < (int)fg_tiles.size(); i++)
             window.draw(fg_tiles[i]);
 
         drawHighlight(&window);
@@ -241,6 +244,24 @@ void drawText(std::vector<sf::Texture> textures, sf::RenderWindow* window) {
     window->draw(text);
 }
 
+void generateFile(std::string path, int w, int h) {
+    std::cout << "we generating" << std::endl; 
+    std::ofstream file(path, std::ofstream::trunc);
+
+    file << w << " " << h << std::endl;
+
+    for (int j = 0; j < h; j++) {
+        for(int i = 0; i < w; i++) {
+            for(int k = 0; k < LAYERS; k++) {
+                file << EMPTY << " ";
+            }
+        }
+        file << "\n";
+    }
+
+    file.close();
+}
+
 // returns an vector of textures from the given spritesheet
 std::vector<sf::Texture> loadTextures(std::string file) {
         std::vector<sf::Texture> v;
@@ -261,13 +282,17 @@ std::vector<sf::Texture> loadTextures(std::string file) {
 }
 
 // reads data from given file into an int array 
-int*** loadMap(std::string path) {
+void loadMap(std::string path) {
 	std::string line;
 	std::ifstream file;
 	file.open(path);
 
 	std::string s;
-	while(std::getline(file, line)) s += line + "\n";
+    int line_count = 0;
+	while(std::getline(file, line)) {
+        line_count++;
+        s += line + "\n";
+    }
 	std::stringstream ss(s);
 
 	ss >> s;
@@ -275,7 +300,16 @@ int*** loadMap(std::string path) {
 	ss >> s;
 	int h = std::stoi(s);
 
-	int*** map = new int**[h];
+    if(line_count == 1) {
+        std::cout << "size defined but map not defined... filling map" << std::endl;
+
+        file.close(); 
+        generateFile(path, w, h);
+        loadMap(path);
+        return;
+    }
+
+	map = new int**[h];
 	for(int i = 0; i < h; i++) {
 		map[i] = new int*[w];
 		for(int j = 0; j < w; j++) {
@@ -292,7 +326,8 @@ int*** loadMap(std::string path) {
                 sprite.setPosition(i * TILE_SIZE, j * TILE_SIZE);
                 if(k == 0)
                      bg_tiles.push_back(sprite);
-                else fg_tiles.push_back(sprite);
+                else
+                    fg_tiles.push_back(sprite);
             }
 		}
 	}
@@ -301,7 +336,6 @@ int*** loadMap(std::string path) {
 	map_h = h;
 
     file.close();
-	return map;
 }
 
 void writeMap(int*** map, std::string path) {
