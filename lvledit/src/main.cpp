@@ -15,7 +15,7 @@
 
 #define EMPTY -1
 
-std::string MAP_PATH = "overworld_map.dat";
+std::string MAP_PATH = "test.dat";
 
 void closeMap(int***);
 void drawGrid(sf::RenderWindow*);
@@ -107,7 +107,10 @@ int main() {
                     sprite.setPosition(x, y);
 
                     map[x / TILE_SIZE][y / TILE_SIZE][current_layer] = currentTileIndex;
-                    bg_tiles.push_back(sprite);
+                    if(current_layer == 0)
+                        bg_tiles.push_back(sprite);
+                    else if(current_layer == 1)
+                        fg_tiles.push_back(sprite);
                 }
 			}
         // removing tiles
@@ -122,7 +125,7 @@ int main() {
                             map[(int)v.x / TILE_SIZE][(int)v.y / TILE_SIZE][current_layer] = EMPTY;
                     }
                 }
-            } else {
+            } else if(current_layer == 1) {
                 for(int i = 0; i < (int)fg_tiles.size(); i++) {
                     sf::Vector2f v = fg_tiles[i].getPosition();
 
