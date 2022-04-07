@@ -21,7 +21,7 @@
 
 #define EMPTY -1
 
-std::string MAP_PATH = "test.dat";
+std::string MAP_PATH = "overworld_map.dat";
 
 void closeMap(int***);
 void drawCollision(sf::RenderWindow*);
@@ -351,7 +351,7 @@ void loadMap(std::string path) {
                 int texture_index = std::stoi(s);
                 map[i][j][k] = texture_index;
 
-                if(texture_index == EMPTY) continue;
+                if(texture_index == EMPTY || texture_index == COLLISION) continue;
 
                 sf::Sprite sprite;
                 sprite.setTexture(textures[texture_index]);
