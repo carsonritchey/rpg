@@ -11,13 +11,20 @@
 
 #define TILE_SIZE 16
 #define ZOOM_FACTOR 1
-#define LAYERS 2
+
+#define LAYERS 3
+#define BG 0 
+#define FG 1
+#define COLLISION 2
+#define COLLISION_WALKABLE -1
+#define COLLISION_WALL 0
 
 #define EMPTY -1
 
 std::string MAP_PATH = "test.dat";
 
 void closeMap(int***);
+void drawCollision(sf::RenderWindow*);
 void drawGrid(sf::RenderWindow*);
 void drawHighlight(sf::RenderWindow*);
 void drawMapBackground(sf::RenderWindow*);
@@ -101,21 +108,24 @@ int main() {
 			int y = (int)(view_mouse_pos.y / TILE_SIZE) * TILE_SIZE;
 			if(x >= 0 && x <= (map_w - 1) * TILE_SIZE &&
 			   y >= 0 && y <= (map_h - 1) * TILE_SIZE){
-                if(map[x / TILE_SIZE][y / TILE_SIZE][current_layer] == EMPTY) {
+                if(current_layer == COLLISION) {
+                    map[x / TILE_SIZE][y / TILE_SIZE][current_layer] = COLLISION_WALL;
+                }
+                else if(map[x / TILE_SIZE][y / TILE_SIZE][current_layer] == EMPTY) {
                     sf::Sprite sprite;
                     sprite.setTexture(textures[currentTileIndex]);
                     sprite.setPosition(x, y);
 
                     map[x / TILE_SIZE][y / TILE_SIZE][current_layer] = currentTileIndex;
-                    if(current_layer == 0)
+                    if(current_layer == BG)
                         bg_tiles.push_back(sprite);
-                    else if(current_layer == 1)
+                    else if(current_layer == FG)
                         fg_tiles.push_back(sprite);
                 }
 			}
         // removing tiles
 		} else if(sf::Mouse::isButtonPressed(sf::Mouse::Right)) {
-            if(current_layer == 0) {
+            if(current_layer == BG) {
                 for(int i = 0; i < (int)bg_tiles.size(); i++) {
                     sf::Vector2f v = bg_tiles[i].getPosition();
 
@@ -125,7 +135,7 @@ int main() {
                             map[(int)v.x / TILE_SIZE][(int)v.y / TILE_SIZE][current_layer] = EMPTY;
                     }
                 }
-            } else if(current_layer == 1) {
+            } else if(current_layer == FG) {
                 for(int i = 0; i < (int)fg_tiles.size(); i++) {
                     sf::Vector2f v = fg_tiles[i].getPosition();
 
@@ -135,6 +145,9 @@ int main() {
                             map[(int)v.x / TILE_SIZE][(int)v.y / TILE_SIZE][current_layer] = EMPTY;
                     }
                 }
+            }
+            else if(current_layer == COLLISION) {
+                map[(int)view_mouse_pos.x / TILE_SIZE][(int)view_mouse_pos.y / TILE_SIZE][COLLISION] = COLLISION_WALKABLE;
             }
         }
 
@@ -149,6 +162,8 @@ int main() {
         for(int i = 0; i < (int)fg_tiles.size(); i++)
             window.draw(fg_tiles[i]);
 
+        if(current_layer == 2)
+            drawCollision(&window);
         drawHighlight(&window);
         drawGrid(&window);
         drawText(textures, &window);
@@ -173,6 +188,20 @@ void closeMap(int*** map) {
 
 	map_w = -1;
 	map_h = -1;
+}
+
+void drawCollision(sf::RenderWindow* window) {
+    for(int i = 0; i < map_w; i++) {
+        for(int j = 0; j < map_h; j++) {
+            if(map[i][j][COLLISION] == COLLISION_WALL) {
+                sf::RectangleShape rect(sf::Vector2f(TILE_SIZE, TILE_SIZE));
+                rect.setPosition(i * TILE_SIZE, j * TILE_SIZE);
+                rect.setFillColor(sf::Color(255, 0, 0, 200));
+
+                window->draw(rect);
+            }
+        }
+    }
 }
 
 void drawGrid(sf::RenderWindow* window) {
@@ -327,9 +356,9 @@ void loadMap(std::string path) {
                 sf::Sprite sprite;
                 sprite.setTexture(textures[texture_index]);
                 sprite.setPosition(i * TILE_SIZE, j * TILE_SIZE);
-                if(k == 0)
+                if(k == BG)
                      bg_tiles.push_back(sprite);
-                else
+                else if(k == FG)
                     fg_tiles.push_back(sprite);
             }
 		}
