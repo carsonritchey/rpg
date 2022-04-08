@@ -8,6 +8,8 @@
 
 class Player : public Entity {
     private:
+        void checkInput(const sf::Event*);
+        sf::Vector2f movePlayer(const float dt, Map* map);
 
     public:
         // constructor & deconstructor

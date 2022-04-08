@@ -1,43 +1,47 @@
 #include "player.h"
 
-Player::Player(std::string texture_path) : Entity(texture_path) {
+#include <iostream>
 
+Player::Player(std::string texture_path) : Entity(texture_path) {
+    sprite.setPosition(4 * TILE_SIZE * ZOOM_FACTOR, 4 * TILE_SIZE * ZOOM_FACTOR);
 }
 
 Player::~Player() {
 
 }
 
-void Player::update(const float dt, const sf::Event* event, Map* map) {
-	if(event->type == sf::Event::KeyPressed) {
+void Player::checkInput(const sf::Event* event) {
+    if(event->type == sf::Event::KeyPressed) {
 		if(event->key.code == sf::Keyboard::Left)
-			this->left = true;
+			left = true;
 		if(event->key.code == sf::Keyboard::Right)
-			this->right = true;
+			right = true;
 		if(event->key.code == sf::Keyboard::Up)
-			this->up = true;
+			up = true;
 		if(event->key.code == sf::Keyboard::Down)
-			this->down = true;
+			down = true;
 	}
 	else if(event->type == sf::Event::KeyReleased) {
 		if(event->key.code == sf::Keyboard::Left)
-			this->left = false;
+			left = false;
 		if(event->key.code == sf::Keyboard::Right)
-			this->right = false;
+			right = false;
 		if(event->key.code == sf::Keyboard::Up)
-			this->up = false;
+			up = false;
 		if(event->key.code == sf::Keyboard::Down)
-			this->down = false;
+			down = false;
 	}
     if(!sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
-        this->left = false;
+        left = false;
     if(!sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
-        this->right = false;
+        right = false;
     if(!sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
-        this->up = false;
+        up = false;
     if(!sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
-        this->down = false;
+        down = false;
+}
 
+sf::Vector2f Player::movePlayer(const float dt, Map* map) {
     sf::Vector2f dPos(0.f, 0.f);
 	if(up) {
         dPos.y -= mvnt_speed * dt;
@@ -47,15 +51,14 @@ void Player::update(const float dt, const sf::Event* event, Map* map) {
     }
 	if(left) {
         dPos.x -= mvnt_speed * dt;
-        this->setTexture(this->l_frames[0]);
+        setTexture(l_frames[0]);
     }
 	if(right) {
         dPos.x += mvnt_speed * dt;
-        this->setTexture(this->r_frames[0]);
+        setTexture(r_frames[0]);
     }
 
-    sf::Vector2f pos = this->sprite.getPosition();
-
+    sf::Vector2f pos = sprite.getPosition();
     if(pos.x + dPos.x < 0)
         dPos.x = 0;
     else if(pos.x + dPos.x > map->map_w * TILE_SIZE * ZOOM_FACTOR - TILE_SIZE * ZOOM_FACTOR)
@@ -66,5 +69,10 @@ void Player::update(const float dt, const sf::Event* event, Map* map) {
     else if(pos.y + dPos.y > map->map_h * TILE_SIZE * ZOOM_FACTOR - TILE_SIZE * ZOOM_FACTOR)
         dPos.y = 0;
 
-    this->sprite.move(dPos);
+    return dPos;
+}
+
+void Player::update(const float dt, const sf::Event* event, Map* map) {
+    checkInput(event);
+    sprite.move(movePlayer(dt, map));
 }
