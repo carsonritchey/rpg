@@ -25,6 +25,7 @@ class Map {
            3 - item/chest
         */
         int map_w, map_h;
+        int buffer = 2; // number of tiles that are rendered offscreen, just incase
         int** tile_collision;
         std::vector<sf::Texture> textures;
 		std::map<int, sf::Sprite> bg_sprites;
@@ -32,7 +33,7 @@ class Map {
 
         // functions
         void drawMap(sf::RenderWindow*, int, int);
-        void drawMap(sf::RenderWindow*, sf::View*, int, int);
+        void drawMap(sf::RenderWindow*, sf::View*, float, float);
         void init(std::string, std::string);
 };
 

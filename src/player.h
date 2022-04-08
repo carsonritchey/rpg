@@ -19,7 +19,10 @@ class Player : public Entity {
 		bool down  = false;
 		bool left  = false;
 		bool right = false;
-		const float mvnt_speed = TILE_SIZE * ZOOM_FACTOR * 4;
+		const float mvnt_speed = TILE_SIZE * ZOOM_FACTOR * 5;
+
+        int l_frames[2] = {4, 5};
+        int r_frames[2] = {0, 1};
 
         // functions
 		void update(const float, const sf::Event*, Map* map);

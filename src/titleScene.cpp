@@ -7,7 +7,7 @@ sf::Color selected_color(0xff, 0x66, 0xff, 255);
 TitleScene::TitleScene(sf::RenderWindow* window) : Scene(window) {
     this->map.init(this->map_path, this->texture_path);
 
-    int font_size = TILE_REAL;
+    int font_size = TILE_SIZE * ZOOM_FACTOR;
 
 	this->font.loadFromFile("art/PressStart2P.ttf");
     // disable anti-aliasing hack 
@@ -27,20 +27,20 @@ TitleScene::TitleScene(sf::RenderWindow* window) : Scene(window) {
 
 	this->text.setCharacterSize(font_size);
 	this->text_backdrop.setCharacterSize(font_size);
-    this->version_text.setCharacterSize(TILE_REAL / 4);
-    this->start_text.setCharacterSize(TILE_REAL / 2);
-    this->exit_text.setCharacterSize(TILE_REAL / 2);
+    this->version_text.setCharacterSize(TILE_SIZE * ZOOM_FACTOR / 4);
+    this->start_text.setCharacterSize(TILE_SIZE * ZOOM_FACTOR / 2);
+    this->exit_text.setCharacterSize(TILE_SIZE * ZOOM_FACTOR / 2);
 
 	this->text.setStyle(sf::Text::Bold);
 	this->text_backdrop.setStyle(sf::Text::Bold);
 
     this->text_backdrop.setFillColor(sf::Color::Black);
 
-	this->text.setPosition(2 * TILE_REAL, 1 * TILE_REAL);
-	this->text_backdrop.setPosition(2 * TILE_REAL + 5, 1 * TILE_REAL - 5);
-    this->version_text.setPosition(((WINDOW_WIDTH / (TILE_REAL)) - 3) * TILE_REAL, 0);
-    this->start_text.setPosition(4 * TILE_REAL, 3 * TILE_REAL);
-    this->exit_text.setPosition(4 * TILE_REAL, 4 * TILE_REAL);
+	this->text.setPosition(2 * TILE_SIZE * ZOOM_FACTOR, 1 * TILE_SIZE * ZOOM_FACTOR);
+	this->text_backdrop.setPosition(2 * TILE_SIZE * ZOOM_FACTOR + 5, 1 * TILE_SIZE * ZOOM_FACTOR - 5);
+    this->version_text.setPosition(((WINDOW_WIDTH / (TILE_SIZE * ZOOM_FACTOR)) - 3) * TILE_SIZE * ZOOM_FACTOR, 0);
+    this->start_text.setPosition(4 * TILE_SIZE * ZOOM_FACTOR, 3 * TILE_SIZE * ZOOM_FACTOR);
+    this->exit_text.setPosition(4 * TILE_SIZE * ZOOM_FACTOR, 4 * TILE_SIZE * ZOOM_FACTOR);
 }
 
 TitleScene::~TitleScene() {

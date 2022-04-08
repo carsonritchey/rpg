@@ -8,6 +8,9 @@
 #include "conf.h"
 
 class Entity {
+    protected:
+        void setTexture(int);
+
     private:
         void loadTextures();
 

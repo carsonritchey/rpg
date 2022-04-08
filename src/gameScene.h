@@ -19,7 +19,7 @@ class GameScene : public Scene {
         void close_scene();
 
 		// variables 
-		Player player{"art/sprites/among.png"};
+		Player player{"art/sprites/duck.png"};
         sf::View* view;
         Map map;
 

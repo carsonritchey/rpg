@@ -19,7 +19,7 @@ sf::Sprite Map::createSprite(int texture_index, int x, int y) {
 	sf::Sprite sprite;
 	sprite.setTexture(this->textures[texture_index]);
 
-	sprite.setPosition(x * TILE_REAL, y * TILE_REAL);
+	sprite.setPosition(x * TILE_SIZE * ZOOM_FACTOR, y * TILE_SIZE * ZOOM_FACTOR);
     sprite.scale(ZOOM_FACTOR, ZOOM_FACTOR);
 
 	return sprite;
@@ -27,13 +27,13 @@ sf::Sprite Map::createSprite(int texture_index, int x, int y) {
 
 // drawing maps that fit the screen and won't be moved (i.e. title screen)
 void Map::drawMap(sf::RenderWindow* window, int x, int y) {
-    int buffer = 2;
+    this->buffer = 2;
 
-    int xbound = std::min(map_w, x + buffer + (WINDOW_WIDTH / (TILE_REAL)));
-    int ybound = std::min(map_h, y + buffer + (WINDOW_HEIGHT / (TILE_REAL)));
+    int xbound = std::min(map_w, x + this->buffer + (WINDOW_WIDTH / (TILE_SIZE * ZOOM_FACTOR)));
+    int ybound = std::min(map_h, y + this->buffer + (WINDOW_HEIGHT / (TILE_SIZE * ZOOM_FACTOR)));
 
-    for(int i = std::max(0, x - buffer); i < xbound; i++) {
-        for(int j = std::max(0, y - buffer); j < ybound; j++) {
+    for(int i = std::max(0, x - this->buffer); i < xbound; i++) {
+        for(int j = std::max(0, y - this->buffer); j < ybound; j++) {
             window->draw(this->bg_sprites[map_w * i + j]);
             window->draw(this->fg_sprites[map_w * i + j]);
         }
@@ -41,20 +41,21 @@ void Map::drawMap(sf::RenderWindow* window, int x, int y) {
 }
 
 // drwawing maps that won't fit the screen and need to be moved via the view
-void Map::drawMap(sf::RenderWindow* window, sf::View* view, int x, int y) {
-    int buffer = 2;
+void Map::drawMap(sf::RenderWindow* window, sf::View* view, float player_x, float player_y) {
+    int xmin = std::max(0, (int)(player_x - WINDOW_WIDTH / 2) / TILE_SIZE / ZOOM_FACTOR - this->buffer);
+    int ymin = std::max(0, (int)(player_y - WINDOW_HEIGHT / 2) / TILE_SIZE / ZOOM_FACTOR - this->buffer);
 
-    int xbound = std::min(map_w, x + buffer + (WINDOW_WIDTH / (TILE_REAL)));
-    int ybound = std::min(map_h, y + buffer + (WINDOW_HEIGHT / (TILE_REAL)));
+    int xmax = std::min(map_w, (int)((player_x + WINDOW_WIDTH / 2) / TILE_SIZE / ZOOM_FACTOR) + this->buffer);
+    int ymax = std::min(map_h, (int)((player_y + WINDOW_HEIGHT / 2) / TILE_SIZE / ZOOM_FACTOR) + this->buffer);
 
-    for(int i = std::max(0, x - buffer); i < xbound; i++) {
-        for(int j = std::max(0, y - buffer); j < ybound; j++) {
+    for(int i = xmin; i < xmax; i++) {
+        for(int j = ymin; j < ymax; j++) {
             window->draw(this->bg_sprites[map_w * i + j]);
             window->draw(this->fg_sprites[map_w * i + j]);
         }
     }
 
-    view->setCenter(x * TILE_REAL + WINDOW_WIDTH / 2, y * TILE_REAL + WINDOW_HEIGHT / 2);
+    view->setCenter(player_x + (TILE_SIZE / 2 * ZOOM_FACTOR), player_y + (TILE_SIZE / 2 * ZOOM_FACTOR));
 }
 
 void Map::init(std::string map_path, std::string texture_path) {

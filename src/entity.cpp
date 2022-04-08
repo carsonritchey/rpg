@@ -1,5 +1,7 @@
 #include "entity.h"
 
+#include <iostream>
+
 Entity::Entity(std::string texture_path) {
     this->texture_path = texture_path;
 
@@ -24,4 +26,8 @@ void Entity::loadTextures() {
             this->textures.push_back(texture);
         }
     }
+}
+
+void Entity::setTexture(int index) {
+    this->sprite.setTexture(this->textures[index]);
 }

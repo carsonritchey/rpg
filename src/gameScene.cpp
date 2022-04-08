@@ -1,8 +1,6 @@
 #include "gameScene.h"
 
 #include <iostream>
-int x = 0;
-int y = 0;
 
 GameScene::GameScene(sf::RenderWindow* window, sf::View* view) : Scene(window) {
     this->map.init(this->map_path, this->texture_path);
@@ -15,23 +13,14 @@ GameScene::~GameScene() {
 }
 
 int GameScene::update(const float& dt, const sf::Event* event) {
-    if (event->type == sf::Event::KeyPressed)
-    {
-        if (event->key.code == sf::Keyboard::Left)
-            x--;
-        else if (event->key.code == sf::Keyboard::Right)
-            x++;
-        else if (event->key.code == sf::Keyboard::Up)
-            y--;
-        else if (event->key.code == sf::Keyboard::Down)
-            y++;
-    }
+    this->player.update(dt, event, &this->map);
 
     return RETURN_CODE_NOTHING;
 }
 
 void GameScene::render() {
-    this->map.drawMap(this->window, this->view, x, y);
+    sf::Vector2f player_pos = this->player.sprite.getPosition(); 
+    this->map.drawMap(this->window, this->view, player_pos.x, player_pos.y);
 	this->window->draw(this->player.sprite);
 }
 

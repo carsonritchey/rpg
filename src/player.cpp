@@ -1,7 +1,5 @@
 #include "player.h"
 
-#include <iostream>
-
 Player::Player(std::string texture_path) : Entity(texture_path) {
 
 }
@@ -41,15 +39,20 @@ void Player::update(const float dt, const sf::Event* event, Map* map) {
         this->down = false;
 
     sf::Vector2f dPos(0.f, 0.f);
-
-	if(up)
+	if(up) {
         dPos.y -= mvnt_speed * dt;
-	if(down)
+    }
+	if(down) {
         dPos.y += mvnt_speed * dt;
-	if(left)
+    }
+	if(left) {
         dPos.x -= mvnt_speed * dt;
-	if(right)
+        this->setTexture(this->l_frames[0]);
+    }
+	if(right) {
         dPos.x += mvnt_speed * dt;
+        this->setTexture(this->r_frames[0]);
+    }
 
     sf::Vector2f pos = this->sprite.getPosition();
 
