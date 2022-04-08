@@ -4,7 +4,7 @@
 #define TILE_SIZE 16
 #define ZOOM_FACTOR 5
 #define TILE_REAL TILE_SIZE * ZOOM_FACTOR
-#define LAYERS 2
+#define LAYERS 3
 #define FRAMES_PER_SECOND 60
 #define VSYNC_CHOICE false
 #define EMPTY -1

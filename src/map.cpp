@@ -19,7 +19,7 @@ sf::Sprite Map::createSprite(int texture_index, int x, int y) {
 	sf::Sprite sprite;
 	sprite.setTexture(this->textures[texture_index]);
 
-	sprite.setPosition(x * TILE_SIZE * ZOOM_FACTOR, y * TILE_SIZE * ZOOM_FACTOR);
+	sprite.setPosition(x * TILE_REAL, y * TILE_REAL);
     sprite.scale(ZOOM_FACTOR, ZOOM_FACTOR);
 
 	return sprite;
@@ -29,11 +29,11 @@ sf::Sprite Map::createSprite(int texture_index, int x, int y) {
 void Map::drawMap(sf::RenderWindow* window, int x, int y) {
     int buffer = 2;
 
-    int xbound = std::min(map_w, x + buffer + (WINDOW_WIDTH / (TILE_SIZE * ZOOM_FACTOR)));
-    int ybound = std::min(map_h, y + buffer + (WINDOW_HEIGHT / (TILE_SIZE * ZOOM_FACTOR)));
+    int xbound = std::min(map_w, x + buffer + (WINDOW_WIDTH / (TILE_REAL)));
+    int ybound = std::min(map_h, y + buffer + (WINDOW_HEIGHT / (TILE_REAL)));
 
-    for(int j = std::max(0, y - buffer); j < ybound; j++) {
-        for(int i = std::max(0, x - buffer); i < xbound; i++) {
+    for(int i = std::max(0, x - buffer); i < xbound; i++) {
+        for(int j = std::max(0, y - buffer); j < ybound; j++) {
             window->draw(this->bg_sprites[map_w * i + j]);
             window->draw(this->fg_sprites[map_w * i + j]);
         }
@@ -44,11 +44,11 @@ void Map::drawMap(sf::RenderWindow* window, int x, int y) {
 void Map::drawMap(sf::RenderWindow* window, sf::View* view, int x, int y) {
     int buffer = 2;
 
-    int xbound = std::min(map_w, x + buffer + (WINDOW_WIDTH / (TILE_SIZE * ZOOM_FACTOR)));
-    int ybound = std::min(map_h, y + buffer + (WINDOW_HEIGHT / (TILE_SIZE * ZOOM_FACTOR)));
+    int xbound = std::min(map_w, x + buffer + (WINDOW_WIDTH / (TILE_REAL)));
+    int ybound = std::min(map_h, y + buffer + (WINDOW_HEIGHT / (TILE_REAL)));
 
-    for(int j = std::max(0, y - buffer); j < ybound; j++) {
-        for(int i = std::max(0, x - buffer); i < xbound; i++) {
+    for(int i = std::max(0, x - buffer); i < xbound; i++) {
+        for(int j = std::max(0, y - buffer); j < ybound; j++) {
             window->draw(this->bg_sprites[map_w * i + j]);
             window->draw(this->fg_sprites[map_w * i + j]);
         }
@@ -91,8 +91,8 @@ void Map::loadMap(std::string path) {
     ss >> s; 
     this->map_h = std::stoi(s);
 
-    for(int i = 0; i < map_h; i++) {
-        for(int j = 0; j < map_w; j++) {
+    for(int j = 0; j < map_h; j++) {
+        for(int i = 0; i < map_w; i++) {
 			for(int k = 0; k < LAYERS; k++) {
 				ss >> s;
 				int texture_index = std::stoi(s);

@@ -21,7 +21,7 @@
 
 #define EMPTY -1
 
-std::string MAP_PATH = "title_map.dat";
+std::string MAP_PATH = "overworld_map.dat";
 
 void closeMap(int***);
 void drawCollision(sf::RenderWindow*);
@@ -61,7 +61,7 @@ void printMap() {
 
 int main() {
 	sf::RenderWindow window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "lvledit");
-    window.setFramerateLimit(120);
+    window.setFramerateLimit(30);
 
     textures = loadTextures("../art/tiles/overworld.png");
 	loadMap(MAP_PATH);
@@ -388,8 +388,8 @@ void loadMap(std::string path) {
 	map_w = w;
 	map_h = h;
 
-    std::cout << "map being loaded" << std::endl;
-    printMap();
+    //std::cout << "map being loaded" << std::endl;
+    //printMap();
     file.close();
 }
 
@@ -407,8 +407,8 @@ void writeMap(int*** map, std::string path) {
         file << std::endl;
     }
 
-    std::cout << "\nmap being written" << std::endl;  
-    printMap();
+    //std::cout << "\nmap being written" << std::endl;  
+    //printMap();
     file.close();
 }
 
