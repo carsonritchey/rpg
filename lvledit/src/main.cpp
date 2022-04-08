@@ -6,8 +6,8 @@
 #include <sstream>
 #include <vector>
 
-#define WINDOW_WIDTH 1072 * 2
-#define WINDOW_HEIGHT 720 * 2
+#define WINDOW_WIDTH 1072
+#define WINDOW_HEIGHT 720
 
 #define TILE_SIZE 16
 #define ZOOM_FACTOR 1
@@ -21,7 +21,7 @@
 
 #define EMPTY -1
 
-std::string MAP_PATH = "overworld_map.dat";
+std::string MAP_PATH = "title_map.dat";
 
 void closeMap(int***);
 void drawCollision(sf::RenderWindow*);
@@ -48,9 +48,20 @@ std::vector<sf::Sprite> fg_tiles;
 
 sf::Font font;
 
+void printMap() {
+    for(int j = 0; j < map_h; j++) {
+        for(int i = 0; i < map_w; i++) {
+            for(int k = 0; k < LAYERS; k++) {
+                std::cout << map[i][j][k] << " ";
+            }
+        }
+        std::cout << std::endl;
+    }
+}
+
 int main() {
 	sf::RenderWindow window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "lvledit");
-    window.setFramerateLimit(30);
+    window.setFramerateLimit(120);
 
     textures = loadTextures("../art/tiles/overworld.png");
 	loadMap(MAP_PATH);
@@ -177,8 +188,8 @@ int main() {
 
 // frees map array 
 void closeMap(int*** map) {
-	for(int i = 0; i < map_h; i++) {
-        for(int j = 0; j < map_w; j++) {
+	for(int i = 0; i < map_w; i++) {
+        for(int j = 0; j < map_h; j++) {
             delete[] map[i][j];
         }
 		delete[] map[i];
@@ -282,8 +293,8 @@ void generateFile(std::string path, int w, int h) {
 
     file << w << " " << h << std::endl;
 
-    for (int j = 0; j < h; j++) {
-        for(int i = 0; i < w; i++) {
+    for (int i = 0; i < w; i++) {
+        for(int j = 0; j < h; j++) {
             for(int k = 0; k < LAYERS; k++) {
                 file << EMPTY << " ";
             }
@@ -341,17 +352,27 @@ void loadMap(std::string path) {
         return;
     }
 
-	map = new int**[h];
-	for(int i = 0; i < h; i++) {
-		map[i] = new int*[w];
-		for(int j = 0; j < w; j++) {
+	map = new int**[w];
+    for(int i = 0; i < w; i++) {
+		map[i] = new int*[h];
+        for(int j = 0; j < h; j++) {
             map[i][j] = new int[LAYERS];
+        }
+    }
+
+    for(int j = 0; j < h; j++) {
+        for(int i = 0; i < w; i++) {
             for(int k = 0; k < LAYERS; k++) {
                 ss >> s;
                 int texture_index = std::stoi(s);
                 map[i][j][k] = texture_index;
 
-                if(texture_index == EMPTY || texture_index == COLLISION) continue;
+                if(k == COLLISION) {
+
+                    continue;
+                }
+                if(texture_index == EMPTY)
+                    continue;
 
                 sf::Sprite sprite;
                 sprite.setTexture(textures[texture_index]);
@@ -361,12 +382,14 @@ void loadMap(std::string path) {
                 else if(k == FG)
                     fg_tiles.push_back(sprite);
             }
-		}
-	}
+        }
+    }
 
 	map_w = w;
 	map_h = h;
 
+    std::cout << "map being loaded" << std::endl;
+    printMap();
     file.close();
 }
 
@@ -375,8 +398,8 @@ void writeMap(int*** map, std::string path) {
     file.open(path, std::ios::out | std::ios::trunc);
 
     file << map_w << " " << map_h << std::endl;
-    for(int i = 0; i < map_h; i++) {
-        for(int j = 0; j < map_w; j++) {
+    for(int j = 0; j < map_h; j++) {
+        for(int i = 0; i < map_w; i++) {
             for(int k = 0; k < LAYERS; k++) {
                 file << map[i][j][k] << " ";
             }
@@ -384,5 +407,8 @@ void writeMap(int*** map, std::string path) {
         file << std::endl;
     }
 
+    std::cout << "\nmap being written" << std::endl;  
+    printMap();
     file.close();
 }
+
