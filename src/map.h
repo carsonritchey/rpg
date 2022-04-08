@@ -25,7 +25,7 @@ class Map {
            3 - item/chest
         */
         int map_w, map_h;
-        int buffer = 2; // number of tiles that are rendered offscreen, just incase
+        int buffer = 8; // number of tiles that are rendered offscreen, just incase
         int** tile_collision;
         std::vector<sf::Texture> textures;
 		std::map<int, sf::Sprite> bg_sprites;

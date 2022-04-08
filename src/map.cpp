@@ -55,7 +55,12 @@ void Map::drawMap(sf::RenderWindow* window, sf::View* view, float player_x, floa
         }
     }
 
-    view->setCenter(player_x + (TILE_SIZE / 2 * ZOOM_FACTOR), player_y + (TILE_SIZE / 2 * ZOOM_FACTOR));
+    float camera_x = player_x + (TILE_SIZE / 2 * ZOOM_FACTOR);
+    float camera_y = player_y + (TILE_SIZE / 2 * ZOOM_FACTOR);
+    if(player_x <= WINDOW_WIDTH / 2 - (TILE_SIZE / 2 * ZOOM_FACTOR)) camera_x = WINDOW_WIDTH / 2;
+    if(player_y <= WINDOW_HEIGHT / 2 - (TILE_SIZE / 2 * ZOOM_FACTOR)) camera_y = WINDOW_HEIGHT / 2;
+
+    view->setCenter(camera_x, camera_y);
 }
 
 void Map::init(std::string map_path, std::string texture_path) {
