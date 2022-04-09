@@ -25,6 +25,19 @@ sf::Sprite Map::createSprite(int texture_index, int x, int y) {
 	return sprite;
 }
 
+void Map::drawCollision(sf::RenderWindow* window) {
+    for(int i = 0; i < map_w; i++) {
+        for(int j = 0; j < map_h; j++) {
+            if(tile_collision[map_h * j + i] != COLLISION_WALL) continue;
+            sf::RectangleShape rect(sf::Vector2f(TILE_SIZE * ZOOM_FACTOR, TILE_SIZE * ZOOM_FACTOR));
+            rect.setPosition(i * TILE_SIZE * ZOOM_FACTOR, j * TILE_SIZE * ZOOM_FACTOR);
+            rect.setFillColor(sf::Color(255, 0, 0, 200));
+
+            window->draw(rect);
+        }
+    }
+}
+
 // drawing maps that fit the screen and won't be moved (i.e. title screen)
 void Map::drawMap(sf::RenderWindow* window, int x, int y) {
     buffer = 2;
@@ -38,6 +51,7 @@ void Map::drawMap(sf::RenderWindow* window, int x, int y) {
             window->draw(fg_sprites[map_w * i + j]);
         }
     }
+
 }
 
 // drwawing maps that won't fit the screen and need to be moved via the view

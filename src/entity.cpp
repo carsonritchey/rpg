@@ -14,6 +14,12 @@ Entity::~Entity() {
 
 }
 
+void Entity::cycleTexture(int* frame_indexes, int length) {
+    frame_offset = (frame_offset + 1) % length;
+
+    setTexture(frame_indexes[0] + frame_offset);
+}
+
 void Entity::loadTextures() {
     sf::Image image;
     image.loadFromFile(this->texture_path);

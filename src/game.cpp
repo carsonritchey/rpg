@@ -11,7 +11,7 @@ Game::Game() {
     this->window->setVerticalSyncEnabled(VSYNC_CHOICE);
 
     // initial scene
-    this->scenes.push(new TitleScene(this->window));
+    this->scenes.push(new GameScene(this->window, this->view));
 }
 
 // frees memory

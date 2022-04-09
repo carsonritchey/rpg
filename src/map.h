@@ -32,6 +32,7 @@ class Map {
         std::map<int, int> tile_collision; 
 
         // functions
+        void drawCollision(sf::RenderWindow* window);
         void drawMap(sf::RenderWindow*, int, int);
         void drawMap(sf::RenderWindow*, sf::View*, float, float);
         void init(std::string, std::string);
