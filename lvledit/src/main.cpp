@@ -21,7 +21,7 @@
 
 #define EMPTY -1
 
-std::string MAP_PATH = "overworld_map.dat";
+std::string MAP_PATH = "title_map.dat";
 
 void closeMap(int***);
 void drawCollision(sf::RenderWindow*);
@@ -66,7 +66,7 @@ int main() {
     textures = loadTextures("../art/tiles/overworld.png");
 	loadMap(MAP_PATH);
 
-    sf::View view(sf::Vector2f(map_w * TILE_SIZE / 2, map_h * TILE_SIZE / 2), sf::Vector2f(WINDOW_WIDTH / ZOOM_FACTOR, WINDOW_HEIGHT / ZOOM_FACTOR));
+    sf::View view(sf::Vector2f(0, 0), sf::Vector2f(WINDOW_WIDTH / ZOOM_FACTOR, WINDOW_HEIGHT / ZOOM_FACTOR));
 
 
     if(!font.loadFromFile("../art/PressStart2P.ttf")) {

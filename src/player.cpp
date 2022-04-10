@@ -3,7 +3,7 @@
 #include <iostream>
 
 Player::Player(std::string texture_path) : Entity(texture_path) {
-    sprite.setPosition(4 * TILE_SIZE * ZOOM_FACTOR, 4 * TILE_SIZE * ZOOM_FACTOR);
+    sprite.setPosition(0 * TILE_SIZE * ZOOM_FACTOR, 0 * TILE_SIZE * ZOOM_FACTOR);
 }
 
 Player::~Player() {
@@ -51,11 +51,13 @@ sf::Vector2f Player::movePlayer(const float dt, Map* map) {
     }
 	if(left) {
         dPos.x -= mvnt_speed * dt;
-        cycleTexture(l_frames, sizeof(l_frames) / sizeof(l_frames[0]));
+        if(!right)
+            cycleTexture(l_frames, sizeof(l_frames) / sizeof(l_frames[0]));
     }
 	if(right) {
         dPos.x += mvnt_speed * dt;
-        cycleTexture(r_frames, sizeof(r_frames) / sizeof(r_frames[0]));
+        if(!left)
+            cycleTexture(r_frames, sizeof(r_frames) / sizeof(r_frames[0]));
     }
 
 
