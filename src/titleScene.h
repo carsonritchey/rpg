@@ -28,10 +28,9 @@ class TitleScene : public Scene {
         void close_scene();
 
 		// variables 
-        Map map;
-
         std::string texture_path = "art/tiles/overworld.png";
         std::string map_path = "lvledit/title_map.dat";
+        Map map{texture_path, map_path};
 };
 
 #endif

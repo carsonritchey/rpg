@@ -11,7 +11,8 @@ Game::Game() {
     this->window->setVerticalSyncEnabled(VSYNC_CHOICE);
 
     // initial scene
-    this->scenes.push(new TitleScene(this->window));
+    //this->scenes.push(new TitleScene(this->window));
+    this->scenes.push(new GameScene(this->window, this->view));
 }
 
 // frees memory
@@ -72,20 +73,24 @@ void Game::tick_dt() {
 
 void Game::update() {
 	sf::Event event;
-
-    GameScene* player_ref = dynamic_cast<GameScene*>(this->scenes.top());
 	while(this->window->pollEvent(event)) {
 		if(event.type == sf::Event::Closed) {
 			this->close();
 			return;
 		}
 
-        if(event.type == sf::Event::KeyPressed || event.type == sf::Event::KeyReleased)
-            if(player_ref != nullptr)
+        // most classes only need a single keypress, so a single event is passed to their update(),
+        // but Player requires high fidelity input so it's handled here 
+        if(event.type == sf::Event::KeyPressed || event.type == sf::Event::KeyReleased) {
+            GameScene* player_ref = dynamic_cast<GameScene*>(this->scenes.top());
+            if(player_ref != nullptr) // if top scene is a GameScene
                 player_ref->player.processEvent(&event);
+        }
 	}
 
+    // calls update() of top scene
     if(!this->scenes.empty()) {
+        // uses last event detected 
         int code = this->scenes.top()->update(this->dt, &event);
 
         if(code == RETURN_CODE_EXIT) this->close(); 

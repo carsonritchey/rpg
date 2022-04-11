@@ -5,8 +5,6 @@
 sf::Color selected_color(0xff, 0x66, 0xff, 255);
 
 TitleScene::TitleScene(sf::RenderWindow* window) : Scene(window) {
-    this->map.init(this->map_path, this->texture_path);
-
     int font_size = TILE_SIZE * ZOOM_FACTOR;
 
 	this->font.loadFromFile("art/PressStart2P.ttf");

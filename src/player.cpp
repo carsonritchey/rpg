@@ -12,33 +12,45 @@ Player::~Player() {
 
 void Player::checkInput(const sf::Event* event) {
     if(event->type == sf::Event::KeyPressed) {
-		if(event->key.code == sf::Keyboard::Left)
+		if(event->key.code == sf::Keyboard::Left) {
 			left = true;
-		if(event->key.code == sf::Keyboard::Right)
+            direction = directions::left;
+        }
+		if(event->key.code == sf::Keyboard::Right) {
 			right = true;
-		if(event->key.code == sf::Keyboard::Up)
+            direction = directions::right;
+        }
+		if(event->key.code == sf::Keyboard::Up) {
 			up = true;
-		if(event->key.code == sf::Keyboard::Down)
+            direction = directions::up;
+        }
+		if(event->key.code == sf::Keyboard::Down) {
 			down = true;
+            direction = directions::down;
+        }
 	}
 	else if(event->type == sf::Event::KeyReleased) {
-		if(event->key.code == sf::Keyboard::Left)
-			left = false;
-		if(event->key.code == sf::Keyboard::Right)
+		if(event->key.code == sf::Keyboard::Left) {
+			left = false; 
+            if(!left && !right && !up && !down)
+                direction = directions::left;
+        }
+		if(event->key.code == sf::Keyboard::Right) {
 			right = false;
-		if(event->key.code == sf::Keyboard::Up)
+            if(!left && !right && !up && !down)
+                direction = directions::right;
+        }
+		if(event->key.code == sf::Keyboard::Up) {
 			up = false;
-		if(event->key.code == sf::Keyboard::Down)
+            if(!left && !right && !up && !down)
+                direction = directions::up;
+        }
+		if(event->key.code == sf::Keyboard::Down) {
 			down = false;
+            if(!left && !right && !up && !down)
+                direction = directions::down;
+        }
 	}
-    if(!sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
-        left = false;
-    if(!sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
-        right = false;
-    if(!sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
-        up = false;
-    if(!sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
-        down = false;
 }
 
 sf::Vector2f Player::movePlayer(const float dt, Map* map) {
@@ -95,6 +107,13 @@ sf::Vector2f Player::movePlayer(const float dt, Map* map) {
         dPos.y = 0;
     else if(pos.y + dPos.y > map->map_h * TILE_SIZE * ZOOM_FACTOR - TILE_SIZE * ZOOM_FACTOR)
         dPos.y = 0;
+
+    if(!left && !right && !up && !down) {
+        if(direction == directions::left)
+            setTexture(l_frames[0]);
+        else 
+            setTexture(r_frames[0]);
+    }
 
     return dPos;
 }

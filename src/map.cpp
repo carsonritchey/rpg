@@ -7,8 +7,14 @@
 #include <sstream>
 #include <vector>
 
-Map::Map() {
-
+Map::Map(std::string texture_path, std::string map_path) {
+    loadTextures(texture_path);
+    loadMap(map_path);
+}
+Map::Map(std::string texture_path, std::string map_path, std::string tile_entities_path) {
+    loadTextures(texture_path);
+    loadMap(map_path);
+    loadTileEntities(tile_entities_path);
 }
 
 Map::~Map() {
@@ -77,11 +83,6 @@ void Map::drawMap(sf::RenderWindow* window, sf::View* view, float player_x, floa
     view->setCenter(camera_x, camera_y);
 }
 
-void Map::init(std::string map_path, std::string texture_path) {
-    Map::loadTextures(texture_path);
-    Map::loadMap(map_path);
-}
-
 void Map::loadTextures(std::string path) {
     sf::Image image;
     image.loadFromFile(path);
@@ -95,6 +96,10 @@ void Map::loadTextures(std::string path) {
             textures.push_back(texture);
         }
     }
+}
+
+void Map::loadTileEntities(std::string path) {
+    
 }
 
 void Map::loadMap(std::string path) {

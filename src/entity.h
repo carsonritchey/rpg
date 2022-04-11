@@ -23,10 +23,9 @@ class Entity {
 		// variables 
         std::vector<sf::Texture> textures;
         sf::Sprite sprite; 
-
         int frame_offset = 0; // used to track which frame of animation the entity is on
-
         std::string texture_path;
+        directions direction;
 };
 
 #endif

@@ -3,8 +3,6 @@
 #include <iostream>
 
 GameScene::GameScene(sf::RenderWindow* window, sf::View* view) : Scene(window) {
-    this->map.init(this->map_path, this->texture_path);
-
     this->view = view;
 }
 
