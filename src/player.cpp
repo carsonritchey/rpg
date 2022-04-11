@@ -62,7 +62,7 @@ sf::Vector2f Player::movePlayer(const float dt, Map* map) {
         pos = sprite.getPosition();
         tile_x = (int)((pos.x + dPos.x) / TILE_SIZE / ZOOM_FACTOR);
         tile_y = (int)((pos.y + dPos.y) / TILE_SIZE / ZOOM_FACTOR);
-        if(up && (map->tile_collision[map->map_h * tile_y + tile_x] == COLLISION_WALL || map->tile_collision[map->map_h * tile_y + tile_x + 1] == COLLISION_WALL)) {
+        if(up && (map->tile_collision[map->map_w * tile_y + tile_x] == COLLISION_WALL || map->tile_collision[map->map_w * tile_y + tile_x + 1] == COLLISION_WALL)) {
             dPos.y = 0;
         }
     }
@@ -71,7 +71,7 @@ sf::Vector2f Player::movePlayer(const float dt, Map* map) {
         pos = sprite.getPosition();
         tile_x = (int)((pos.x + dPos.x) / TILE_SIZE / ZOOM_FACTOR);
         tile_y = (int)((pos.y + dPos.y) / TILE_SIZE / ZOOM_FACTOR);
-        if(down && (map->tile_collision[map->map_h * (tile_y + 1) + tile_x] == COLLISION_WALL || map->tile_collision[map->map_h * (tile_y + 1) + tile_x + 1] == COLLISION_WALL)) {
+        if(down && (map->tile_collision[map->map_w * (tile_y + 1) + tile_x] == COLLISION_WALL || map->tile_collision[map->map_w * (tile_y + 1) + tile_x + 1] == COLLISION_WALL)) {
             dPos.y = 0;
         }
     }
@@ -80,7 +80,7 @@ sf::Vector2f Player::movePlayer(const float dt, Map* map) {
         pos = sprite.getPosition();
         tile_x = (int)((pos.x + dPos.x) / TILE_SIZE / ZOOM_FACTOR);
         tile_y = (int)((pos.y + dPos.y) / TILE_SIZE / ZOOM_FACTOR);
-        if(left && (map->tile_collision[map->map_h * tile_y + tile_x] == COLLISION_WALL || map->tile_collision[map->map_h * (tile_y + 1) + tile_x] == COLLISION_WALL)) {
+        if(left && (map->tile_collision[map->map_w * tile_y + tile_x] == COLLISION_WALL || map->tile_collision[map->map_w * (tile_y + 1) + tile_x] == COLLISION_WALL)) {
             dPos.x = 0;
         }
         if(!right)
@@ -91,7 +91,7 @@ sf::Vector2f Player::movePlayer(const float dt, Map* map) {
         pos = sprite.getPosition();
         tile_x = (int)((pos.x + dPos.x) / TILE_SIZE / ZOOM_FACTOR);
         tile_y = (int)((pos.y + dPos.y) / TILE_SIZE / ZOOM_FACTOR);
-        if(right && (map->tile_collision[map->map_h * tile_y + tile_x + 1] == COLLISION_WALL || map->tile_collision[map->map_h * (tile_y + 1) + tile_x + 1] == COLLISION_WALL)) {
+        if(right && (map->tile_collision[map->map_w * tile_y + tile_x + 1] == COLLISION_WALL || map->tile_collision[map->map_w * (tile_y + 1) + tile_x + 1] == COLLISION_WALL)) {
             dPos.x = 0;
         }
         if(!left)

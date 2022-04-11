@@ -9,13 +9,13 @@ class Map {
     private:
 		sf::Sprite createSprite(int, int, int);
         void loadTextures(std::string);
-        void loadTileEntities(std::string);
+        void loadTileData(std::string);
         void loadMap(std::string);
 
     public:
         // constructor & deconstructor
         Map(std::string texture_path, std::string map_path);
-        Map(std::string texture_path, std::string map_path, std::string tile_entities_path);
+        Map(std::string texture_path, std::string map_path, std::string tile_data_path);
         virtual ~Map();
 
         // variables
@@ -25,7 +25,7 @@ class Map {
 		std::map<int, sf::Sprite> bg_sprites;
 		std::map<int, sf::Sprite> fg_sprites;
         std::map<int, int> tile_collision; 
-        std::map<int, std::string> tile_entities;
+        std::map<int, std::string> tile_data;
 
         // functions
         void drawCollision(sf::RenderWindow* window);

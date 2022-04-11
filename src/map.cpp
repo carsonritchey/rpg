@@ -7,14 +7,17 @@
 #include <sstream>
 #include <vector>
 
+#define TILEDAT_SEPERATOR "|"
+#define TILEDAT_POS_SEPERATOR ","
+
 Map::Map(std::string texture_path, std::string map_path) {
     loadTextures(texture_path);
     loadMap(map_path);
 }
-Map::Map(std::string texture_path, std::string map_path, std::string tile_entities_path) {
+Map::Map(std::string texture_path, std::string map_path, std::string tile_data_path) {
     loadTextures(texture_path);
     loadMap(map_path);
-    loadTileEntities(tile_entities_path);
+    loadTileData(tile_data_path);
 }
 
 Map::~Map() {
@@ -57,7 +60,6 @@ void Map::drawMap(sf::RenderWindow* window, int x, int y) {
             window->draw(fg_sprites[map_w * i + j]);
         }
     }
-
 }
 
 // drwawing maps that won't fit the screen and need to be moved via the view
@@ -98,8 +100,23 @@ void Map::loadTextures(std::string path) {
     }
 }
 
-void Map::loadTileEntities(std::string path) {
-    
+void Map::loadTileData(std::string path) {
+    std::string line;
+    std::ifstream file;
+    file.open(path);
+
+    while(std::getline(file, line)) {
+        int x, y;
+
+        std::string pos = line.substr(0, line.find(TILEDAT_SEPERATOR));
+        std::string text = line.substr(line.find(TILEDAT_SEPERATOR) + 1);
+
+        x = std::stoi(pos.substr(0, pos.find(TILEDAT_POS_SEPERATOR)));
+        y = std::stoi(pos.substr(pos.find(TILEDAT_POS_SEPERATOR) + 1));
+
+        tile_data[y * map_w + x] = text;
+    }
+
 }
 
 void Map::loadMap(std::string path) {
