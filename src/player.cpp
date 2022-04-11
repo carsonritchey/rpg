@@ -3,7 +3,7 @@
 #include <iostream>
 
 Player::Player(std::string texture_path) : Entity(texture_path) {
-    sprite.setPosition(0 * TILE_SIZE * ZOOM_FACTOR, 0 * TILE_SIZE * ZOOM_FACTOR);
+    sprite.setPosition(2 * TILE_SIZE * ZOOM_FACTOR, 3 * TILE_SIZE * ZOOM_FACTOR);
 }
 
 Player::~Player() {
