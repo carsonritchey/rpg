@@ -99,7 +99,10 @@ sf::Vector2f Player::movePlayer(const float dt, Map* map) {
     return dPos;
 }
 
-void Player::update(const float dt, const sf::Event* event, Map* map) {
+void Player::processEvent(const sf::Event* event) {
     checkInput(event);
+}
+
+void Player::update(const float dt, Map* map) {
     sprite.move(movePlayer(dt, map));
 }

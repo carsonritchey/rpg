@@ -27,7 +27,8 @@ class Player : public Entity {
         int r_frames[3] = {0, 1, 2};
 
         // functions
-		void update(const float, const sf::Event*, Map* map);
+        void processEvent(const sf::Event*);
+		void update(const float, Map* map);
 };
 
 #endif

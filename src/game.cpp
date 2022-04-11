@@ -72,13 +72,18 @@ void Game::tick_dt() {
 
 void Game::update() {
 	sf::Event event;
+
+    GameScene* player_ref = dynamic_cast<GameScene*>(this->scenes.top());
 	while(this->window->pollEvent(event)) {
 		if(event.type == sf::Event::Closed) {
 			this->close();
 			return;
 		}
-	}
 
+        if(event.type == sf::Event::KeyPressed || event.type == sf::Event::KeyReleased)
+            if(player_ref != nullptr)
+                player_ref->player.processEvent(&event);
+	}
 
     if(!this->scenes.empty()) {
         int code = this->scenes.top()->update(this->dt, &event);

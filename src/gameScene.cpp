@@ -13,7 +13,7 @@ GameScene::~GameScene() {
 }
 
 int GameScene::update(const float& dt, const sf::Event* event) {
-    this->player.update(dt, event, &this->map);
+    this->player.update(dt, &this->map);
 
     return RETURN_CODE_NOTHING;
 }
