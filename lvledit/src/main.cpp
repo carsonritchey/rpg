@@ -21,7 +21,7 @@
 
 #define EMPTY -1
 
-std::string MAP_PATH = "title_map.dat";
+std::string MAP_PATH = "overworld_map.dat";
 
 void closeMap(int***);
 void drawCollision(sf::RenderWindow*);
