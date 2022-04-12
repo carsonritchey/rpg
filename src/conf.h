@@ -10,6 +10,7 @@
 #define VSYNC_CHOICE false
 #define EMPTY -1
 #define WINDOW_NAME "rpg filler"
+#define FONT_PATH "art/PressStart2P.ttf"
 #define VERSION "version 0.1"
 
 #define LAYERS 3
