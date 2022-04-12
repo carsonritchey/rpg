@@ -21,6 +21,9 @@ void GameScene::render() {
     sf::Vector2f player_pos = this->player.sprite.getPosition(); 
     this->map.drawMap(this->window, this->view, player_pos.x, player_pos.y);
 	this->window->draw(this->player.sprite);
+
+    if(this->player.interactable)
+        this->window->draw(this->player.interactSprite.sprite);
 }
 
 void GameScene::close_scene() {

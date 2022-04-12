@@ -69,19 +69,25 @@ bool Player::checkForInteractables(Map* map) {
     int tile_y = (int)(pos.y / TILE_SIZE / ZOOM_FACTOR);
     int x, y;
     std::string text; 
+    bool found = false;
 
     if(map->tile_data[map->map_w * (tile_y - 1) + tile_x].length() != 0) {
         x = tile_x;
         y = tile_y; 
         text = map->tile_data[map->map_w * (tile_y - 1) + tile_x];
+
+        found = true;
     }
     else if(map->tile_data[map->map_w * (tile_y - 1) + tile_x + 1].length() != 0) {
         x = tile_x;
         y = tile_y; 
         text = map->tile_data[map->map_w * (tile_y - 1) + tile_x + 1];
+
+        found = true;
     }
 
-    std::cout << text << std::endl;
+    interactable = found;
+    return found;
 }
 
 sf::Vector2f Player::movePlayer(const float dt, Map* map) {
@@ -156,8 +162,9 @@ void Player::processEvent(const sf::Event* event) {
 void Player::update(const float dt, Map* map) {
     sprite.move(movePlayer(dt, map));
 
-    if(interacting) {
-        //std::cout << "we checking" << std::endl;
-        checkForInteractables(map);
+    if(checkForInteractables(map)) {
+        sf::Vector2f pos = sprite.getPosition(); 
+        pos.y += TILE_SIZE * ZOOM_FACTOR;
+        interactSprite.sprite.setPosition(pos);
     }
 }

@@ -24,6 +24,8 @@ class Player : public Entity {
 		bool right = false;
 
         bool interacting = false;
+        bool interactable = false;
+        Entity interactSprite{"art/sprites/space.png"};
 
 		const float mvnt_speed = TILE_SIZE * ZOOM_FACTOR * 5;
 
