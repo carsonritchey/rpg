@@ -45,12 +45,12 @@ void TextBox::drawText() {
 }
 
 void TextBox::setPosition() {
-    bg.setPosition(sf::Vector2f(SPACING, WINDOW_HEIGHT - WINDOW_HEIGHT / 3 - SPACING));
+    bg.setPosition(window->mapPixelToCoords(sf::Vector2i(SPACING, WINDOW_HEIGHT - WINDOW_HEIGHT / 3 - SPACING)));
 
-    top.setPosition(sf::Vector2f(SPACING, WINDOW_HEIGHT - WINDOW_HEIGHT / 3 - SPACING));
-    left.setPosition(sf::Vector2f(SPACING, WINDOW_HEIGHT - WINDOW_HEIGHT / 3 - SPACING));
-    right.setPosition(sf::Vector2f(WINDOW_WIDTH - SPACING - OUTLINE_WIDTH, WINDOW_HEIGHT - WINDOW_HEIGHT / 3 - SPACING));
-    bottom.setPosition(sf::Vector2f(SPACING, WINDOW_HEIGHT - SPACING - OUTLINE_WIDTH));
+    top.setPosition(window->mapPixelToCoords(sf::Vector2i(SPACING, WINDOW_HEIGHT - WINDOW_HEIGHT / 3 - SPACING)));
+    left.setPosition(window->mapPixelToCoords(sf::Vector2i(SPACING, WINDOW_HEIGHT - WINDOW_HEIGHT / 3 - SPACING)));
+    right.setPosition(window->mapPixelToCoords(sf::Vector2i(WINDOW_WIDTH - SPACING - OUTLINE_WIDTH, WINDOW_HEIGHT - WINDOW_HEIGHT / 3 - SPACING)));
+    bottom.setPosition(window->mapPixelToCoords(sf::Vector2i(SPACING, WINDOW_HEIGHT - SPACING - OUTLINE_WIDTH)));
 
-    text.setPosition(sf::Vector2f(SPACING * 2, WINDOW_HEIGHT - WINDOW_HEIGHT / 3));
+    text.setPosition(window->mapPixelToCoords(sf::Vector2i(SPACING * 2, WINDOW_HEIGHT - WINDOW_HEIGHT / 3)));
 }

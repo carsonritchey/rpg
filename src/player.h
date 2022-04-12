@@ -9,6 +9,7 @@
 class Player : public Entity {
     private:
         void checkInput(const sf::Event*);
+        bool checkForInteractables(Map* map); 
         sf::Vector2f movePlayer(const float dt, Map* map);
 
     public:
@@ -21,6 +22,9 @@ class Player : public Entity {
 		bool down  = false;
 		bool left  = false;
 		bool right = false;
+
+        bool interacting = false;
+
 		const float mvnt_speed = TILE_SIZE * ZOOM_FACTOR * 5;
 
         int l_frames[3] = {4, 5, 6};

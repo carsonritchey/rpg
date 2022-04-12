@@ -32,7 +32,7 @@ class TextBox {
 
         sf::Color bg_color{255, 255, 255, 255};
         sf::Color hl_color{0, 0, 0, 255};
-        sf::Color text_color{50, 50, 50, 255};
+        sf::Color text_color{0, 0, 0, 255};
 
         // functions
         void drawBox();

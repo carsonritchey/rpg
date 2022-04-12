@@ -16,17 +16,23 @@ void Player::checkInput(const sf::Event* event) {
 			left = true;
             direction = directions::left;
         }
-		if(event->key.code == sf::Keyboard::Right) {
+        else if(event->key.code == sf::Keyboard::Right) {
 			right = true;
             direction = directions::right;
         }
-		if(event->key.code == sf::Keyboard::Up) {
+        else if(event->key.code == sf::Keyboard::Up) {
 			up = true;
             direction = directions::up;
         }
-		if(event->key.code == sf::Keyboard::Down) {
+        else if(event->key.code == sf::Keyboard::Down) {
 			down = true;
             direction = directions::down;
+        }
+
+        if(direction == directions::up) {
+            if(event->key.code == sf::Keyboard::Space) {
+                interacting = true;
+            }
         }
 	}
 	else if(event->type == sf::Event::KeyReleased) {
@@ -35,22 +41,47 @@ void Player::checkInput(const sf::Event* event) {
             if(!left && !right && !up && !down)
                 direction = directions::left;
         }
-		if(event->key.code == sf::Keyboard::Right) {
+        else if(event->key.code == sf::Keyboard::Right) {
 			right = false;
             if(!left && !right && !up && !down)
                 direction = directions::right;
         }
-		if(event->key.code == sf::Keyboard::Up) {
+        else if(event->key.code == sf::Keyboard::Up) {
 			up = false;
             if(!left && !right && !up && !down)
                 direction = directions::up;
         }
-		if(event->key.code == sf::Keyboard::Down) {
+        else if(event->key.code == sf::Keyboard::Down) {
 			down = false;
             if(!left && !right && !up && !down)
                 direction = directions::down;
         }
+
+        if(event->key.code == sf::Keyboard::Space) {
+            interacting = false;
+        }
 	}
+}
+
+bool Player::checkForInteractables(Map* map) {
+    sf::Vector2f pos = sprite.getPosition(); 
+    int tile_x = (int)(pos.x / TILE_SIZE / ZOOM_FACTOR);
+    int tile_y = (int)(pos.y / TILE_SIZE / ZOOM_FACTOR);
+    int x, y;
+    std::string text; 
+
+    if(map->tile_data[map->map_w * (tile_y - 1) + tile_x].length() != 0) {
+        x = tile_x;
+        y = tile_y; 
+        text = map->tile_data[map->map_w * (tile_y - 1) + tile_x];
+    }
+    else if(map->tile_data[map->map_w * (tile_y - 1) + tile_x + 1].length() != 0) {
+        x = tile_x;
+        y = tile_y; 
+        text = map->tile_data[map->map_w * (tile_y - 1) + tile_x + 1];
+    }
+
+    std::cout << text << std::endl;
 }
 
 sf::Vector2f Player::movePlayer(const float dt, Map* map) {
@@ -124,4 +155,9 @@ void Player::processEvent(const sf::Event* event) {
 
 void Player::update(const float dt, Map* map) {
     sprite.move(movePlayer(dt, map));
+
+    if(interacting) {
+        //std::cout << "we checking" << std::endl;
+        checkForInteractables(map);
+    }
 }
