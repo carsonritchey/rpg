@@ -1,9 +1,17 @@
 #ifndef MAP_H
 #define MAP_H
 
+#include "conf.h"
+
 #include <SFML/Graphics.hpp>
+
 #include <vector>
 #include <map>
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <sstream>
+#include <regex>
 
 class Map {
     private:

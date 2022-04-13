@@ -79,31 +79,46 @@ bool Player::checkForInteractables(Map* map) {
     sf::Vector2f pos = sprite.getPosition(); 
     int tile_x = (int)(pos.x / TILE_SIZE / ZOOM_FACTOR);
     int tile_y = (int)(pos.y / TILE_SIZE / ZOOM_FACTOR);
-    int x, y;
     std::string text; 
     bool found = false;
 
     if(map->tile_data[map->map_w * (tile_y - 1) + tile_x].length() != 0) {
-        x = tile_x;
-        y = tile_y; 
         text = map->tile_data[map->map_w * (tile_y - 1) + tile_x];
 
         found = true;
     }
     else if(map->tile_data[map->map_w * (tile_y - 1) + tile_x + 1].length() != 0) {
-        x = tile_x;
-        y = tile_y; 
         text = map->tile_data[map->map_w * (tile_y - 1) + tile_x + 1];
 
         found = true;
     }
 
-    if(found && interacting && textbox == nullptr) {
-        textbox = new TextBox(text);
+    // if there's something to interact with above player and they pressed space 
+    if(found && interacting) {
+        // if talking to door
+        if(text.substr(0, strlen(TILEDAT_DOOR_PREFIX)) == TILEDAT_DOOR_PREFIX) {
+            std::string door_coords = text.substr(text.find(TILEDAT_SEPERATOR) + 1);
+            int door_x = std::stoi(door_coords.substr(0, door_coords.find(TILEDAT_POS_SEPERATOR)));
+            int door_y = std::stoi(door_coords.substr(door_coords.find(TILEDAT_POS_SEPERATOR + 1)));
+
+            sprite.setPosition(sf::Vector2f(door_x * TILE_SIZE * ZOOM_FACTOR, door_y * TILE_SIZE * ZOOM_FACTOR));
+            cycleCurrentMap();
+        }
+        // if talking to sign 
+        else if(textbox == nullptr) {
+            textbox = new TextBox(text);
+        }
     }
 
     interactable = found;
     return found;
+}
+
+void Player::cycleCurrentMap() {
+    if(current_map == maps::overworld)
+        current_map = maps::subworld;
+    else if(current_map == maps::subworld)
+        current_map = maps::overworld;
 }
 
 void Player::killTextBox() {

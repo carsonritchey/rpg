@@ -11,6 +11,7 @@ class Player : public Entity {
     private:
         void checkInput(const sf::Event*);
         bool checkForInteractables(Map* map); 
+        void cycleCurrentMap();
         void killTextBox();
         sf::Vector2f movePlayer(const float dt, Map* map);
 
@@ -31,10 +32,12 @@ class Player : public Entity {
         TextBox* textbox = nullptr;
 
 		const float mvnt_speed = TILE_SIZE * ZOOM_FACTOR * 5;
-        int animation_speed = 10;
+        int animation_speed = 7;
 
         int l_frames[3] = {4, 5, 6};
         int r_frames[3] = {0, 1, 2};
+
+        maps current_map = maps::overworld;
 
         // functions
         void processEvent(const sf::Event*);

@@ -1,15 +1,4 @@
-#include "conf.h"
 #include "map.h"
-
-#include <iostream>
-#include <fstream>
-#include <string>
-#include <sstream>
-#include <vector>
-#include <regex>
-
-#define TILEDAT_SEPERATOR "|"
-#define TILEDAT_POS_SEPERATOR ","
 
 Map::Map(std::string texture_path, std::string map_path) {
     loadTextures(texture_path);

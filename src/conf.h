@@ -20,6 +20,11 @@
 #define COLLISION_WALKABLE -1
 #define COLLISION_WALL 0
 
+#define TILEDAT_SEPERATOR "|"
+#define TILEDAT_POS_SEPERATOR ","
+#define TILEDAT_DOOR_PREFIX "--door"
+#define TILEDAT_ITEM_PREFIX "--item"
+
 #define RETURN_CODE_NOTHING -1 
 #define RETURN_CODE_EXIT    0
 #define RETURN_CODE_START   1
@@ -29,6 +34,11 @@ enum directions {
     right = 1,
     up = 2,
     down = 3,
+};
+
+enum maps {
+    overworld = 0,
+    subworld = 1,
 };
 
 extern unsigned int global_tick;

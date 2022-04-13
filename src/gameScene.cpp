@@ -20,6 +20,15 @@ int GameScene::update(const float& dt, const sf::Event* event) {
     else if(event->key.code == sf::Keyboard::P)
         current_map = &overworld_map;
 
+    if(player.current_map == maps::overworld)
+        current_map = &overworld_map;
+    else if(player.current_map == maps::subworld)
+        current_map = &subworld_map;
+    else
+    {
+        std::cout << "bruh" << std::endl;
+    }
+
     return RETURN_CODE_NOTHING;
 }
 

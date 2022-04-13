@@ -1,4 +1,4 @@
-3,23|item-filler
-30,6|door-0,0
-31,10|Press space to read a sign!NEWLINEOh... you already figured that out.
+3,23|--item|mushroom
+30,6|--door|0,0
+31,10|Press space to interact with objects!NEWLINEOh... you already figured that out.
 33,1|-- PRIVATE PROPERTY --NEWLINEDO NOT ENTER
