@@ -12,55 +12,63 @@ Player::~Player() {
 
 void Player::checkInput(const sf::Event* event) {
     if(event->type == sf::Event::KeyPressed) {
-		if(event->key.code == sf::Keyboard::Left) {
-			left = true;
-            direction = directions::left;
-        }
-        else if(event->key.code == sf::Keyboard::Right) {
-			right = true;
-            direction = directions::right;
-
-            if(textbox != nullptr) {
+        if(textbox != nullptr) {
+            if(event->key.code == sf::Keyboard::Right) {
                 if(textbox->progressText()) {
+                    // prevents space sprite from flashing
+                    direction = directions::right;
                     killTextBox();
                 }
             }
-        }
-        else if(event->key.code == sf::Keyboard::Up) {
-			up = true;
-            direction = directions::up;
-        }
-        else if(event->key.code == sf::Keyboard::Down) {
-			down = true;
-            direction = directions::down;
-        }
+        } else {
+            if(event->key.code == sf::Keyboard::Left) {
+                left = true;
+                direction = directions::left;
+            }
+            else if(event->key.code == sf::Keyboard::Right) {
 
-        if(direction == directions::up || textbox != nullptr) {
-            if(event->key.code == sf::Keyboard::Space) {
-                interacting = true;
+                right = true;
+                direction = directions::right;
+
+            }
+            else if(event->key.code == sf::Keyboard::Up) {
+                up = true;
+                direction = directions::up;
+            }
+            else if(event->key.code == sf::Keyboard::Down) {
+                down = true;
+                direction = directions::down;
+            }
+
+            if(direction == directions::up || textbox != nullptr) {
+                if(event->key.code == sf::Keyboard::Space) {
+                    interacting = true;
+                }
             }
         }
 	}
 	else if(event->type == sf::Event::KeyReleased) {
-		if(event->key.code == sf::Keyboard::Left) {
-			left = false; 
-            if(!left && !right && !up && !down)
-                direction = directions::left;
-        }
-        else if(event->key.code == sf::Keyboard::Right) {
-			right = false;
-            if(!left && !right && !up && !down)
-                direction = directions::right;
-        }
-        else if(event->key.code == sf::Keyboard::Up) {
-			up = false;
-            if(!left && !right && !up && !down)
-                direction = directions::up;
-        }
-        else if(event->key.code == sf::Keyboard::Down) {
-			down = false;
-            if(!left && !right && !up && !down)
-                direction = directions::down;
+        if(textbox == nullptr) {
+            if(event->key.code == sf::Keyboard::Left) {
+                left = false; 
+                if(!left && !right && !up && !down)
+                    direction = directions::left;
+            }
+            else if(event->key.code == sf::Keyboard::Right) {
+                right = false;
+                if(!left && !right && !up && !down)
+                    direction = directions::right;
+            }
+            else if(event->key.code == sf::Keyboard::Up) {
+                up = false;
+                if(!left && !right && !up && !down)
+                    direction = directions::up;
+            }
+            else if(event->key.code == sf::Keyboard::Down) {
+                down = false;
+                if(!left && !right && !up && !down)
+                    direction = directions::down;
+            }
         }
 
         if(event->key.code == sf::Keyboard::Space) {
