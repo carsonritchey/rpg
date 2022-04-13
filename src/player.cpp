@@ -26,10 +26,8 @@ void Player::checkInput(const sf::Event* event) {
                 direction = directions::left;
             }
             else if(event->key.code == sf::Keyboard::Right) {
-
                 right = true;
                 direction = directions::right;
-
             }
             else if(event->key.code == sf::Keyboard::Up) {
                 up = true;

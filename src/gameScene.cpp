@@ -12,14 +12,14 @@ GameScene::~GameScene() {
 }
 
 int GameScene::update(const float& dt, const sf::Event* event) {
-    this->player.update(dt, &this->map);
+    this->player.update(dt, this->current_map);
 
     return RETURN_CODE_NOTHING;
 }
 
 void GameScene::render() {
     sf::Vector2f player_pos = this->player.sprite.getPosition(); 
-    this->map.drawMap(this->window, this->view, player_pos.x, player_pos.y);
+    this->current_map->drawMap(this->window, this->view, player_pos.x, player_pos.y);
 	this->window->draw(this->player.sprite);
 
     if(this->player.textbox != nullptr) {
