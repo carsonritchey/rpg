@@ -22,7 +22,11 @@ void GameScene::render() {
     this->map.drawMap(this->window, this->view, player_pos.x, player_pos.y);
 	this->window->draw(this->player.sprite);
 
-    if(this->player.interactable)
+    if(this->player.textbox != nullptr) {
+        this->player.textbox->drawBox(window);
+        this->player.textbox->drawText(window);
+    }
+    else if(this->player.interactable)
         this->window->draw(this->player.interactSprite.sprite);
 }
 

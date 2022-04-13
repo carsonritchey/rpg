@@ -3,7 +3,7 @@
 #include "conf.h"
 #include "textBox.h"
 
-TextBox::TextBox(sf::RenderWindow* window, std::string content) {
+TextBox::TextBox(std::string content) {
     this->content = content;
 
     font.loadFromFile(FONT_PATH);
@@ -21,16 +21,14 @@ TextBox::TextBox(sf::RenderWindow* window, std::string content) {
 
     text.setLineSpacing(LINE_SPACING);
 
-    this->window = window;
-
-    setPosition();
 }
 
 TextBox::~TextBox() {
 
 }
 
-void TextBox::drawBox() {
+void TextBox::drawBox(sf::RenderWindow* window) {
+    setPosition(window);
     window->draw(bg);
     window->draw(top);
     window->draw(left);
@@ -38,13 +36,13 @@ void TextBox::drawBox() {
     window->draw(bottom);
 }
 
-void TextBox::drawText() {
+void TextBox::drawText(sf::RenderWindow* window) {
     text.setString(content);
 
     window->draw(text);
 }
 
-void TextBox::setPosition() {
+void TextBox::setPosition(sf::RenderWindow* window) {
     bg.setPosition(window->mapPixelToCoords(sf::Vector2i(SPACING, WINDOW_HEIGHT - WINDOW_HEIGHT / 3 - SPACING)));
 
     top.setPosition(window->mapPixelToCoords(sf::Vector2i(SPACING, WINDOW_HEIGHT - WINDOW_HEIGHT / 3 - SPACING)));

@@ -13,7 +13,7 @@ class TextBox {
 
     public:
         // constructor & deconstructor
-        TextBox(sf::RenderWindow* window, std::string);
+        TextBox(std::string);
         virtual ~TextBox();
 
         // variables
@@ -35,9 +35,9 @@ class TextBox {
         sf::Color text_color{0, 0, 0, 255};
 
         // functions
-        void drawBox();
-        void drawText();
-        void setPosition();
+        void drawBox(sf::RenderWindow* window);
+        void drawText(sf::RenderWindow* window);
+        void setPosition(sf::RenderWindow* window);
 };
 
 #endif

@@ -5,6 +5,7 @@
 
 #include "entity.h"
 #include "map.h"
+#include "textBox.h"
 
 class Player : public Entity {
     private:
@@ -26,6 +27,7 @@ class Player : public Entity {
         bool interacting = false;
         bool interactable = false;
         Entity interactSprite{"art/sprites/space.png"};
+        TextBox* textbox = nullptr;
 
 		const float mvnt_speed = TILE_SIZE * ZOOM_FACTOR * 5;
 

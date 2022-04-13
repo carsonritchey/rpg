@@ -29,7 +29,7 @@ void Player::checkInput(const sf::Event* event) {
             direction = directions::down;
         }
 
-        if(direction == directions::up) {
+        if(direction == directions::up || textbox != nullptr) {
             if(event->key.code == sf::Keyboard::Space) {
                 interacting = true;
             }
@@ -84,6 +84,10 @@ bool Player::checkForInteractables(Map* map) {
         text = map->tile_data[map->map_w * (tile_y - 1) + tile_x + 1];
 
         found = true;
+    }
+
+    if(found && interacting && textbox == nullptr) {
+        textbox = new TextBox(text);
     }
 
     interactable = found;
@@ -160,11 +164,18 @@ void Player::processEvent(const sf::Event* event) {
 }
 
 void Player::update(const float dt, Map* map) {
+    // actually move player
     sprite.move(movePlayer(dt, map));
 
+    // set position of space bar prompt
     if(checkForInteractables(map)) {
         sf::Vector2f pos = sprite.getPosition(); 
         pos.y += TILE_SIZE * ZOOM_FACTOR;
         interactSprite.sprite.setPosition(pos);
+    }
+
+    // progress text box if neccessary
+    if(interacting) {
+        std::cout << "bruh" << std::endl;
     }
 }
