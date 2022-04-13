@@ -26,7 +26,7 @@ void GameScene::render() {
         this->player.textbox->drawBox(window);
         this->player.textbox->drawText(window);
     }
-    else if(this->player.interactable)
+    else if(this->player.interactable && this->player.direction == directions::up)
         this->window->draw(this->player.interactSprite.sprite);
 }
 

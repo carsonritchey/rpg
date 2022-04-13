@@ -19,6 +19,12 @@ void Player::checkInput(const sf::Event* event) {
         else if(event->key.code == sf::Keyboard::Right) {
 			right = true;
             direction = directions::right;
+
+            if(textbox != nullptr) {
+                if(textbox->progressText()) {
+                    killTextBox();
+                }
+            }
         }
         else if(event->key.code == sf::Keyboard::Up) {
 			up = true;
@@ -92,6 +98,11 @@ bool Player::checkForInteractables(Map* map) {
 
     interactable = found;
     return found;
+}
+
+void Player::killTextBox() {
+    delete textbox;
+    textbox = nullptr;
 }
 
 sf::Vector2f Player::movePlayer(const float dt, Map* map) {
@@ -172,10 +183,5 @@ void Player::update(const float dt, Map* map) {
         sf::Vector2f pos = sprite.getPosition(); 
         pos.y += TILE_SIZE * ZOOM_FACTOR;
         interactSprite.sprite.setPosition(pos);
-    }
-
-    // progress text box if neccessary
-    if(interacting) {
-        std::cout << "bruh" << std::endl;
     }
 }

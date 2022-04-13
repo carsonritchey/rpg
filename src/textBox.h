@@ -23,6 +23,9 @@ class TextBox {
         std::string title;
         std::string content;
 
+        int head; // last character to be drawn (i.e. final character before line break or end of string)
+        int tail; // start of text to be drawn to screen 
+
         sf::RectangleShape bg{sf::Vector2f(WINDOW_WIDTH - SPACING * 2, WINDOW_HEIGHT / 3)};
 
         sf::RectangleShape top{sf::Vector2f(WINDOW_WIDTH - SPACING * 2, OUTLINE_WIDTH)};
@@ -37,6 +40,7 @@ class TextBox {
         // functions
         void drawBox(sf::RenderWindow* window);
         void drawText(sf::RenderWindow* window);
+        bool progressText();
         void setPosition(sf::RenderWindow* window);
 };
 

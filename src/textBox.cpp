@@ -5,6 +5,11 @@
 
 TextBox::TextBox(std::string content) {
     this->content = content;
+    tail = 0;
+    std::size_t found = content.find("\n");
+    head = (found != std::string::npos) ? found : content.length();
+
+    //cout << tail << " " << head << " " << content.subtring(tail, head + 1) << std::endl;
 
     font.loadFromFile(FONT_PATH);
 
@@ -37,9 +42,19 @@ void TextBox::drawBox(sf::RenderWindow* window) {
 }
 
 void TextBox::drawText(sf::RenderWindow* window) {
-    text.setString(content);
+    text.setString(content.substr(tail, head + 1));
 
     window->draw(text);
+}
+
+bool TextBox::progressText() {
+    if(head >= (int)content.length() - 1)
+        return true;
+
+    std::size_t found = content.find("\n", head + 1);
+    head = (found != std::string::npos) ? found : content.length();
+
+    return false;
 }
 
 void TextBox::setPosition(sf::RenderWindow* window) {

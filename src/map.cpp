@@ -6,6 +6,7 @@
 #include <string>
 #include <sstream>
 #include <vector>
+#include <regex>
 
 #define TILEDAT_SEPERATOR "|"
 #define TILEDAT_POS_SEPERATOR ","
@@ -110,6 +111,7 @@ void Map::loadTileData(std::string path) {
 
         std::string pos = line.substr(0, line.find(TILEDAT_SEPERATOR));
         std::string text = line.substr(line.find(TILEDAT_SEPERATOR) + 1);
+        text = std::regex_replace(text, std::regex("NEWLINE"), "\n");
 
         x = std::stoi(pos.substr(0, pos.find(TILEDAT_POS_SEPERATOR)));
         y = std::stoi(pos.substr(pos.find(TILEDAT_POS_SEPERATOR) + 1));
