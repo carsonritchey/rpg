@@ -26,7 +26,7 @@ class GameScene : public Scene {
         std::string subworld_texture_path = "art/tiles/subworld.png";
         std::string subworld_map_path = "lvledit/subworld_map.dat";
         std::string subworld_tile_data_path = "lvledit/subworld.dat";
-        //Map subworld_map{subworld_texture_path, subworld_map_path, subworld_tile_data_path};
+        Map subworld_map{subworld_texture_path, subworld_map_path, subworld_tile_data_path};
 
         Map* current_map = &overworld_map; 
 

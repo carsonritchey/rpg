@@ -21,7 +21,8 @@
 
 #define EMPTY -1
 
-std::string MAP_PATH = "overworld_map.dat";
+std::string MAP_PATH = "subworld_map.dat";
+std::string TEXTURE_PATH = "../art/tiles/subworld.png";
 
 void closeMap(int***);
 void drawCollision(sf::RenderWindow*);
@@ -63,7 +64,7 @@ int main() {
 	sf::RenderWindow window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "lvledit");
     window.setFramerateLimit(30);
 
-    textures = loadTextures("../art/tiles/overworld.png");
+    textures = loadTextures(TEXTURE_PATH);
 	loadMap(MAP_PATH);
 
     sf::View view(sf::Vector2f(0, 0), sf::Vector2f(WINDOW_WIDTH / ZOOM_FACTOR, WINDOW_HEIGHT / ZOOM_FACTOR));

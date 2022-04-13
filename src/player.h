@@ -31,6 +31,7 @@ class Player : public Entity {
         TextBox* textbox = nullptr;
 
 		const float mvnt_speed = TILE_SIZE * ZOOM_FACTOR * 5;
+        int animation_speed = 10;
 
         int l_frames[3] = {4, 5, 6};
         int r_frames[3] = {0, 1, 2};

@@ -3,7 +3,7 @@
 #include <iostream>
 
 Player::Player(std::string texture_path) : Entity(texture_path) {
-    sprite.setPosition(2 * TILE_SIZE * ZOOM_FACTOR, 3 * TILE_SIZE * ZOOM_FACTOR);
+    sprite.setPosition(2 * TILE_SIZE * ZOOM_FACTOR, 3.5f * TILE_SIZE * ZOOM_FACTOR);
 }
 
 Player::~Player() {
@@ -13,7 +13,7 @@ Player::~Player() {
 void Player::checkInput(const sf::Event* event) {
     if(event->type == sf::Event::KeyPressed) {
         if(textbox != nullptr) {
-            if(event->key.code == sf::Keyboard::Right) {
+            if(event->key.code == sf::Keyboard::Space) {
                 if(textbox->progressText()) {
                     // prevents space sprite from flashing
                     direction = directions::right;
@@ -141,7 +141,7 @@ sf::Vector2f Player::movePlayer(const float dt, Map* map) {
         if(left && (map->tile_collision[map->map_w * tile_y + tile_x] == COLLISION_WALL || map->tile_collision[map->map_w * (tile_y + 1) + tile_x] == COLLISION_WALL)) {
             dPos.x = 0;
         }
-        if(!right)
+        if(!right && global_tick % animation_speed == 0)
             cycleTexture(l_frames, sizeof(l_frames) / sizeof(l_frames[0]));
     }
 	if(right) {
@@ -152,7 +152,7 @@ sf::Vector2f Player::movePlayer(const float dt, Map* map) {
         if(right && (map->tile_collision[map->map_w * tile_y + tile_x + 1] == COLLISION_WALL || map->tile_collision[map->map_w * (tile_y + 1) + tile_x + 1] == COLLISION_WALL)) {
             dPos.x = 0;
         }
-        if(!left)
+        if(!left && global_tick % animation_speed == 0)
             cycleTexture(r_frames, sizeof(r_frames) / sizeof(r_frames[0]));
     }
 

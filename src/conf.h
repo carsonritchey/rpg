@@ -7,7 +7,7 @@
 #define TILE_SIZE 16
 #define ZOOM_FACTOR 5
 #define FRAMES_PER_SECOND 60
-#define VSYNC_CHOICE false
+#define VSYNC_CHOICE true 
 #define EMPTY -1
 #define WINDOW_NAME "rpg filler"
 #define FONT_PATH "art/PressStart2P.ttf"
@@ -30,5 +30,7 @@ enum directions {
     up = 2,
     down = 3,
 };
+
+extern unsigned int global_tick;
 
 #endif

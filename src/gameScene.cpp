@@ -14,6 +14,12 @@ GameScene::~GameScene() {
 int GameScene::update(const float& dt, const sf::Event* event) {
     this->player.update(dt, this->current_map);
 
+    // temporary level switch hotkey
+    if(event->key.code == sf::Keyboard::O)
+        current_map = &subworld_map;
+    else if(event->key.code == sf::Keyboard::P)
+        current_map = &overworld_map;
+
     return RETURN_CODE_NOTHING;
 }
 
