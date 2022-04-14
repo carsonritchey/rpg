@@ -99,7 +99,7 @@ bool Player::checkForInteractables(Map* map) {
         if(text.substr(0, strlen(TILEDAT_DOOR_PREFIX)) == TILEDAT_DOOR_PREFIX) {
             std::string door_coords = text.substr(text.find(TILEDAT_SEPERATOR) + 1);
             int door_x = std::stoi(door_coords.substr(0, door_coords.find(TILEDAT_POS_SEPERATOR)));
-            int door_y = std::stoi(door_coords.substr(door_coords.find(TILEDAT_POS_SEPERATOR + 1)));
+            int door_y = std::stoi(door_coords.substr(door_coords.find(TILEDAT_POS_SEPERATOR) + 1));
 
             sprite.setPosition(sf::Vector2f(door_x * TILE_SIZE * ZOOM_FACTOR, door_y * TILE_SIZE * ZOOM_FACTOR));
             cycleCurrentMap();
