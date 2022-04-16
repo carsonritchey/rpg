@@ -84,11 +84,14 @@ bool Player::checkForInteractables(Map* map) {
 
     if(map->tile_data[map->map_w * (tile_y - 1) + tile_x].length() != 0) {
         text = map->tile_data[map->map_w * (tile_y - 1) + tile_x];
+        tile_y--;
 
         found = true;
     }
     else if(map->tile_data[map->map_w * (tile_y - 1) + tile_x + 1].length() != 0) {
         text = map->tile_data[map->map_w * (tile_y - 1) + tile_x + 1];
+        tile_y--;
+        tile_x++;
 
         found = true;
     }
@@ -104,8 +107,13 @@ bool Player::checkForInteractables(Map* map) {
             sprite.setPosition(sf::Vector2f(door_x * TILE_SIZE * ZOOM_FACTOR, door_y * TILE_SIZE * ZOOM_FACTOR));
             cycleCurrentMap();
         }
+        // if talking to chest
+        if(text.substr(0, strlen(TILEDAT_ITEM_PREFIX)) == TILEDAT_ITEM_PREFIX) {
+            map->setTexture(tile_x, tile_y, FG, CHEST_OPEN_TEXTURE);
+            inventory.deltaStack(text.substr(text.find(TILEDAT_ITEM_PREFIX) + 1), 1);
+        }
         // if talking to sign 
-        else if(textbox == nullptr) {
+        if(textbox == nullptr) {
             textbox = new TextBox(text);
         }
     }
@@ -130,6 +138,7 @@ sf::Vector2f Player::movePlayer(const float dt, Map* map) {
     sf::Vector2f pos; 
     sf::Vector2f dPos(0.f, 0.f);
     int tile_x, tile_y;
+
 	if(up) {
         dPos.y -= mvnt_speed * dt;
         pos = sprite.getPosition();

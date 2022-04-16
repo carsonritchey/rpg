@@ -13,6 +13,7 @@
 #include <sstream>
 #include <regex>
 
+
 class Map {
     private:
 		sf::Sprite createSprite(int, int, int);
@@ -39,6 +40,7 @@ class Map {
         void drawCollision(sf::RenderWindow* window);
         void drawMap(sf::RenderWindow*, int, int);
         void drawMap(sf::RenderWindow*, sf::View*, float, float);
+        void setTexture(int, int, int, int);
 };
 
 #endif

@@ -150,3 +150,10 @@ void Map::loadMap(std::string path) {
 
     file.close();
 }
+
+void Map::setTexture(int tile_x, int tile_y, int layer, int texture_index) {
+    if(layer == BG)
+        bg_sprites[map_w * tile_x + tile_y].setTexture(textures[texture_index]);
+    else if(layer == FG)
+        fg_sprites[map_w * tile_x + tile_y].setTexture(textures[texture_index]);
+}

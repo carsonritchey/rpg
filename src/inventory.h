@@ -38,7 +38,6 @@ class Item {
         sf::Sprite sprite; 
 
         // functions
-        void deltaStack(int); // change in stack count (i.e. -1 to remove 1, 5 to add 5)
 };
 
 class Inventory {
@@ -55,6 +54,8 @@ class Inventory {
         std::vector<sf::Texture> textures;
 
         // functions
+        void deltaStack(std::string, int); // change in stack count (i.e. -1 to remove 1, 5 to add 5)
+        int nameToId(std::string);
 };
 
 

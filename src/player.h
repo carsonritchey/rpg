@@ -6,6 +6,7 @@
 #include "entity.h"
 #include "map.h"
 #include "textBox.h"
+#include "inventory.h"
 
 class Player : public Entity {
     private:
@@ -38,6 +39,8 @@ class Player : public Entity {
         int r_frames[3] = {0, 1, 2};
 
         maps current_map = maps::overworld;
+
+        Inventory inventory;
 
         // functions
         void processEvent(const sf::Event*);

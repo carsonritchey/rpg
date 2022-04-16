@@ -25,7 +25,6 @@ TextBox::TextBox(std::string content) {
     bottom.setFillColor(hl_color);
 
     text.setLineSpacing(LINE_SPACING);
-
 }
 
 TextBox::~TextBox() {

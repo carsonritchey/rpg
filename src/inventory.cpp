@@ -15,6 +15,12 @@ Inventory::~Inventory() {
 
 }
 
+void Inventory::deltaStack(std::string name, int dStack) {
+    int id = nameToId(name);
+
+    items[id].count += dStack;
+}
+
 void Inventory::loadTextures(std::string path) {
     sf::Image image;
     image.loadFromFile(path);
@@ -28,6 +34,15 @@ void Inventory::loadTextures(std::string path) {
             textures.push_back(texture);
         }
     }
+}
+
+int Inventory::nameToId(std::string name) {
+    for(std::size_t i = 0; i < size(item_names); i++) {
+        if(item_names[i] == name)
+            return i;
+    }
+
+    return -1;
 }
 
 /* item stuff */

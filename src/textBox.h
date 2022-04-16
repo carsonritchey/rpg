@@ -7,6 +7,7 @@
 #define LINE_SPACING 1.7
 
 #include <SFML/Graphics.hpp>
+#include "entity.h"
 
 class TextBox {
     private:
@@ -36,6 +37,8 @@ class TextBox {
         sf::Color bg_color{255, 255, 255, 255};
         sf::Color hl_color{0, 0, 0, 255};
         sf::Color text_color{0, 0, 0, 255};
+
+        Entity space_sprite{"art/sprites/space.png"};
 
         // functions
         void drawBox(sf::RenderWindow* window);
