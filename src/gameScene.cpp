@@ -1,5 +1,6 @@
 #include "gameScene.h"
 #include "textBox.h"
+#include "inventory.h"
 
 #include <iostream>
 
@@ -24,10 +25,6 @@ int GameScene::update(const float& dt, const sf::Event* event) {
         current_map = &overworld_map;
     else if(player.current_map == maps::subworld)
         current_map = &subworld_map;
-    else
-    {
-        std::cout << "bruh" << std::endl;
-    }
 
     return RETURN_CODE_NOTHING;
 }

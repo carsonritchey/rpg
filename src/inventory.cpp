@@ -1,7 +1,14 @@
 #include "inventory.h"
 
-Inventory::Inventory() {
+#include <iostream>
 
+/* inventory stuff */
+Inventory::Inventory() {
+    loadTextures(ITEM_PATH);
+
+    for(std::size_t i = 0; i < size(item_names); i++) {
+        items.push_back(Item(i, this));
+    }
 }
 
 Inventory::~Inventory() {
@@ -21,4 +28,15 @@ void Inventory::loadTextures(std::string path) {
             textures.push_back(texture);
         }
     }
+}
+
+/* item stuff */
+Item::Item(int id, Inventory* inventory) {
+    this->id = id;
+
+    sprite.setTexture(inventory->textures[id]);
+}
+
+Item::~Item() {
+
 }

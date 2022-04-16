@@ -21,8 +21,8 @@
 
 #define EMPTY -1
 
-std::string MAP_PATH = "subworld_map.dat";
-std::string TEXTURE_PATH = "../art/tiles/subworld.png";
+std::string MAP_PATH = "overworld_map.dat";
+std::string TEXTURE_PATH = "../art/tiles/overworld.png";
 
 void closeMap(int***);
 void drawCollision(sf::RenderWindow*);

@@ -1,12 +1,45 @@
 #ifndef INVENTORY_H
 #define INVENTORY_H
 
+#include <SFML/Graphics.hpp>
 
 #include <string>
 #include <vector>
 #include <map>
 
-#include "item.h"
+#include "conf.h"
+
+#define ITEM_PATH "art/sprites/items.png"
+
+const std::string item_names[] = {
+    "mushroom",
+    "potion",
+    "mega potion",
+    "repel",
+    "key",
+};
+
+class Item;
+class Inventory;
+
+class Item {
+    private:
+
+    public:
+        // constructor & deconstructor
+        Item(int, Inventory*);
+        virtual ~Item();
+
+        // variables
+        sf::String name;
+        int id;
+        int count = 0;
+        int cost;
+        sf::Sprite sprite; 
+
+        // functions
+        void deltaStack(int); // change in stack count (i.e. -1 to remove 1, 5 to add 5)
+};
 
 class Inventory {
     private:
@@ -20,9 +53,9 @@ class Inventory {
         // variables
         std::vector<Item> items;
         std::vector<sf::Texture> textures;
-        std::vector<sf::Sprite*> sprites;
 
         // functions
 };
+
 
 #endif
