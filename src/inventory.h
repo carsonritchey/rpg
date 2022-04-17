@@ -58,4 +58,36 @@ class Inventory {
         int nameToId(std::string);
 };
 
+#define ITEMBOX_WIDTH 110
+#define OUTLINE_WIDTH 5
+const int x_offset = WINDOW_WIDTH / 2 - TILE_SIZE * ZOOM_FACTOR * 1.5;
+const int y_offset = -60;
+
+class ItemBox {
+    private:
+
+    public:
+        // constructors and deconstructors
+        ItemBox(int, Inventory* inventory);
+        virtual ~ItemBox();
+
+        // variables
+        sf::RectangleShape bg{sf::Vector2f(ITEMBOX_WIDTH, ITEMBOX_WIDTH)};
+
+        sf::RectangleShape top{sf::Vector2f(ITEMBOX_WIDTH, OUTLINE_WIDTH)};
+        sf::RectangleShape bottom{sf::Vector2f(ITEMBOX_WIDTH, OUTLINE_WIDTH)};
+        sf::RectangleShape left{sf::Vector2f(OUTLINE_WIDTH, ITEMBOX_WIDTH)};
+        sf::RectangleShape right{sf::Vector2f(OUTLINE_WIDTH, ITEMBOX_WIDTH)};
+
+        sf::Color bg_color{255, 255, 255, 255};
+        sf::Color hl_color{0, 0, 0, 255};
+
+        sf::Texture* texture;
+        sf::Sprite sprite;
+
+        // functions
+        void drawBox(sf::RenderWindow* window);
+        void setPosition(sf::RenderWindow* window);
+};
+
 #endif

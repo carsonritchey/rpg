@@ -55,3 +55,41 @@ Item::Item(int id, Inventory* inventory) {
 Item::~Item() {
 
 }
+
+/* item box stuff */
+ItemBox::ItemBox(int id, Inventory* inventory) {
+    top.setFillColor(hl_color);
+    bottom.setFillColor(hl_color);
+    left.setFillColor(hl_color);
+    right.setFillColor(hl_color);
+
+    texture = &inventory->textures[id];
+    sprite.setTexture(*texture);
+    sprite.scale(ZOOM_FACTOR, ZOOM_FACTOR);
+}
+
+ItemBox::~ItemBox() {
+
+}
+
+void ItemBox::drawBox(sf::RenderWindow* window) {
+    setPosition(window);
+
+    window->draw(bg);
+    window->draw(top);
+    window->draw(bottom);
+    window->draw(left);
+    window->draw(right);
+    window->draw(sprite); 
+}
+
+void ItemBox::setPosition(sf::RenderWindow* window) {
+    bg.setPosition(window->mapPixelToCoords(sf::Vector2i(WINDOW_WIDTH / 2 - ITEMBOX_WIDTH / 2 + x_offset, WINDOW_HEIGHT / 2 - ITEMBOX_WIDTH / 2 - y_offset)));
+
+    top.setPosition(window->mapPixelToCoords(sf::Vector2i(WINDOW_WIDTH / 2 - ITEMBOX_WIDTH / 2 + x_offset, WINDOW_HEIGHT / 2 - ITEMBOX_WIDTH / 2 - y_offset)));
+    bottom.setPosition(window->mapPixelToCoords(sf::Vector2i(WINDOW_WIDTH / 2 - ITEMBOX_WIDTH / 2 + x_offset, WINDOW_HEIGHT / 2 + ITEMBOX_WIDTH / 2 - OUTLINE_WIDTH - y_offset)));
+    left.setPosition(window->mapPixelToCoords(sf::Vector2i(WINDOW_WIDTH / 2 - ITEMBOX_WIDTH / 2 + x_offset, WINDOW_HEIGHT / 2 - ITEMBOX_WIDTH / 2 - y_offset)));
+    right.setPosition(window->mapPixelToCoords(sf::Vector2i(WINDOW_WIDTH / 2 + ITEMBOX_WIDTH / 2 - OUTLINE_WIDTH + x_offset, WINDOW_HEIGHT / 2 - ITEMBOX_WIDTH / 2 - y_offset)));
+
+    sprite.setPosition(window->mapPixelToCoords(sf::Vector2i(WINDOW_WIDTH / 2 - TILE_SIZE * ZOOM_FACTOR / 2 + x_offset, WINDOW_HEIGHT / 2 - y_offset - TILE_SIZE * ZOOM_FACTOR / 2)));
+}
