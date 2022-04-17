@@ -1,8 +1,11 @@
 #include "gameScene.h"
 #include "textBox.h"
+#include "itemBox.h"
 #include "inventory.h"
 
 #include <iostream>
+
+ItemBox itembox(0);
 
 GameScene::GameScene(sf::RenderWindow* window, sf::View* view) : Scene(window) {
     this->view = view;
@@ -40,6 +43,8 @@ void GameScene::render() {
     }
     else if(this->player.interactable && this->player.direction == directions::up)
         this->window->draw(this->player.interactSprite.sprite);
+
+    itembox.drawBox(window);
 }
 
 void GameScene::close_scene() {

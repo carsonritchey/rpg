@@ -58,5 +58,4 @@ class Inventory {
         int nameToId(std::string);
 };
 
-
 #endif

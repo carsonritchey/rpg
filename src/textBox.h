@@ -4,7 +4,7 @@
 #define TEXT_ZOOM_FACTOR 2
 #define SPACING 25
 #define OUTLINE_WIDTH 5
-#define LINE_SPACING 1.7
+#define LINE_SPACING 1.5
 
 #include <SFML/Graphics.hpp>
 #include "entity.h"

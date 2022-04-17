@@ -98,8 +98,17 @@ bool Player::checkForInteractables(Map* map) {
 
     // if there's something to interact with above player and they pressed space 
     if(found && interacting) {
+        // if talking to chest
+        if(text.substr(0, strlen(TILEDAT_ITEM_PREFIX)) == TILEDAT_ITEM_PREFIX) {
+            if(textbox == nullptr) {
+                map->setTexture(tile_x, tile_y, FG, CHEST_OPEN_TEXTURE);
+                inventory.deltaStack(text.substr(text.find(TILEDAT_ITEM_PREFIX) + 1), 1);
+                
+                textbox = new TextBox(text.substr(text.find_last_of(TILEDAT_SEPERATOR) + 1));
+            }
+        }
         // if talking to door
-        if(text.substr(0, strlen(TILEDAT_DOOR_PREFIX)) == TILEDAT_DOOR_PREFIX) {
+        else if(text.substr(0, strlen(TILEDAT_DOOR_PREFIX)) == TILEDAT_DOOR_PREFIX) {
             std::string door_coords = text.substr(text.find(TILEDAT_SEPERATOR) + 1);
             int door_x = std::stoi(door_coords.substr(0, door_coords.find(TILEDAT_POS_SEPERATOR)));
             int door_y = std::stoi(door_coords.substr(door_coords.find(TILEDAT_POS_SEPERATOR) + 1));
@@ -107,13 +116,8 @@ bool Player::checkForInteractables(Map* map) {
             sprite.setPosition(sf::Vector2f(door_x * TILE_SIZE * ZOOM_FACTOR, door_y * TILE_SIZE * ZOOM_FACTOR));
             cycleCurrentMap();
         }
-        // if talking to chest
-        if(text.substr(0, strlen(TILEDAT_ITEM_PREFIX)) == TILEDAT_ITEM_PREFIX) {
-            map->setTexture(tile_x, tile_y, FG, CHEST_OPEN_TEXTURE);
-            inventory.deltaStack(text.substr(text.find(TILEDAT_ITEM_PREFIX) + 1), 1);
-        }
         // if talking to sign 
-        if(textbox == nullptr) {
+        else if(textbox == nullptr) {
             textbox = new TextBox(text);
         }
     }
