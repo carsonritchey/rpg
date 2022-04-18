@@ -3,6 +3,7 @@
 
 #include <SFML/Graphics.hpp>
 
+#include "conf.h"
 #include "entity.h"
 #include "map.h"
 
@@ -11,7 +12,7 @@ class NPC : public Entity {
 
     public:
         // constructors and deconstructors
-        NPC();
+        NPC(std::string);
         virtual ~NPC();
 
         // variables
@@ -19,7 +20,7 @@ class NPC : public Entity {
         bool first_chat = true; // if player has never talked to NPC
         int required_item_id;
 
-        int default_timeout = 10000; // how many ticks until NPC gives up going to target_pos 
+        const int default_timeout = FRAMES_PER_SECOND * 7; // how many ticks until NPC gives up going to target_pos 
         sf::Vector2f target_pos; // where the NPC wants to walk to
 
         // functions 
