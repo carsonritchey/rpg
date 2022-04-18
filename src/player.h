@@ -13,6 +13,7 @@ class Player : public Entity {
         void checkInput(const sf::Event*);
         bool checkForInteractables(Map* map); 
         void cycleCurrentMap();
+        void killItemBox();
         void killTextBox();
         sf::Vector2f movePlayer(const float dt, Map* map);
 
@@ -31,6 +32,7 @@ class Player : public Entity {
         bool interactable = false;
         Entity interactSprite{"art/sprites/space.png"};
         TextBox* textbox = nullptr;
+        ItemBox* itembox = nullptr;
 
 		const float mvnt_speed = TILE_SIZE * ZOOM_FACTOR * 5;
         int animation_speed = 7;

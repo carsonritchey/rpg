@@ -19,6 +19,8 @@ void Inventory::deltaStack(std::string name, int dStack) {
     int id = nameToId(name);
 
     items[id].count += dStack;
+
+    std::cout << name << "@id:" << id << " has " << items[id].count << std::endl;
 }
 
 void Inventory::loadTextures(std::string path) {
@@ -38,6 +40,7 @@ void Inventory::loadTextures(std::string path) {
 
 int Inventory::nameToId(std::string name) {
     for(std::size_t i = 0; i < sizeof(item_names) / sizeof(item_names[0]); i++) {
+        if(item_names[i].compare(name) == 0)
         if(item_names[i] == name)
             return i;
     }

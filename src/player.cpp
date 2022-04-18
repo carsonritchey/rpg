@@ -102,7 +102,7 @@ bool Player::checkForInteractables(Map* map) {
         if(text.substr(0, strlen(TILEDAT_ITEM_PREFIX)) == TILEDAT_ITEM_PREFIX) {
             if(textbox == nullptr) {
                 map->setTexture(tile_x, tile_y, FG, CHEST_OPEN_TEXTURE);
-                inventory.deltaStack(text.substr(text.find(TILEDAT_ITEM_PREFIX) + 1), 1);
+                inventory.deltaStack(text.substr(text.find(TILEDAT_SEPERATOR) + 1, text.substr(text.find(TILEDAT_SEPERATOR) + 1).find(TILEDAT_SEPERATOR)), 1);
                 
                 textbox = new TextBox(text.substr(text.find_last_of(TILEDAT_SEPERATOR) + 1));
             }
@@ -133,6 +133,10 @@ void Player::cycleCurrentMap() {
         current_map = maps::overworld;
 }
 
+void Player::killItemBox() {
+    delete itembox;
+    itembox = nullptr;
+}
 void Player::killTextBox() {
     delete textbox;
     textbox = nullptr;
