@@ -14,6 +14,11 @@ Entity::~Entity() {
 
 }
 
+void Entity::cycleTexture(int length) {
+    frame_offset = (frame_offset + 1) % length;
+
+    setTexture(frame_offset);
+}
 void Entity::cycleTexture(int* frame_indexes, int length) {
     frame_offset = (frame_offset + 1) % length;
 

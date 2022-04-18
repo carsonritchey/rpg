@@ -217,5 +217,8 @@ void Player::update(const float dt, Map* map) {
         sf::Vector2f pos = sprite.getPosition(); 
         pos.y += TILE_SIZE * ZOOM_FACTOR;
         interactSprite.sprite.setPosition(pos);
+
+        if(global_tick % interactSprite_animation_speed == 0)
+            interactSprite.cycleTexture(2);
     }
 }

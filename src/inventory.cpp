@@ -6,7 +6,7 @@
 Inventory::Inventory() {
     loadTextures(ITEM_PATH);
 
-    for(std::size_t i = 0; i < size(item_names); i++) {
+    for(std::size_t i = 0; i < sizeof(item_names) / sizeof(item_names[0]); i++) {
         items.push_back(Item(i, this));
     }
 }
@@ -37,7 +37,7 @@ void Inventory::loadTextures(std::string path) {
 }
 
 int Inventory::nameToId(std::string name) {
-    for(std::size_t i = 0; i < size(item_names); i++) {
+    for(std::size_t i = 0; i < sizeof(item_names) / sizeof(item_names[0]); i++) {
         if(item_names[i] == name)
             return i;
     }

@@ -9,14 +9,13 @@
 
 class Entity {
     protected:
-        void cycleTexture(int*, int);
         void setTexture(int);
 
     private:
         void loadTextures();
 
     public:
-		// functions 
+		// functions
         Entity(std::string);
         virtual ~Entity();
 
@@ -26,6 +25,10 @@ class Entity {
         int frame_offset = 0; // used to track which frame of animation the entity is on
         std::string texture_path;
         directions direction = directions::right;
+
+        // functions 
+        void cycleTexture(int);
+        void cycleTexture(int*, int);
 };
 
 #endif
