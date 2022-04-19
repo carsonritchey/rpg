@@ -11,7 +11,7 @@ Map::Map(std::string texture_path, std::string map_path, std::string tile_data_p
 }
 
 Map::~Map() {
-
+    killEntities();
 }
 
 sf::Sprite Map::createSprite(int texture_index, int x, int y) {
@@ -45,10 +45,10 @@ void Map::drawEntities(sf::RenderWindow* window, sf::View* view, float player_x,
     int ymax = std::min(map_h, (int)((player_y + WINDOW_HEIGHT / 2) / TILE_SIZE / ZOOM_FACTOR) + buffer);
 
     for(int i = 0; i < npcs.size(); i++) {
-        sf::Vector2f npc_pos = npcs[i].sprite.getPosition();
+        sf::Vector2f npc_pos = npcs[i]->sprite.getPosition();
 
         if(npc_pos.x >= xmin && npc_pos.x <= xmax && npc_pos.y >= ymin && npc_pos.y <= ymax) {
-            window->draw(npcs[i].sprite);
+            window->draw(npcs[i]->sprite);
         }
     }
 }
@@ -91,6 +91,11 @@ void Map::drawMap(sf::RenderWindow* window, sf::View* view, float player_x, floa
     view->setCenter(camera_x, camera_y);
 }
 
+void Map::killEntities() {
+    for(int i = 0; i < npcs.size(); i++)
+        delete npcs[i];
+}
+
 void Map::loadTextures(std::string path) {
     sf::Image image;
     if(!image.loadFromFile(path))
@@ -125,7 +130,9 @@ void Map::loadTileData(std::string path) {
 
         if(text.substr(0, strlen(TILEDAT_NPC_PREFIX)) == TILEDAT_NPC_PREFIX) {
             //std::cout << text.substr(text.find(TILEDAT_SEPERATOR) + 1, text.substr(text.find(TILEDAT_SEPERATOR) + 1).find(TILEDAT_SEPERATOR)) << std::endl;
-            npcs.push_back(NPC(text.substr(text.find(TILEDAT_SEPERATOR) + 1, text.substr(text.find(TILEDAT_SEPERATOR) + 1).find(TILEDAT_SEPERATOR)), x, y));
+
+            NPC* npc = new NPC(text.substr(text.find(TILEDAT_SEPERATOR) + 1, text.substr(text.find(TILEDAT_SEPERATOR) + 1).find(TILEDAT_SEPERATOR)), x, y);
+            npcs.push_back(npc);
 
             continue;
         }

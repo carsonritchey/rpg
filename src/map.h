@@ -19,6 +19,7 @@ class NPC;
 class Map {
     private:
 		sf::Sprite createSprite(int, int, int);
+        void killEntities();
         void loadTextures(std::string);
         void loadTileData(std::string);
         void loadMap(std::string);
@@ -38,7 +39,7 @@ class Map {
         std::map<int, int> tile_collision; 
         std::map<int, std::string> tile_data;
 
-        std::vector<NPC> npcs; 
+        std::vector<NPC*> npcs; 
 
         // functions
         void drawCollision(sf::RenderWindow*);
