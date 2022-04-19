@@ -2,6 +2,7 @@
 #define MAP_H
 
 #include "conf.h"
+#include "npc.h"
 
 #include <SFML/Graphics.hpp>
 
@@ -13,6 +14,7 @@
 #include <sstream>
 #include <regex>
 
+class NPC;
 
 class Map {
     private:
@@ -36,8 +38,11 @@ class Map {
         std::map<int, int> tile_collision; 
         std::map<int, std::string> tile_data;
 
+        std::vector<NPC> npcs; 
+
         // functions
-        void drawCollision(sf::RenderWindow* window);
+        void drawCollision(sf::RenderWindow*);
+        void drawEntities(sf::RenderWindow*, sf::View*, float, float);
         void drawMap(sf::RenderWindow*, int, int);
         void drawMap(sf::RenderWindow*, sf::View*, float, float);
         void setTexture(int, int, int, int);

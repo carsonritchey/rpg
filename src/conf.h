@@ -26,6 +26,7 @@
 #define TILEDAT_POS_SEPERATOR ","
 #define TILEDAT_DOOR_PREFIX "--door"
 #define TILEDAT_ITEM_PREFIX "--item"
+#define TILEDAT_NPC_PREFIX "--npc"
 
 #define RETURN_CODE_NOTHING -1 
 #define RETURN_CODE_EXIT    0

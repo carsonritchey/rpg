@@ -7,12 +7,14 @@
 #include "entity.h"
 #include "map.h"
 
+class Map; 
+
 class NPC : public Entity {
     private:
 
     public:
         // constructors and deconstructors
-        NPC(std::string);
+        NPC(std::string, int, int);
         virtual ~NPC();
 
         // variables

@@ -4,6 +4,7 @@
 #include "scene.h"
 #include "map.h"
 #include "player.h"
+#include "npc.h"
 #include "conf.h"
 
 class GameScene : public Scene {

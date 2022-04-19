@@ -37,6 +37,22 @@ void Map::drawCollision(sf::RenderWindow* window) {
     }
 }
 
+void Map::drawEntities(sf::RenderWindow* window, sf::View* view, float player_x, float player_y) {
+    int xmin = std::max(0, (int)(player_x - WINDOW_WIDTH / 2) / TILE_SIZE / ZOOM_FACTOR - buffer);
+    int ymin = std::max(0, (int)(player_y - WINDOW_HEIGHT / 2) / TILE_SIZE / ZOOM_FACTOR - buffer);
+
+    int xmax = std::min(map_w, (int)((player_x + WINDOW_WIDTH / 2) / TILE_SIZE / ZOOM_FACTOR) + buffer);
+    int ymax = std::min(map_h, (int)((player_y + WINDOW_HEIGHT / 2) / TILE_SIZE / ZOOM_FACTOR) + buffer);
+
+    for(int i = 0; i < npcs.size(); i++) {
+        sf::Vector2f npc_pos = npcs[i].sprite.getPosition();
+
+        if(npc_pos.x >= xmin && npc_pos.x <= xmax && npc_pos.y >= ymin && npc_pos.y <= ymax) {
+            window->draw(npcs[i].sprite);
+        }
+    }
+}
+
 // drawing maps that fit the screen and won't be moved (i.e. title screen)
 void Map::drawMap(sf::RenderWindow* window, int x, int y) {
     buffer = 2;
@@ -77,13 +93,15 @@ void Map::drawMap(sf::RenderWindow* window, sf::View* view, float player_x, floa
 
 void Map::loadTextures(std::string path) {
     sf::Image image;
-    image.loadFromFile(path);
+    if(!image.loadFromFile(path))
+        std::cout << "map-loadTextures: unable to load image " << path << std::endl;
     sf::Vector2u size = image.getSize();
 
     for(int j = 0; j < (int)size.y; j+= TILE_SIZE) {
         for(int i = 0; i < (int)size.x; i+= TILE_SIZE) {
             sf::Texture texture;
-            texture.loadFromFile(path, sf::IntRect(i, j, TILE_SIZE, TILE_SIZE));
+            if(!texture.loadFromFile(path, sf::IntRect(i, j, TILE_SIZE, TILE_SIZE)))
+                std::cout << "map-loadTextures: unable to load texture " << path << std::endl;
 
             textures.push_back(texture);
         }
@@ -105,9 +123,15 @@ void Map::loadTileData(std::string path) {
         x = std::stoi(pos.substr(0, pos.find(TILEDAT_POS_SEPERATOR)));
         y = std::stoi(pos.substr(pos.find(TILEDAT_POS_SEPERATOR) + 1));
 
+        if(text.substr(0, strlen(TILEDAT_NPC_PREFIX)) == TILEDAT_NPC_PREFIX) {
+            //std::cout << text.substr(text.find(TILEDAT_SEPERATOR) + 1, text.substr(text.find(TILEDAT_SEPERATOR) + 1).find(TILEDAT_SEPERATOR)) << std::endl;
+            npcs.push_back(NPC(text.substr(text.find(TILEDAT_SEPERATOR) + 1, text.substr(text.find(TILEDAT_SEPERATOR) + 1).find(TILEDAT_SEPERATOR)), x, y));
+
+            continue;
+        }
+
         tile_data[y * map_w + x] = text;
     }
-
 }
 
 void Map::loadMap(std::string path) {
