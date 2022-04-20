@@ -11,7 +11,7 @@ Player::~Player() {
 }
 
 void Player::animate() {
-    if(up || down || left || right) {
+    if((up || down || left || right) && !(up && down)) {
         if(global_tick % animation_speed == 0) {
             if(h_dir == directions::left && !right)
                 cycleTexture(l_frames, sizeof(l_frames) / sizeof(l_frames[0]));
@@ -55,10 +55,8 @@ void Player::checkInput(const sf::Event* event) {
                 v_dir = directions::down;
             }
 
-            if(v_dir == directions::up || textbox != nullptr) {
-                if(event->key.code == sf::Keyboard::Space) {
-                    interacting = true;
-                }
+            if(event->key.code == sf::Keyboard::Space) {
+                interacting = true;
             }
         }
     }
@@ -91,6 +89,7 @@ bool Player::checkForInteractables(Map* map) {
     std::string text; 
     bool found = false;
 
+    // above 
     if(map->tile_data[map->map_w * (tile_y - 1) + tile_x].length() != 0) {
         text = map->tile_data[map->map_w * (tile_y - 1) + tile_x];
         tile_y--;
@@ -100,6 +99,20 @@ bool Player::checkForInteractables(Map* map) {
     else if(map->tile_data[map->map_w * (tile_y - 1) + tile_x + 1].length() != 0) {
         text = map->tile_data[map->map_w * (tile_y - 1) + tile_x + 1];
         tile_y--;
+        tile_x++;
+
+        found = true;
+    }
+    // below
+    else if(map->tile_data[map->map_w * (tile_y + 2) + tile_x].length() != 0) {
+        text = map->tile_data[map->map_w * (tile_y + 2) + tile_x];
+        tile_y += 2;
+
+        found = true;
+    }
+    else if(map->tile_data[map->map_w * (tile_y + 2) + tile_x + 1].length() != 0) {
+        text = map->tile_data[map->map_w * (tile_y + 2) + tile_x + 1];
+        tile_y += 2;
         tile_x++;
 
         found = true;
@@ -124,6 +137,8 @@ bool Player::checkForInteractables(Map* map) {
 
             sprite.setPosition(sf::Vector2f(door_x * TILE_SIZE * ZOOM_FACTOR, door_y * TILE_SIZE * ZOOM_FACTOR));
             cycleCurrentMap();
+
+            interacting = false;
         }
         // if talking to sign 
         else if(textbox == nullptr) {
