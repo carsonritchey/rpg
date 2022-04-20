@@ -9,6 +9,12 @@
 
 class Map; 
 
+enum ai_types {
+    still = 0,
+    look_around = 1,
+    wander = 2,
+};
+
 class NPC : public Entity {
     private:
 
@@ -22,6 +28,9 @@ class NPC : public Entity {
         bool first_chat = true; // if player has never talked to NPC
         int required_item_id;
 
+        ai_types ai_type;
+
+        const int tick_time = 300;
         const int default_timeout = FRAMES_PER_SECOND * 7; // how many ticks until NPC gives up going to target_pos 
         sf::Vector2f target_pos; // where the NPC wants to walk to
 

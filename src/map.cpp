@@ -47,18 +47,8 @@ void Map::drawCollision(sf::RenderWindow* window) {
 */
 
 void Map::drawEntities(sf::RenderWindow* window, sf::View* view, float player_x, float player_y) {
-    int xmin = std::max(0, (int)(player_x - WINDOW_WIDTH / 2) / TILE_SIZE / ZOOM_FACTOR - buffer);
-    int ymin = std::max(0, (int)(player_y - WINDOW_HEIGHT / 2) / TILE_SIZE / ZOOM_FACTOR - buffer);
-
-    int xmax = std::min(map_w, (int)((player_x + WINDOW_WIDTH / 2) / TILE_SIZE / ZOOM_FACTOR) + buffer);
-    int ymax = std::min(map_h, (int)((player_y + WINDOW_HEIGHT / 2) / TILE_SIZE / ZOOM_FACTOR) + buffer);
-
     for(std::size_t i = 0; i < npcs.size(); i++) {
-        sf::Vector2f npc_pos = npcs[i]->sprite.getPosition();
-
-        if(npc_pos.x >= xmin && npc_pos.x <= xmax && npc_pos.y >= ymin && npc_pos.y <= ymax) {
-            window->draw(npcs[i]->sprite);
-        }
+        window->draw(npcs[i]->sprite);
     }
 }
 

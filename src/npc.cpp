@@ -9,5 +9,12 @@ NPC::~NPC() {
 }
 
 void NPC::update(const float dt, Map* map) {
-    
+    switch(ai_type) {
+        case still:
+            break;
+        case look_around:
+            break;
+        case wander:
+            break;
+    }
 }
