@@ -15,7 +15,8 @@ class Player : public Entity {
         void cycleCurrentMap();
         void killItemBox();
         void killTextBox();
-        sf::Vector2f movePlayer(const float dt, Map* map);
+        sf::Vector2f movePlayer(const float dt, Map*);
+        float movePlayerCalculateDPos(const float dt, Map*, sf::Vector2f pos, sf::Vector2f dPos);
 
     public:
         // constructor & deconstructor

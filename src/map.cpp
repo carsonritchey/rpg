@@ -12,6 +12,7 @@ Map::Map(std::string texture_path, std::string map_path, std::string tile_data_p
 
 Map::~Map() {
     killEntities();
+    // free collision memory
 }
 
 sf::Sprite Map::createSprite(int texture_index, int x, int y) {
@@ -24,6 +25,7 @@ sf::Sprite Map::createSprite(int texture_index, int x, int y) {
 	return sprite;
 }
 
+/*
 void Map::drawCollision(sf::RenderWindow* window) {
     for(int i = 0; i < map_w; i++) {
         for(int j = 0; j < map_h; j++) {
@@ -36,6 +38,7 @@ void Map::drawCollision(sf::RenderWindow* window) {
         }
     }
 }
+*/
 
 void Map::drawEntities(sf::RenderWindow* window, sf::View* view, float player_x, float player_y) {
     int xmin = std::max(0, (int)(player_x - WINDOW_WIDTH / 2) / TILE_SIZE / ZOOM_FACTOR - buffer);
@@ -163,7 +166,14 @@ void Map::loadMap(std::string path) {
 
                 // collision
                 if(k == COLLISION) {
-                    tile_collision[map_h * j + i] = texture_index;
+                    if(texture_index == COLLISION_WALKABLE)
+                        continue;
+
+                    const float leeway = TILE_SIZE * ZOOM_FACTOR / 8;
+                    sf::RectangleShape* r = new sf::RectangleShape(sf::Vector2f(TILE_SIZE * ZOOM_FACTOR - leeway, TILE_SIZE * ZOOM_FACTOR - leeway));
+                    r->setPosition(sf::Vector2f(i * TILE_SIZE * ZOOM_FACTOR, j * TILE_SIZE * ZOOM_FACTOR));
+                    tile_collision[map_w * j + i] = r;
+
                     continue;
                 }
 				if(texture_index == EMPTY) continue;

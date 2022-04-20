@@ -44,8 +44,8 @@ void Player::checkInput(const sf::Event* event) {
                 }
             }
         }
-	}
-	else if(event->type == sf::Event::KeyReleased) {
+    }
+    else if(event->type == sf::Event::KeyReleased) {
         if(textbox == nullptr) {
             if(event->key.code == sf::Keyboard::Left) {
                 left = false; 
@@ -72,7 +72,7 @@ void Player::checkInput(const sf::Event* event) {
         if(event->key.code == sf::Keyboard::Space) {
             interacting = false;
         }
-	}
+    }
 }
 
 bool Player::checkForInteractables(Map* map) {
@@ -103,7 +103,7 @@ bool Player::checkForInteractables(Map* map) {
             if(textbox == nullptr) {
                 map->setTexture(tile_x, tile_y, FG, CHEST_OPEN_TEXTURE);
                 inventory.deltaStack(text.substr(text.find(TILEDAT_SEPERATOR) + 1, text.substr(text.find(TILEDAT_SEPERATOR) + 1).find(TILEDAT_SEPERATOR)), 1);
-                
+
                 textbox = new TextBox(text.substr(text.find_last_of(TILEDAT_SEPERATOR) + 1));
             }
         }
@@ -143,69 +143,52 @@ void Player::killTextBox() {
 }
 
 sf::Vector2f Player::movePlayer(const float dt, Map* map) {
-    sf::Vector2f pos; 
+    sf::Vector2f pos = sprite.getPosition(); 
     sf::Vector2f dPos(0.f, 0.f);
-    int tile_x, tile_y;
 
-	if(up) {
+    if(up) {
         dPos.y -= mvnt_speed * dt;
-        pos = sprite.getPosition();
-        tile_x = (int)((pos.x + dPos.x) / TILE_SIZE / ZOOM_FACTOR);
-        tile_y = (int)((pos.y + dPos.y) / TILE_SIZE / ZOOM_FACTOR);
-        if(up && (map->tile_collision[map->map_w * tile_y + tile_x] == COLLISION_WALL || map->tile_collision[map->map_w * tile_y + tile_x + 1] == COLLISION_WALL)) {
+        if(movePlayerCalculateDPos(dt, map, pos, dPos) == 0)
             dPos.y = 0;
-        }
     }
-	if(down) {
+    if(down) {
         dPos.y += mvnt_speed * dt;
-        pos = sprite.getPosition();
-        tile_x = (int)((pos.x + dPos.x) / TILE_SIZE / ZOOM_FACTOR);
-        tile_y = (int)((pos.y + dPos.y) / TILE_SIZE / ZOOM_FACTOR);
-        if(down && (map->tile_collision[map->map_w * (tile_y + 1) + tile_x] == COLLISION_WALL || map->tile_collision[map->map_w * (tile_y + 1) + tile_x + 1] == COLLISION_WALL)) {
+        if(movePlayerCalculateDPos(dt, map, pos, dPos) == 0)
             dPos.y = 0;
-        }
     }
-	if(left) {
+    if(left) {
         dPos.x -= mvnt_speed * dt;
-        pos = sprite.getPosition();
-        tile_x = (int)((pos.x + dPos.x) / TILE_SIZE / ZOOM_FACTOR);
-        tile_y = (int)((pos.y + dPos.y) / TILE_SIZE / ZOOM_FACTOR);
-        if(left && (map->tile_collision[map->map_w * tile_y + tile_x] == COLLISION_WALL || map->tile_collision[map->map_w * (tile_y + 1) + tile_x] == COLLISION_WALL)) {
+        if(movePlayerCalculateDPos(dt, map, pos, dPos) == 0)
             dPos.x = 0;
-        }
-        if(!right && global_tick % animation_speed == 0)
-            cycleTexture(l_frames, sizeof(l_frames) / sizeof(l_frames[0]));
     }
-	if(right) {
+    if(right) {
         dPos.x += mvnt_speed * dt;
-        pos = sprite.getPosition();
-        tile_x = (int)((pos.x + dPos.x) / TILE_SIZE / ZOOM_FACTOR);
-        tile_y = (int)((pos.y + dPos.y) / TILE_SIZE / ZOOM_FACTOR);
-        if(right && (map->tile_collision[map->map_w * tile_y + tile_x + 1] == COLLISION_WALL || map->tile_collision[map->map_w * (tile_y + 1) + tile_x + 1] == COLLISION_WALL)) {
+        if(movePlayerCalculateDPos(dt, map, pos, dPos) == 0)
             dPos.x = 0;
-        }
-        if(!left && global_tick % animation_speed == 0)
-            cycleTexture(r_frames, sizeof(r_frames) / sizeof(r_frames[0]));
-    }
-
-    // TL edge of word
-    if(pos.x + dPos.x < 0)
-        dPos.x = 0;
-    else if(pos.x + dPos.x > map->map_w * TILE_SIZE * ZOOM_FACTOR - TILE_SIZE * ZOOM_FACTOR)
-        dPos.x = 0;
-    if(pos.y + dPos.y < 0)
-        dPos.y = 0;
-    else if(pos.y + dPos.y > map->map_h * TILE_SIZE * ZOOM_FACTOR - TILE_SIZE * ZOOM_FACTOR)
-        dPos.y = 0;
-
-    if(!left && !right && !up && !down) {
-        if(direction == directions::left)
-            setTexture(l_frames[0]);
-        else 
-            setTexture(r_frames[0]);
     }
 
     return dPos;
+}
+float Player::movePlayerCalculateDPos(const float dt, Map* map, sf::Vector2f pos, sf::Vector2f dPos) {
+    sf::RectangleShape player_rect(sf::Vector2f(TILE_SIZE * ZOOM_FACTOR, TILE_SIZE * ZOOM_FACTOR));
+    player_rect.setPosition(pos + dPos);
+    sf::Rect player_bounds = player_rect.getGlobalBounds();
+
+    int tile_x = (int)(pos.x / TILE_SIZE / ZOOM_FACTOR);
+    int tile_y = (int)(pos.y / TILE_SIZE / ZOOM_FACTOR);
+    for(int i = 0; i < 3; i++) {
+        for(int j = 0; j < 3; j++) {
+            if(i == 1 && j == 1) continue;
+
+            sf::RectangleShape* r = map->tile_collision[map->map_w * (tile_y + j) + (tile_x + i)];
+            if(r != nullptr) {
+                if(player_bounds.intersects(r->getGlobalBounds()))
+                    return 0;
+            }
+        }
+    }
+
+    return mvnt_speed * dt;
 }
 
 void Player::processEvent(const sf::Event* event) {
