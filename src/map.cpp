@@ -169,10 +169,13 @@ void Map::loadMap(std::string path) {
                     if(texture_index == COLLISION_WALKABLE)
                         continue;
 
-                    const float leeway = TILE_SIZE * ZOOM_FACTOR / 8;
-                    sf::RectangleShape* r = new sf::RectangleShape(sf::Vector2f(TILE_SIZE * ZOOM_FACTOR - leeway, TILE_SIZE * ZOOM_FACTOR - leeway));
-                    r->setPosition(sf::Vector2f(i * TILE_SIZE * ZOOM_FACTOR, j * TILE_SIZE * ZOOM_FACTOR));
-                    tile_collision[map_w * j + i] = r;
+                    const float leeway = TILE_SIZE * ZOOM_FACTOR / 10;
+                    sf::RectangleShape r(sf::Vector2f(TILE_SIZE * ZOOM_FACTOR - leeway, TILE_SIZE * ZOOM_FACTOR - leeway));
+                    r.setPosition(sf::Vector2f(i * TILE_SIZE * ZOOM_FACTOR, j * TILE_SIZE * ZOOM_FACTOR));
+
+                    sf::Rect<float>* r_ = new sf::Rect<float>;
+                    *r_ = r.getGlobalBounds();
+                    tile_collision[map_w * j + i] = r_;
 
                     continue;
                 }

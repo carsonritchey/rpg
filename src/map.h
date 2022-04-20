@@ -36,7 +36,7 @@ class Map {
         std::vector<sf::Texture> textures;
 		std::map<int, sf::Sprite> bg_sprites;
 		std::map<int, sf::Sprite> fg_sprites;
-        std::map<int, sf::RectangleShape*> tile_collision; 
+        std::map<int, sf::Rect<float>*> tile_collision; 
         std::map<int, std::string> tile_data;
 
         std::vector<NPC*> npcs; 

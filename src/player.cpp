@@ -146,6 +146,7 @@ sf::Vector2f Player::movePlayer(const float dt, Map* map) {
     sf::Vector2f pos = sprite.getPosition(); 
     sf::Vector2f dPos(0.f, 0.f);
 
+    // collision detection
     if(up) {
         dPos.y -= mvnt_speed * dt;
         if(movePlayerCalculateDPos(dt, map, pos, dPos) == 0)
@@ -167,12 +168,18 @@ sf::Vector2f Player::movePlayer(const float dt, Map* map) {
             dPos.x = 0;
     }
 
+    // edge of world
+    if(pos.x + dPos.x < 0 || pos.x + TILE_SIZE * ZOOM_FACTOR + dPos.x > map->map_w * TILE_SIZE * ZOOM_FACTOR)
+        dPos.x = 0;
+    if(pos.y + dPos.y < 0 || pos.y + TILE_SIZE * ZOOM_FACTOR + dPos.y > map->map_h * TILE_SIZE * ZOOM_FACTOR)
+        dPos.y = 0;
+
     return dPos;
 }
 float Player::movePlayerCalculateDPos(const float dt, Map* map, sf::Vector2f pos, sf::Vector2f dPos) {
     sf::RectangleShape player_rect(sf::Vector2f(TILE_SIZE * ZOOM_FACTOR, TILE_SIZE * ZOOM_FACTOR));
     player_rect.setPosition(pos + dPos);
-    sf::Rect player_bounds = player_rect.getGlobalBounds();
+    sf::Rect<float> player_bounds = player_rect.getGlobalBounds();
 
     int tile_x = (int)(pos.x / TILE_SIZE / ZOOM_FACTOR);
     int tile_y = (int)(pos.y / TILE_SIZE / ZOOM_FACTOR);
@@ -180,9 +187,9 @@ float Player::movePlayerCalculateDPos(const float dt, Map* map, sf::Vector2f pos
         for(int j = 0; j < 3; j++) {
             if(i == 1 && j == 1) continue;
 
-            sf::RectangleShape* r = map->tile_collision[map->map_w * (tile_y + j) + (tile_x + i)];
+            sf::Rect<float>* r = map->tile_collision[map->map_w * (tile_y + j) + (tile_x + i)];
             if(r != nullptr) {
-                if(player_bounds.intersects(r->getGlobalBounds()))
+                if(player_bounds.intersects(*r))
                     return 0;
             }
         }
