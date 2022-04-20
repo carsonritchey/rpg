@@ -10,35 +10,52 @@ Player::~Player() {
 
 }
 
+void Player::animate() {
+    if(up || down || left || right) {
+        if(global_tick % animation_speed == 0) {
+            if(h_dir == directions::left && !right)
+                cycleTexture(l_frames, sizeof(l_frames) / sizeof(l_frames[0]));
+            else if(h_dir == directions::right && !left)
+                cycleTexture(r_frames, sizeof(r_frames) / sizeof(r_frames[0]));
+        }
+    }
+    else {
+        if(h_dir == directions::left) {
+            setTexture(l_frames[0]);
+        }
+        else {
+            setTexture(r_frames[0]);
+        }
+    }
+}
+
 void Player::checkInput(const sf::Event* event) {
     if(event->type == sf::Event::KeyPressed) {
         if(textbox != nullptr) {
             if(event->key.code == sf::Keyboard::Space) {
                 if(textbox->progressText()) {
-                    // prevents space sprite from flashing
-                    direction = directions::right;
                     killTextBox();
                 }
             }
         } else {
             if(event->key.code == sf::Keyboard::Left) {
                 left = true;
-                direction = directions::left;
+                h_dir = directions::left;
             }
             else if(event->key.code == sf::Keyboard::Right) {
                 right = true;
-                direction = directions::right;
+                h_dir = directions::right;
             }
             else if(event->key.code == sf::Keyboard::Up) {
                 up = true;
-                direction = directions::up;
+                v_dir = directions::up;
             }
             else if(event->key.code == sf::Keyboard::Down) {
                 down = true;
-                direction = directions::down;
+                v_dir = directions::down;
             }
 
-            if(direction == directions::up || textbox != nullptr) {
+            if(v_dir == directions::up || textbox != nullptr) {
                 if(event->key.code == sf::Keyboard::Space) {
                     interacting = true;
                 }
@@ -49,23 +66,15 @@ void Player::checkInput(const sf::Event* event) {
         if(textbox == nullptr) {
             if(event->key.code == sf::Keyboard::Left) {
                 left = false; 
-                if(!left && !right && !up && !down)
-                    direction = directions::left;
             }
             else if(event->key.code == sf::Keyboard::Right) {
                 right = false;
-                if(!left && !right && !up && !down)
-                    direction = directions::right;
             }
             else if(event->key.code == sf::Keyboard::Up) {
                 up = false;
-                if(!left && !right && !up && !down)
-                    direction = directions::up;
             }
             else if(event->key.code == sf::Keyboard::Down) {
                 down = false;
-                if(!left && !right && !up && !down)
-                    direction = directions::down;
             }
         }
 
@@ -173,6 +182,8 @@ sf::Vector2f Player::movePlayer(const float dt, Map* map) {
         dPos.x = 0;
     if(pos.y + dPos.y < 0 || pos.y + TILE_SIZE * ZOOM_FACTOR + dPos.y > map->map_h * TILE_SIZE * ZOOM_FACTOR)
         dPos.y = 0;
+
+    animate();
 
     return dPos;
 }

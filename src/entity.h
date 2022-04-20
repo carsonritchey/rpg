@@ -24,7 +24,8 @@ class Entity {
         sf::Sprite sprite; 
         int frame_offset = 0; // used to track which frame of animation the entity is on
         std::string texture_path;
-        directions direction = directions::right;
+        directions h_dir = directions::right;
+        directions v_dir = directions::up;
 
         // functions 
         void cycleTexture(int);

@@ -10,6 +10,7 @@
 
 class Player : public Entity {
     private:
+        void animate();
         void checkInput(const sf::Event*);
         bool checkForInteractables(Map* map); 
         void cycleCurrentMap();
