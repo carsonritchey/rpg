@@ -12,7 +12,13 @@ Map::Map(std::string texture_path, std::string map_path, std::string tile_data_p
 
 Map::~Map() {
     killEntities();
-    // free collision memory
+
+    for(int i = 0; i < map_w; i++) {
+        for(int j = 0; j < map_h; j++) {
+            if(tile_collision[map_w * j + i] != nullptr)
+                delete tile_collision[map_w * j + i];
+        }
+    }
 }
 
 sf::Sprite Map::createSprite(int texture_index, int x, int y) {
