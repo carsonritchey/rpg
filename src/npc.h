@@ -1,7 +1,11 @@
 #ifndef NPC_H
 #define NPC_H
 
+#include <iostream>
+
 #include <SFML/Graphics.hpp>
+#include <map>
+#include <vector>
 
 #include "conf.h"
 #include "entity.h"
@@ -33,6 +37,10 @@ class NPC : public Entity {
         const int tick_time = 300;
         const int default_timeout = FRAMES_PER_SECOND * 7; // how many ticks until NPC gives up going to target_pos 
         sf::Vector2f target_pos; // where the NPC wants to walk to
+
+        // should go R, L, (U, D if neccessary)
+        static std::map<int, std::vector<std::vector<int>>> animation_frames;
+        static bool once; 
 
         // functions 
         void update(const float, Map* map);

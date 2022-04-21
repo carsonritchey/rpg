@@ -120,6 +120,7 @@ bool Player::checkForInteractables(Map* map) {
 
     // if there's something to interact with above player and they pressed space 
     if(found && interacting) {
+        up = false; down = false; left = false; right = false;
         // if talking to chest
         if(text.substr(0, strlen(TILEDAT_ITEM_PREFIX)) == TILEDAT_ITEM_PREFIX) {
             if(textbox == nullptr) {
