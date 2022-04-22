@@ -130,7 +130,7 @@ void Map::loadTileData(std::string path) {
         if(text.substr(0, strlen(TILEDAT_NPC_PREFIX)) == TILEDAT_NPC_PREFIX) {
             //std::cout << text.substr(text.find(TILEDAT_SEPERATOR) + 1, text.substr(text.find(TILEDAT_SEPERATOR) + 1).find(TILEDAT_SEPERATOR)) << std::endl;
 
-            NPC* npc = new NPC(text.substr(text.find(TILEDAT_SEPERATOR) + 1, text.substr(text.find(TILEDAT_SEPERATOR) + 1).find(TILEDAT_SEPERATOR)), x, y);
+            NPC* npc = new NPC(std::stoi(text.substr(text.find(TILEDAT_SEPERATOR) + 1, text.substr(text.find(TILEDAT_SEPERATOR) + 1).find(TILEDAT_SEPERATOR))), x, y);
             npcs.push_back(npc);
 
             continue;

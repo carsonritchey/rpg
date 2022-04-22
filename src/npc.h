@@ -19,15 +19,23 @@ enum ai_types {
     wander = 2,
 };
 
+const std::string texture_paths[] = {
+    "art/sprites/simms.png",
+    "art/sprites/among.png",
+    "art/sprites/duck.png",
+};
+
 class NPC : public Entity {
     private:
 
     public:
         // constructors and deconstructors
-        NPC(std::string, int, int);
+        NPC(int id, int x, int y);
         virtual ~NPC();
 
         // variables
+        int npc_id;
+
         bool has_dialogue = true;
         bool first_chat = true; // if player has never talked to NPC
         int required_item_id;

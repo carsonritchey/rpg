@@ -4,7 +4,9 @@
 std::map<int, std::vector<std::vector<int>>> NPC::animation_frames;
 bool NPC::once = true;
 
-NPC::NPC(std::string texture_path, int x, int y) : Entity(texture_path) {
+NPC::NPC(int id, int x, int y) : Entity(texture_paths[id]) {
+    this->npc_id = id;
+
     sprite.setPosition(sf::Vector2f(x * TILE_SIZE * ZOOM_FACTOR, y * TILE_SIZE * ZOOM_FACTOR));
 
     // initializes static animation frames map variable, only runs once for entire class 
@@ -31,12 +33,14 @@ NPC::~NPC() {
 }
 
 void NPC::update(const float dt, Map* map) {
-    switch(ai_type) {
-        case still:
-            break;
-        case look_around:
-            break;
-        case wander:
-            break;
+    if(global_tick % tick_time == 0) {
+        switch(ai_type) {
+            case still:
+                break;
+            case look_around:
+                break;
+            case wander:
+                break;
+        }
     }
 }
