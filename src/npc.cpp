@@ -8,7 +8,23 @@ NPC::NPC(int id, int x, int y) : Entity(texture_paths[id]) {
     this->id = id;
 
     sprite.setPosition(sf::Vector2f(x * TILE_SIZE * ZOOM_FACTOR, y * TILE_SIZE * ZOOM_FACTOR));
+    initAnimationFrames(); 
+}
+NPC::NPC(int id, int x, int y, std::string text) : Entity(texture_paths[id]) {
+    this->id = id;
+    this->text = text;
 
+    std::cout << text << std::endl;
+
+    sprite.setPosition(sf::Vector2f(x * TILE_SIZE * ZOOM_FACTOR, y * TILE_SIZE * ZOOM_FACTOR));
+    initAnimationFrames(); 
+}
+
+NPC::~NPC() {
+
+}
+
+void NPC::initAnimationFrames() {
     // initializes static animation frames map variable, only runs once for entire class 
     if(once) {
         std::vector<int> simmsR = {0, 1};
@@ -26,10 +42,6 @@ NPC::NPC(int id, int x, int y) : Entity(texture_paths[id]) {
 
         once = false;
     }
-}
-
-NPC::~NPC() {
-
 }
 
 void NPC::update(const float dt, Map* map) {

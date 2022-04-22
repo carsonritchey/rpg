@@ -28,10 +28,12 @@ const std::string texture_paths[] = {
 
 class NPC : public Entity {
     private:
+        void initAnimationFrames(); 
 
     public:
         // constructors and deconstructors
         NPC(int id, int x, int y);
+        NPC(int id, int x, int y, std::string);
         virtual ~NPC();
 
         // variables
@@ -40,6 +42,8 @@ class NPC : public Entity {
         bool has_dialogue = true;
         bool first_chat = true; // if player has never talked to NPC
         int required_item_id;
+
+        std::string text, initial_text;
 
         ai_types ai_type = ai_types::look_around;
 

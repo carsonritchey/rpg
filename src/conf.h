@@ -22,7 +22,7 @@
 
 #define CHEST_OPEN_TEXTURE 47
 
-#define TILEDAT_SEPERATOR "|"
+#define TILEDAT_SEPERATOR '|'
 #define TILEDAT_POS_SEPERATOR ","
 #define TILEDAT_DOOR_PREFIX "--door"
 #define TILEDAT_ITEM_PREFIX "--item"
