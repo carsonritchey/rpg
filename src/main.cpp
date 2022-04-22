@@ -1,10 +1,14 @@
 #include <SFML/Graphics.hpp>
 
+#include <random>
+
 #include "game.h"
 
 int main()
 {
     Game game;
+
+    srand(time(NULL));
 
     while (game.running)
     {

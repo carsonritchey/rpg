@@ -24,6 +24,11 @@ void Entity::cycleTexture(int* frame_indexes, int length) {
 
     setTexture(frame_indexes[0] + frame_offset);
 }
+void Entity::cycleTexture(std::vector<int> frame_indexes) {
+    frame_offset = (frame_offset + 1) % frame_indexes.size();
+
+    setTexture(frame_indexes[0] + frame_offset);
+}
 
 void Entity::loadTextures() {
     sf::Image image;

@@ -5,7 +5,7 @@ std::map<int, std::vector<std::vector<int>>> NPC::animation_frames;
 bool NPC::once = true;
 
 NPC::NPC(int id, int x, int y) : Entity(texture_paths[id]) {
-    this->npc_id = id;
+    this->id = id;
 
     sprite.setPosition(sf::Vector2f(x * TILE_SIZE * ZOOM_FACTOR, y * TILE_SIZE * ZOOM_FACTOR));
 
@@ -38,6 +38,15 @@ void NPC::update(const float dt, Map* map) {
             case still:
                 break;
             case look_around:
+                if(rand() % 2 == 0) break;
+
+                if(h_dir == directions::left) {
+                    h_dir = directions::right;
+                } else {
+                    h_dir = directions::left;
+                }
+
+                setTexture(animation_frames[id][h_dir][0]);
                 break;
             case wander:
                 break;

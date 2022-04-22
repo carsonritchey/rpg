@@ -13,6 +13,9 @@ GameScene::~GameScene() {
 int GameScene::update(const float& dt, const sf::Event* event) {
     this->player.update(dt, this->current_map);
 
+    for(std::size_t i = 0; i < this->current_map->npcs.size(); i++)
+        this->current_map->npcs[i]->update(dt, this->current_map);
+
     if(player.current_map == maps::overworld)
         current_map = &overworld_map;
     else if(player.current_map == maps::subworld)

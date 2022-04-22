@@ -33,8 +33,8 @@
 #define RETURN_CODE_START   1
 
 enum directions {
-    left = 0,
-    right = 1,
+    right = 0,
+    left = 1,
     up = 2,
     down = 3,
 };

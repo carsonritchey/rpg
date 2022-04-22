@@ -30,6 +30,7 @@ class Entity {
         // functions 
         void cycleTexture(int);
         void cycleTexture(int*, int);
+        void cycleTexture(std::vector<int>);
 };
 
 #endif
