@@ -1,6 +1,7 @@
 #ifndef BATTLESCENE_H
 #define BATTLESCENE_H
 
+#include "conf.h"
 #include "scene.h"
 
 class BattleScene : public Scene {
@@ -14,4 +15,6 @@ class BattleScene : public Scene {
         void render();
 
         // variables
-}
+};
+
+#endif
