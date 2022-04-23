@@ -13,6 +13,8 @@ GameScene::~GameScene() {
 int GameScene::update(const float& dt, const sf::Event* event) {
     this->player.update(dt, this->current_map);
 
+    // updates ALL npcs on map
+    // needs to be optimized to only update npcs on screen later 
     for(std::size_t i = 0; i < this->current_map->npcs.size(); i++)
         this->current_map->npcs[i]->update(dt, this->current_map);
 

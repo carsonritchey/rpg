@@ -210,6 +210,7 @@ float Player::movePlayerCalculateDPos(const float dt, Map* map, sf::Vector2f pos
 
     int tile_x = (int)(pos.x / TILE_SIZE / ZOOM_FACTOR);
     int tile_y = (int)(pos.y / TILE_SIZE / ZOOM_FACTOR);
+    // check all surrounding tiles
     for(int i = 0; i < 3; i++) {
         for(int j = 0; j < 3; j++) {
             if(i == 1 && j == 1) continue;
@@ -220,6 +221,13 @@ float Player::movePlayerCalculateDPos(const float dt, Map* map, sf::Vector2f pos
                     return 0;
             }
         }
+    }
+
+    // check for ALL (and i mean all) npcs for collision
+    // needs to be optimized later
+    for(std::size_t i = 0; i < map->npcs.size(); i++) {
+        if(player_bounds.intersects(map->npcs[i]->sprite.getGlobalBounds()))
+            return 0;
     }
 
     return mvnt_speed * dt;
