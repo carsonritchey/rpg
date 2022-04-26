@@ -6,6 +6,7 @@
 
 #include "titleScene.h"
 #include "gameScene.h"
+#include "battleScene.h"
 
 class Game {
     public:

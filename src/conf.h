@@ -31,6 +31,7 @@
 #define RETURN_CODE_NOTHING -1 
 #define RETURN_CODE_EXIT    0
 #define RETURN_CODE_START   1
+#define RETURN_CODE_BATTLESCENE 2 
 
 enum directions {
     right = 0,
@@ -42,6 +43,7 @@ enum directions {
 enum maps {
     overworld = 0,
     subworld = 1,
+    battlescene = 2, 
 };
 
 extern unsigned int global_tick;

@@ -63,7 +63,6 @@ int TitleScene::update(const float& dt, const sf::Event* event) {
         }
     }
 
-
     return RETURN_CODE_NOTHING;
 }
 

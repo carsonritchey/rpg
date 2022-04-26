@@ -156,6 +156,9 @@ void Player::cycleCurrentMap() {
         current_map = maps::subworld;
     else if(current_map == maps::subworld)
         current_map = maps::overworld;
+    else {
+        current_map = maps::overworld; 
+    }
 }
 
 void Player::killItemBox() {
