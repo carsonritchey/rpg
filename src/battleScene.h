@@ -39,7 +39,7 @@ class BattleScene : public Scene {
 
         // variables
         sf::RenderWindow* window;
-        battle_options option = battle_options::item; 
+        battle_options option = battle_options::attack; 
 };
 
 #endif

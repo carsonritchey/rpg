@@ -135,8 +135,6 @@ void Map::loadTileData(std::string path) {
                 if(text[i] == TILEDAT_SEPERATOR) t++;
             }
 
-            std::cout << t << std::endl;
-
             NPC* npc;
             if(t == 1)
                 npc = new NPC(std::stoi(text.substr(text.find(TILEDAT_SEPERATOR) + 1, text.substr(text.find(TILEDAT_SEPERATOR) + 1).find(TILEDAT_SEPERATOR))), x, y);

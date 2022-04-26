@@ -11,7 +11,6 @@ BattleScene::BattleScene(sf::RenderWindow* window) : Scene(window) {
     attack_text.setFont(font);
     attack_text.setString("ATTACK");
     attack_text.setCharacterSize(font_size);
-    attack_text.setStyle(sf::Text::Bold | sf::Text::Italic);
     attack_text.setFillColor(base_color);
     attack_text.setPosition(sf::Vector2f(0, 0));
 
@@ -58,6 +57,11 @@ void BattleScene::drawText() {
             item_text.setFillColor(base_color);
             party_text.setFillColor(base_color);
             run_text.setFillColor(base_color);
+
+            attack_text.setStyle(sf::Text::Italic);
+            party_text.setStyle(sf::Text::Regular);
+            item_text.setStyle(sf::Text::Regular);
+            run_text.setStyle(sf::Text::Regular);
             break;
         case item:
             item_text.setFillColor(selected_color);
@@ -65,6 +69,11 @@ void BattleScene::drawText() {
             attack_text.setFillColor(base_color);
             party_text.setFillColor(base_color);
             run_text.setFillColor(base_color);
+
+            item_text.setStyle(sf::Text::Italic);
+            attack_text.setStyle(sf::Text::Regular);
+            party_text.setStyle(sf::Text::Regular);
+            run_text.setStyle(sf::Text::Regular);
             break;
         case party:
             party_text.setFillColor(selected_color);
@@ -72,6 +81,11 @@ void BattleScene::drawText() {
             attack_text.setFillColor(base_color);
             item_text.setFillColor(base_color);
             run_text.setFillColor(base_color);
+
+            party_text.setStyle(sf::Text::Italic);
+            attack_text.setStyle(sf::Text::Regular);
+            item_text.setStyle(sf::Text::Regular);
+            run_text.setStyle(sf::Text::Regular);
             break;
         case run:
             run_text.setFillColor(selected_color);
@@ -79,16 +93,29 @@ void BattleScene::drawText() {
             attack_text.setFillColor(base_color);
             item_text.setFillColor(base_color);
             party_text.setFillColor(base_color);
+
+            run_text.setStyle(sf::Text::Italic);
+            attack_text.setStyle(sf::Text::Regular);
+            item_text.setStyle(sf::Text::Regular);
+            party_text.setStyle(sf::Text::Regular);
             break;
     }
 }
 
 int BattleScene::update(const float& dt, const sf::Event* event) {
-    if(event->key.code == sf::Keyboard::Down) {
-        if(option == battle_options::attack) option = battle_options::item;
-        if(option == battle_options::item) option = battle_options::attack;
-        if(option == battle_options::party) option = battle_options::run;
-        if(option == battle_options::run) option = battle_options::party;
+    if(event->type == sf::Event::KeyPressed) {
+         if(event->key.code == sf::Keyboard::Up || event->key.code == sf::Keyboard::Down) {
+            if(option == battle_options::attack) option = battle_options::item;
+            else if(option == battle_options::item) option = battle_options::attack;
+            else if(option == battle_options::party) option = battle_options::run;
+            else if(option == battle_options::run) option = battle_options::party;
+        }
+        else if(event->key.code == sf::Keyboard::Left || event->key.code == sf::Keyboard::Right) {
+            if(option == battle_options::attack) option = battle_options::party;
+            else if(option == battle_options::item) option = battle_options::run;
+            else if(option == battle_options::party) option = battle_options::attack;
+            else if(option == battle_options::run) option = battle_options::item;
+        }
     }
 
     return RETURN_CODE_NOTHING;
