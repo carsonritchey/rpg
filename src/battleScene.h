@@ -3,6 +3,7 @@
 
 #include "conf.h"
 #include "scene.h"
+#include "entity.h"
 
 #include <iostream>
 
@@ -18,6 +19,10 @@ class BattleScene : public Scene {
         void drawBackground();
         void drawText();
 
+        /*
+         * attack party 
+         * item   run 
+         */
         sf::Font font;
         sf::Text attack_text;
         sf::Text item_text;

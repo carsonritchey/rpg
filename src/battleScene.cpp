@@ -1,5 +1,7 @@
 #include "battleScene.h"
 
+Entity enemy("art/sprites/battle/nineplusten.png", 64); 
+
 BattleScene::BattleScene(sf::RenderWindow* window) : Scene(window) {
     this->window = window;
 
@@ -36,6 +38,8 @@ BattleScene::BattleScene(sf::RenderWindow* window) : Scene(window) {
     run_text.setStyle(sf::Text::Bold | sf::Text::Italic);
     run_text.setFillColor(base_color);
     run_text.setPosition(sf::Vector2f(h_offset + h_padding, WINDOW_HEIGHT - v_padding - v_offset));
+
+    enemy.sprite.setPosition(sf::Vector2f(WINDOW_WIDTH / 2 - enemy.slice_size * ZOOM_FACTOR / 2, v_offset));
 }
 
 BattleScene::~BattleScene() {
@@ -106,17 +110,21 @@ void BattleScene::drawText() {
 
 int BattleScene::update(const float& dt, const sf::Event* event) {
     if(event->type == sf::Event::KeyPressed) {
-         if(event->key.code == sf::Keyboard::Up || event->key.code == sf::Keyboard::Down) {
-            if(option == battle_options::attack) option = battle_options::item;
-            else if(option == battle_options::item) option = battle_options::attack;
-            else if(option == battle_options::party) option = battle_options::run;
+        if(event->key.code == sf::Keyboard::Up) {
+            if(option == battle_options::item) option = battle_options::attack;
             else if(option == battle_options::run) option = battle_options::party;
         }
-        else if(event->key.code == sf::Keyboard::Left || event->key.code == sf::Keyboard::Right) {
+        else if(event->key.code == sf::Keyboard::Down) {
+            if(option == battle_options::attack) option = battle_options::item;
+            else if(option == battle_options::party) option = battle_options::run;
+        }
+        else if(event->key.code == sf::Keyboard::Left) {
+            if(option == battle_options::party) option = battle_options::attack;
+            else if(option == battle_options::run) option = battle_options::item;
+        }
+        else if(event->key.code == sf::Keyboard::Right) {
             if(option == battle_options::attack) option = battle_options::party;
             else if(option == battle_options::item) option = battle_options::run;
-            else if(option == battle_options::party) option = battle_options::attack;
-            else if(option == battle_options::run) option = battle_options::item;
         }
     }
 
@@ -126,6 +134,8 @@ int BattleScene::update(const float& dt, const sf::Event* event) {
 void BattleScene::render() {
     drawBackground();
     drawText();
+
+    window->draw(enemy.sprite);
 }
 
 void BattleScene::close_scene() {
