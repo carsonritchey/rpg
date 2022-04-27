@@ -1,6 +1,6 @@
 #include "battleScene.h"
 
-Entity enemy("art/sprites/battle/nineplusten.png", 64); 
+Monster monster("art/sprites/battle/nineplusten.png");
 
 BattleScene::BattleScene(sf::RenderWindow* window) : Scene(window) {
     this->window = window;
@@ -39,7 +39,7 @@ BattleScene::BattleScene(sf::RenderWindow* window) : Scene(window) {
     run_text.setFillColor(base_color);
     run_text.setPosition(sf::Vector2f(h_offset + h_padding, WINDOW_HEIGHT - v_padding - v_offset));
 
-    enemy.sprite.setPosition(sf::Vector2f(WINDOW_WIDTH / 2 - enemy.slice_size * ZOOM_FACTOR / 2, v_offset));
+    monster.sprite.setPosition(sf::Vector2f(WINDOW_WIDTH / 2 - monster.slice_size * ZOOM_FACTOR / 2, v_offset));
 }
 
 BattleScene::~BattleScene() {
@@ -135,7 +135,7 @@ void BattleScene::render() {
     drawBackground();
     drawText();
 
-    window->draw(enemy.sprite);
+    window->draw(monster.sprite);
 }
 
 void BattleScene::close_scene() {

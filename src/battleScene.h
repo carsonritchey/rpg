@@ -3,7 +3,7 @@
 
 #include "conf.h"
 #include "scene.h"
-#include "entity.h"
+#include "monster.h"
 
 #include <iostream>
 
