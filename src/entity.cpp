@@ -10,6 +10,8 @@ Entity::Entity(std::string texture_path) {
     this->loadTextures();
     this->sprite.setTexture(this->textures[0]);
     this->sprite.scale(ZOOM_FACTOR, ZOOM_FACTOR);
+
+    this->slice_size = TILE_SIZE;
 }
 Entity::Entity(std::string texture_path, int slice) {
     this->texture_path = texture_path;
