@@ -8,32 +8,34 @@ BattleScene::BattleScene(sf::RenderWindow* window) : Scene(window) {
     const int font_size = TILE_SIZE * ZOOM_FACTOR / 2;
     const_cast<sf::Texture&>(font.getTexture(font_size)).setSmooth(false);
 
+    const int v_padding = 50, h_padding = 300, v_offset = 20, h_offset = 20;
+
     attack_text.setFont(font);
     attack_text.setString("ATTACK");
     attack_text.setCharacterSize(font_size);
     attack_text.setFillColor(base_color);
-    attack_text.setPosition(sf::Vector2f(0, 0));
+    attack_text.setPosition(sf::Vector2f(h_offset, WINDOW_HEIGHT - v_padding * 2 - v_offset));
 
     item_text.setFont(font);
     item_text.setString("ITEM");
     item_text.setCharacterSize(font_size);
     item_text.setStyle(sf::Text::Bold | sf::Text::Italic);
     item_text.setFillColor(base_color);
-    item_text.setPosition(sf::Vector2f(0, 100));
+    item_text.setPosition(sf::Vector2f(h_offset, WINDOW_HEIGHT - v_padding - v_offset));
 
     party_text.setFont(font);
     party_text.setString("PARTY");
     party_text.setCharacterSize(font_size);
     party_text.setStyle(sf::Text::Bold | sf::Text::Italic);
     party_text.setFillColor(base_color);
-    party_text.setPosition(sf::Vector2f(300, 0));
+    party_text.setPosition(sf::Vector2f(h_offset + h_padding, WINDOW_HEIGHT - v_padding * 2 - v_offset));
 
     run_text.setFont(font);
     run_text.setString("RUN");
     run_text.setCharacterSize(font_size);
     run_text.setStyle(sf::Text::Bold | sf::Text::Italic);
     run_text.setFillColor(base_color);
-    run_text.setPosition(sf::Vector2f(300, 100));
+    run_text.setPosition(sf::Vector2f(h_offset + h_padding, WINDOW_HEIGHT - v_padding - v_offset));
 }
 
 BattleScene::~BattleScene() {
