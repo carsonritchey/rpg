@@ -7,6 +7,8 @@
 
 #include "conf.h"
 
+#include <iostream>
+
 class Entity {
     protected:
         void setTexture(int);
@@ -17,6 +19,7 @@ class Entity {
     public:
 		// functions
         Entity(std::string);
+        Entity(std::string, int);
         virtual ~Entity();
 
 		// variables 
@@ -26,6 +29,8 @@ class Entity {
         std::string texture_path;
         directions h_dir = directions::right;
         directions v_dir = directions::up;
+
+        int slice_size; 
 
         // functions 
         void cycleTexture(int);
