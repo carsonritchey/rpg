@@ -1,6 +1,6 @@
 #include "battleScene.h"
 
-Monster monster("art/sprites/battle/nineplusten.png");
+Monster twentyone("art/sprites/battle/nineplusten.png");
 
 BattleScene::BattleScene(sf::RenderWindow* window) : Scene(window) {
     this->window = window;
@@ -39,7 +39,8 @@ BattleScene::BattleScene(sf::RenderWindow* window) : Scene(window) {
     run_text.setFillColor(base_color);
     run_text.setPosition(sf::Vector2f(h_offset + h_padding, WINDOW_HEIGHT - v_padding - v_offset));
 
-    monster.sprite.setPosition(sf::Vector2f(WINDOW_WIDTH / 2 - monster.slice_size * ZOOM_FACTOR / 2, v_offset));
+    enemy_party.push_back(twentyone);
+    enemy_party[0].sprite.setPosition(sf::Vector2f(WINDOW_WIDTH / 2 - enemy_party[0].slice_size * ZOOM_FACTOR / 2, v_offset));
 }
 
 BattleScene::~BattleScene() {
@@ -110,6 +111,7 @@ void BattleScene::drawText() {
 
 int BattleScene::update(const float& dt, const sf::Event* event) {
     if(event->type == sf::Event::KeyPressed) {
+        std::cout << event->key.code << std::endl;
         if(event->key.code == sf::Keyboard::Up) {
             if(option == battle_options::item) option = battle_options::attack;
             else if(option == battle_options::run) option = battle_options::party;
@@ -135,7 +137,7 @@ void BattleScene::render() {
     drawBackground();
     drawText();
 
-    window->draw(monster.sprite);
+    window->draw(enemy_party[current_enemy].sprite);
 }
 
 void BattleScene::close_scene() {
