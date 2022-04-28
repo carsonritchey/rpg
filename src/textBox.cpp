@@ -31,6 +31,11 @@ TextBox::~TextBox() {
 
 }
 
+void TextBox::draw(sf::RenderWindow* window) {
+    drawBox(window);
+    drawText(window);
+}
+
 void TextBox::drawBox(sf::RenderWindow* window) {
     setPosition(window);
     window->draw(bg);

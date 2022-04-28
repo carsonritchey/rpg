@@ -4,6 +4,7 @@
 #include "conf.h"
 #include "scene.h"
 #include "monster.h"
+#include "textBox.h"
 
 #include <iostream>
 
@@ -41,6 +42,7 @@ class BattleScene : public Scene {
         int update(const float& dt, const sf::Event* event);
         void render();
         void close_scene();
+        void processEvent(const sf::Event* event);
 
         // variables
         sf::RenderWindow* window;
@@ -49,6 +51,8 @@ class BattleScene : public Scene {
         int current_player = 0, current_enemy = 0;
         std::vector<Monster> player_party;
         std::vector<Monster> enemy_party;
+
+        TextBox* textbox;
 };
 
 #endif

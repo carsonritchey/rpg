@@ -84,8 +84,11 @@ void Game::update() {
         // but Player requires high fidelity input so it's handled here 
         if(event.type == sf::Event::KeyPressed || event.type == sf::Event::KeyReleased) {
             GameScene* player_ref = dynamic_cast<GameScene*>(this->scenes.top());
+            BattleScene* battle_ref = dynamic_cast<BattleScene*>(this->scenes.top());
             if(player_ref != nullptr) // if top scene is a GameScene
                 player_ref->player.processEvent(&event);
+            else if(battle_ref != nullptr) // if top scene is a BattleScene
+                battle_ref->processEvent(&event); 
         }
 	}
 

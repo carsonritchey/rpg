@@ -41,6 +41,7 @@ class TextBox {
         Entity space_sprite{"art/sprites/space.png"};
 
         // functions
+        void draw(sf::RenderWindow* window);
         void drawBox(sf::RenderWindow* window);
         void drawText(sf::RenderWindow* window);
         bool progressText();

@@ -110,9 +110,39 @@ void BattleScene::drawText() {
 }
 
 int BattleScene::update(const float& dt, const sf::Event* event) {
+
+    return RETURN_CODE_NOTHING;
+}
+
+void BattleScene::processEvent(const sf::Event* event) {
     if(event->type == sf::Event::KeyPressed) {
-        std::cout << event->key.code << std::endl;
-        if(event->key.code == sf::Keyboard::Up) {
+        if(event->key.code == sf::Keyboard::Space) { // bruh 
+            if(textbox != nullptr) { // if there's a textbox on screen 
+                if(textbox->progressText()) {
+                    delete textbox;
+                    textbox = nullptr;
+                }
+            }
+            else {
+                switch(option) {
+                    case battle_options::attack:
+                        std::cout << "attack chose" << std::endl;
+                        textbox = new TextBox("bruh");
+                        break;
+                    case battle_options::item:
+                        std::cout << "item chose" << std::endl;
+                        break;
+                    case battle_options::party:
+                        std::cout << "party chose" << std::endl;
+                        break;
+                    case battle_options::run:
+                        std::cout << "run chose" << std::endl;
+                        break;
+                }
+            }
+        }
+
+        else if(event->key.code == sf::Keyboard::Up) {
             if(option == battle_options::item) option = battle_options::attack;
             else if(option == battle_options::run) option = battle_options::party;
         }
@@ -129,8 +159,6 @@ int BattleScene::update(const float& dt, const sf::Event* event) {
             else if(option == battle_options::item) option = battle_options::run;
         }
     }
-
-    return RETURN_CODE_NOTHING;
 }
 
 void BattleScene::render() {
@@ -138,6 +166,8 @@ void BattleScene::render() {
     drawText();
 
     window->draw(enemy_party[current_enemy].sprite);
+    if(textbox != nullptr)
+        textbox->draw(window);
 }
 
 void BattleScene::close_scene() {
