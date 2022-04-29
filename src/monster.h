@@ -10,6 +10,7 @@ class Monster : public Entity {
     public:
         // constructors and deconstructors
         Monster(std::string);
+        Monster(std::string, float scale_down_factor);
         virtual ~Monster();
 
         // variables 

@@ -41,6 +41,7 @@ class BattleScene : public Scene {
         // functions
         int update(const float& dt, const sf::Event* event);
         void render();
+        bool canRun();
         void close_scene();
         void processEvent(const sf::Event* event);
 

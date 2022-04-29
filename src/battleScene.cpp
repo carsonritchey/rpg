@@ -1,5 +1,6 @@
 #include "battleScene.h"
 
+Monster fortnite("art/sprites/battle/gay.png", 0.5f);
 Monster twentyone("art/sprites/battle/nineplusten.png");
 
 BattleScene::BattleScene(sf::RenderWindow* window) : Scene(window) {
@@ -10,7 +11,7 @@ BattleScene::BattleScene(sf::RenderWindow* window) : Scene(window) {
     const int font_size = TILE_SIZE * ZOOM_FACTOR / 2;
     const_cast<sf::Texture&>(font.getTexture(font_size)).setSmooth(false);
 
-    const int v_padding = 50, h_padding = 300, v_offset = 20, h_offset = 20;
+    const int v_padding = 50, h_padding = 300, v_offset = 30, h_offset = 30;
 
     attack_text.setFont(font);
     attack_text.setString("ATTACK");
@@ -21,30 +22,34 @@ BattleScene::BattleScene(sf::RenderWindow* window) : Scene(window) {
     item_text.setFont(font);
     item_text.setString("ITEM");
     item_text.setCharacterSize(font_size);
-    item_text.setStyle(sf::Text::Bold | sf::Text::Italic);
     item_text.setFillColor(base_color);
     item_text.setPosition(sf::Vector2f(h_offset, WINDOW_HEIGHT - v_padding - v_offset));
 
     party_text.setFont(font);
     party_text.setString("PARTY");
     party_text.setCharacterSize(font_size);
-    party_text.setStyle(sf::Text::Bold | sf::Text::Italic);
     party_text.setFillColor(base_color);
     party_text.setPosition(sf::Vector2f(h_offset + h_padding, WINDOW_HEIGHT - v_padding * 2 - v_offset));
 
     run_text.setFont(font);
     run_text.setString("RUN");
     run_text.setCharacterSize(font_size);
-    run_text.setStyle(sf::Text::Bold | sf::Text::Italic);
     run_text.setFillColor(base_color);
     run_text.setPosition(sf::Vector2f(h_offset + h_padding, WINDOW_HEIGHT - v_padding - v_offset));
 
+    player_party.push_back(fortnite);
     enemy_party.push_back(twentyone);
+
     enemy_party[0].sprite.setPosition(sf::Vector2f(WINDOW_WIDTH / 2 - enemy_party[0].slice_size * ZOOM_FACTOR / 2, v_offset));
+    player_party[0].sprite.setPosition(sf::Vector2f(WINDOW_WIDTH - 64 / 2 * ZOOM_FACTOR - h_offset, WINDOW_HEIGHT - 64 / 2 * ZOOM_FACTOR - v_offset));
 }
 
 BattleScene::~BattleScene() {
 
+}
+
+bool BattleScene::canRun() {
+    return false;
 }
 
 void BattleScene::drawBackground() {
@@ -137,6 +142,8 @@ void BattleScene::processEvent(const sf::Event* event) {
                         break;
                     case battle_options::run:
                         std::cout << "run chose" << std::endl;
+                        if(!canRun())
+                            textbox = new TextBox("yeah, sorry no");
                         break;
                 }
             }
@@ -166,6 +173,7 @@ void BattleScene::render() {
     drawText();
 
     window->draw(enemy_party[current_enemy].sprite);
+    window->draw(player_party[current_player].sprite);
     if(textbox != nullptr)
         textbox->draw(window);
 }
