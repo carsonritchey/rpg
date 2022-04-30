@@ -14,9 +14,9 @@ class Monster : public Entity {
         virtual ~Monster();
 
         // variables 
-        std::string name;
+        std::string name = "filler name";
         int level = 1, xp = 0, level_up_threshold = 25; 
-        float health;
+        float max_health, 20.f, health = 15.f;
 
         // functions
 };

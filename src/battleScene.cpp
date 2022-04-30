@@ -9,9 +9,15 @@ BattleScene::BattleScene(sf::RenderWindow* window) : Scene(window) {
     font.loadFromFile("art/PressStart2P.ttf");
 
     const int font_size = TILE_SIZE * ZOOM_FACTOR / 2;
+    const int name_font_size = TILE_SIZE * 2;
     const_cast<sf::Texture&>(font.getTexture(font_size)).setSmooth(false);
 
     const int v_padding = 50, h_padding = 300, v_offset = 30, h_offset = 30;
+
+    player_party.push_back(fortnite);
+    enemy_party.push_back(twentyone);
+    enemy_party[0].sprite.setPosition(sf::Vector2f(WINDOW_WIDTH / 2 - enemy_party[0].slice_size * ZOOM_FACTOR / 2, v_offset));
+    player_party[0].sprite.setPosition(sf::Vector2f(WINDOW_WIDTH - 64 / 2 * ZOOM_FACTOR - h_offset, WINDOW_HEIGHT - 64 / 2 * ZOOM_FACTOR - v_offset));
 
     attack_text.setFont(font);
     attack_text.setString("ATTACK");
@@ -37,15 +43,44 @@ BattleScene::BattleScene(sf::RenderWindow* window) : Scene(window) {
     run_text.setFillColor(base_color);
     run_text.setPosition(sf::Vector2f(h_offset + h_padding, WINDOW_HEIGHT - v_padding - v_offset));
 
-    player_party.push_back(fortnite);
-    enemy_party.push_back(twentyone);
+    playername_text.setFont(font);
+    playername_text.setString(player_party[current_player].name);
+    playername_text.setCharacterSize(name_font_size);
+    playername_text.setFillColor(base_color);
+    playername_text.setPosition(sf::Vector2f(WINDOW_WIDTH / 2 - enemy_party[0].slice_size * ZOOM_FACTOR / 2, v_offset - name_font_size));
 
-    enemy_party[0].sprite.setPosition(sf::Vector2f(WINDOW_WIDTH / 2 - enemy_party[0].slice_size * ZOOM_FACTOR / 2, v_offset));
-    player_party[0].sprite.setPosition(sf::Vector2f(WINDOW_WIDTH - 64 / 2 * ZOOM_FACTOR - h_offset, WINDOW_HEIGHT - 64 / 2 * ZOOM_FACTOR - v_offset));
 }
 
 BattleScene::~BattleScene() {
 
+}
+
+void BattleScene::box(int x, int y, int w, int h) {
+    const int outline_width = 2;
+
+    sf::RectangleShape bg(sf::Vector2f(w, h));
+    bg.setPosition(sf::Vector2f(x, y));
+    
+    sf::RectangleShape top(sf::Vector2f(w, outline_width));
+    sf::RectangleShape bottom(sf::Vector2f(w, outline_width));
+    sf::RectangleShape left(sf::Vector2f(outline_width, h));
+    sf::RectangleShape right(sf::Vector2f(outline_width, h));
+
+    top.setPosition(sf::Vector2f(x, y));
+    bottom.setPosition(sf::Vector2f(x, y + h));
+    left.setPosition(sf::Vector2f(x, y));
+    right.setPosition(sf::Vector2f(x + w - outline_width, y));
+
+    top.setFillColor(base_color);
+    bottom.setFillColor(base_color);
+    left.setFillColor(base_color);
+    right.setFillColor(base_color);
+
+    window->draw(bg);
+    window->draw(top);
+    window->draw(bottom);
+    window->draw(left);
+    window->draw(right);
 }
 
 bool BattleScene::canRun() {
@@ -61,6 +96,9 @@ void BattleScene::drawText() {
     window->draw(item_text); 
     window->draw(party_text); 
     window->draw(run_text); 
+
+    window->draw(playername_text);
+    window->draw(enemyname_text);
 
     switch(option) {
         case attack:
@@ -174,8 +212,9 @@ void BattleScene::render() {
 
     window->draw(enemy_party[current_enemy].sprite);
     window->draw(player_party[current_player].sprite);
-    if(textbox != nullptr)
-        textbox->draw(window);
+
+    //if(textbox != nullptr)
+    //    textbox->draw(window);
 }
 
 void BattleScene::close_scene() {
