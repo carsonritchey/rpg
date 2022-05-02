@@ -16,7 +16,7 @@ BattleScene::BattleScene(sf::RenderWindow* window) : Scene(window) {
 
     player_party.push_back(fortnite);
     enemy_party.push_back(twentyone);
-    enemy_party[0].sprite.setPosition(sf::Vector2f(WINDOW_WIDTH / 2 - enemy_party[0].slice_size * ZOOM_FACTOR / 2, v_offset));
+    enemy_party[0].sprite.setPosition(sf::Vector2f(WINDOW_WIDTH / 2 - enemy_party[current_enemy].slice_size * ZOOM_FACTOR / 2, v_offset));
     player_party[0].sprite.setPosition(sf::Vector2f(WINDOW_WIDTH - 64 / 2 * ZOOM_FACTOR - h_offset, WINDOW_HEIGHT - 64 / 2 * ZOOM_FACTOR - v_offset));
 
     attack_text.setFont(font);
@@ -47,12 +47,15 @@ BattleScene::BattleScene(sf::RenderWindow* window) : Scene(window) {
     playername_text.setString(player_party[current_player].name);
     playername_text.setCharacterSize(name_font_size);
     playername_text.setFillColor(base_color);
-    playername_text.setPosition(sf::Vector2f(WINDOW_WIDTH / 2 - enemy_party[0].slice_size * ZOOM_FACTOR / 2, v_offset - name_font_size));
+    playername_text.setPosition(sf::Vector2f(WINDOW_WIDTH / 2 - enemy_party[current_player].slice_size * ZOOM_FACTOR / 2, v_offset - name_font_size));
 
+    sf::Vector2f pPos = player_party[current_player].sprite.getPosition();
+    player_health = new HealthBar(window, pPos.x, pPos.y, player_party[current_player].slice_size, 15, player_party[current_player].max_health, player_party[current_player].health);
 }
 
 BattleScene::~BattleScene() {
-
+    delete player_health;
+    delete enemy_health;
 }
 
 void BattleScene::box(int x, int y, int w, int h) {
@@ -215,6 +218,8 @@ void BattleScene::render() {
 
     //if(textbox != nullptr)
     //    textbox->draw(window);
+
+    player_health->draw();
 }
 
 void BattleScene::close_scene() {

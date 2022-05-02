@@ -16,7 +16,7 @@ class Monster : public Entity {
         // variables 
         std::string name = "filler name";
         int level = 1, xp = 0, level_up_threshold = 25; 
-        float max_health, 20.f, health = 15.f;
+        float max_health = 20.f, health = 15.f;
 
         // functions
 };

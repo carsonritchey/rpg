@@ -5,6 +5,7 @@
 #include "scene.h"
 #include "monster.h"
 #include "textBox.h"
+#include "healthBar.h"
 
 #include <iostream>
 
@@ -60,6 +61,9 @@ class BattleScene : public Scene {
         std::vector<Monster> enemy_party;
 
         TextBox* textbox;
+
+        HealthBar* player_health;
+        HealthBar* enemy_health;
 };
 
 #endif
