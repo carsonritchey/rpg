@@ -15,8 +15,9 @@ class Game {
         virtual ~Game();
 
         // variables 
-        bool running = true;
-        bool debug   = false;
+        bool running   = true;
+        bool debug     = false;
+        bool need_view = true;
 
         sf::RenderWindow* window;
         sf::View* view;

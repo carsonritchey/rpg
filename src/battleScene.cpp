@@ -2,6 +2,9 @@
 
 BattleScene::BattleScene(sf::RenderWindow* window) : Scene(window) {
     this->window = window;
+    old_view = &window->getView();
+
+    window->setView(window->getDefaultView());
 
     font.loadFromFile("art/PressStart2P.ttf");
 
@@ -70,6 +73,8 @@ BattleScene::~BattleScene() {
 
     player_party.clear();
     enemy_party.clear();
+
+    window->setView(*old_view);
 }
 
 void BattleScene::box(int x, int y, int w, int h) {
@@ -177,17 +182,9 @@ int BattleScene::update(const float& dt, const sf::Event* event) {
 void BattleScene::processEvent(const sf::Event* event) {
     if(event->type == sf::Event::KeyPressed) {
         if(event->key.code == sf::Keyboard::Space) { // bruh 
-            if(textbox != nullptr) { // if there's a textbox on screen 
-                if(textbox->progressText()) {
-                    delete textbox;
-                    textbox = nullptr;
-                }
-            }
-            else {
                 switch(option) {
                     case battle_options::attack:
                         std::cout << "attack chose" << std::endl;
-                        textbox = new TextBox("bruh");
                         break;
                     case battle_options::item:
                         std::cout << "item chose" << std::endl;
@@ -197,12 +194,10 @@ void BattleScene::processEvent(const sf::Event* event) {
                         break;
                     case battle_options::run:
                         std::cout << "run chose" << std::endl;
-                        if(!canRun())
-                            textbox = new TextBox("yeah, sorry no");
+                        if(!canRun()) {}
                         break;
                 }
             }
-        }
 
         else if(event->key.code == sf::Keyboard::Up) {
             if(option == battle_options::item) option = battle_options::attack;
@@ -229,9 +224,6 @@ void BattleScene::render() {
 
     window->draw(enemy_party[current_enemy].sprite);
     window->draw(player_party[current_player].sprite);
-
-    //if(textbox != nullptr)
-    //    textbox->draw(window);
 
     enemy_health->draw();
     player_health->draw();

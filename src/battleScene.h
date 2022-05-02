@@ -4,7 +4,6 @@
 #include "conf.h"
 #include "scene.h"
 #include "monster.h"
-#include "textBox.h"
 #include "healthBar.h"
 
 #include <iostream>
@@ -57,13 +56,12 @@ class BattleScene : public Scene {
 
         // variables
         sf::RenderWindow* window;
+        const sf::View* old_view;
         battle_options option = battle_options::attack; 
 
         int current_player = 0, current_enemy = 0;
         std::vector<Monster> player_party;
         std::vector<Monster> enemy_party;
-
-        TextBox* textbox;
 
         HealthBar* player_health;
         HealthBar* enemy_health;

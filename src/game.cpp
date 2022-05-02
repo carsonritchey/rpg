@@ -12,8 +12,8 @@ Game::Game() {
 
     // initial scene
     //this->scenes.push(new TitleScene(this->window));
-    //this->scenes.push(new GameScene(this->window, this->view));
-    this->scenes.push(new BattleScene(this->window));
+    this->scenes.push(new GameScene(this->window, this->view));
+    //this->scenes.push(new BattleScene(this->window));
 }
 
 // frees memory
@@ -83,12 +83,22 @@ void Game::update() {
         // most classes only need a single keypress, so a single event is passed to their update(),
         // but Player requires high fidelity input so it's handled here 
         if(event.type == sf::Event::KeyPressed || event.type == sf::Event::KeyReleased) {
-            GameScene* player_ref = dynamic_cast<GameScene*>(this->scenes.top());
-            BattleScene* battle_ref = dynamic_cast<BattleScene*>(this->scenes.top());
-            if(player_ref != nullptr) // if top scene is a GameScene
-                player_ref->player.processEvent(&event);
-            else if(battle_ref != nullptr) // if top scene is a BattleScene
-                battle_ref->processEvent(&event); 
+            GameScene* gamescene_ref = dynamic_cast<GameScene*>(this->scenes.top());
+            BattleScene* battlescene_ref = dynamic_cast<BattleScene*>(this->scenes.top());
+
+            if(gamescene_ref != nullptr) { // if top scene is a GameScene
+                gamescene_ref->player.processEvent(&event);
+
+                need_view = true;
+            }
+            else if(battlescene_ref != nullptr) { // if top scene is a BattleScene
+                battlescene_ref->processEvent(&event); 
+
+                need_view = false;
+            }
+
+            if(event.key.code == sf::Keyboard::B)
+                this->scenes.push(new BattleScene(this->window));
         }
 	}
 
@@ -113,6 +123,8 @@ void Game::render() {
     if(this->debug)
         this->drawDebugInfo();
 
-    this->window->setView(*this->view);
+    if(need_view) // if the screen needs to scroll then set the view (i.e. a gamescene)
+        this->window->setView(*this->view);
+
     this->window->display();
 }
