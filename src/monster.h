@@ -15,6 +15,20 @@ const std::string monster_texture_paths[] = {
     "art/sprites/battle/jfk.png",
     "art/sprites/battle/corolla.png",
     "art/sprites/battle/wordle.png",
+    "art/sprites/battle/bush.png",
+    "art/sprites/battle/celery.png",
+    "art/sprites/battle/e.png",
+    "art/sprites/battle/france.png",
+    "art/sprites/battle/integral.png",
+    "art/sprites/battle/iphone.png",
+    "art/sprites/battle/jesus.png",
+    "art/sprites/battle/boeing.png",
+    "art/sprites/battle/boris.png",
+    "art/sprites/battle/lick.png",
+    "art/sprites/battle/mark.png",
+    "art/sprites/battle/mozart.png",
+    "art/sprites/battle/saul.png",
+    "art/sprites/battle/uranium.png",
 };
 
 const std::string monster_names[] {
@@ -25,6 +39,20 @@ const std::string monster_names[] {
     "John F. Kennedy",
     "2008 Toyota Corolla",
     "WORDLE",
+    "a bush",
+    "some celery",
+    "E",
+    "France",
+    "Integral",
+    "iPhone 3",
+    "jesus",
+    "Boeing 747",
+    "Boris Johnson",
+    "The Lick",
+    "Mark Cuban",
+    "Wolfgang Amadeus Mozart",
+    "Saul Goodman",
+    "Uranium-238",
 };
 
 class Monster : public Entity {
