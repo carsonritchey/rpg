@@ -9,7 +9,7 @@ BattleScene::BattleScene(sf::RenderWindow* window) : Scene(window) {
     const int name_font_size = TILE_SIZE * 2;
     const_cast<sf::Texture&>(font.getTexture(font_size)).setSmooth(false);
 
-    const int v_padding = 50, h_padding = 300, v_offset = 30, h_offset = 30;
+    const int v_padding = 50, h_padding = MAX_ATTACK_LENGTH / 2 * font_size, v_offset = 30, h_offset = 30;
 
     // adding monsters to player and enemy party
     player_party.push_back(*new Monster(0, 0.5f));
