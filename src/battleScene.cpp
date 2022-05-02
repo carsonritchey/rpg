@@ -18,7 +18,7 @@ BattleScene::BattleScene(sf::RenderWindow* window) : Scene(window) {
     player_party.push_back(fortnite);
     enemy_party.push_back(twentyone);
     enemy_party[0].sprite.setPosition(sf::Vector2f(WINDOW_WIDTH / 2 - enemy_party[current_enemy].slice_size * ZOOM_FACTOR / 2, v_offset));
-    player_party[0].sprite.setPosition(sf::Vector2f(WINDOW_WIDTH - 64 / 2 * ZOOM_FACTOR - h_offset, WINDOW_HEIGHT - 64 / 2 * ZOOM_FACTOR - v_offset));
+    player_party[0].sprite.setPosition(sf::Vector2f(WINDOW_WIDTH - player_party[current_player].slice_size / player_scale_down * ZOOM_FACTOR - h_offset, WINDOW_HEIGHT - player_party[current_player].slice_size / player_scale_down * ZOOM_FACTOR - v_offset));
 
     // creating options text
     attack_text.setFont(font);
@@ -45,18 +45,24 @@ BattleScene::BattleScene(sf::RenderWindow* window) : Scene(window) {
     run_text.setFillColor(base_color);
     run_text.setPosition(sf::Vector2f(h_offset + h_padding, WINDOW_HEIGHT - v_padding - v_offset));
 
+    sf::Vector2f pPos = player_party[current_player].sprite.getPosition();
+    sf::Vector2f ePos = enemy_party[current_enemy].sprite.getPosition();
 
     playername_text.setFont(font);
     playername_text.setString(player_party[current_player].name);
-    playername_text.setCharacterSize(name_font_size);
+    playername_text.setCharacterSize(name_font_size / player_scale_down);
     playername_text.setFillColor(base_color);
-    playername_text.setPosition(sf::Vector2f(WINDOW_WIDTH / 2 - enemy_party[current_player].slice_size * ZOOM_FACTOR / 2, v_offset - name_font_size));
+    playername_text.setPosition(sf::Vector2f(pPos.x, pPos.y - name_font_size / player_scale_down));
 
-    sf::Vector2f pPos = player_party[current_player].sprite.getPosition();
+    enemyname_text.setFont(font);
+    enemyname_text.setString(enemy_party[current_enemy].name);
+    enemyname_text.setCharacterSize(name_font_size);
+    enemyname_text.setFillColor(base_color);
+    enemyname_text.setPosition(sf::Vector2f(ePos.x, ePos.y - name_font_size));
+
     sf::FloatRect pSize = player_party[current_player].sprite.getGlobalBounds();
     player_health = new HealthBar(window, pPos.x, pPos.y + pSize.height, pSize.width, 15, player_party[current_player].max_health, player_party[current_player].health);
 
-    sf::Vector2f ePos = enemy_party[current_enemy].sprite.getPosition();
     sf::FloatRect eSize = enemy_party[current_enemy].sprite.getGlobalBounds();
     enemy_health = new HealthBar(window, ePos.x, ePos.y + eSize.height, eSize.width, 15, enemy_party[current_enemy].max_health, enemy_party[current_enemy].health);
 }

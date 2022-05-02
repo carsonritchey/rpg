@@ -35,6 +35,8 @@ class BattleScene : public Scene {
         sf::Text playername_text;
         sf::Text enemyname_text;
 
+        const int player_scale_down = 2;
+
         sf::Color selected_color{0x40, 0x90, 0xff, 0xff};
         sf::Color base_color{0x0, 0x0, 0x0, 0xff};
 
