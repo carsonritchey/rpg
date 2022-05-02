@@ -20,7 +20,7 @@ enum ai_types {
     wander = 2,
 };
 
-const std::string texture_paths[] = {
+const std::string npc_texture_paths[] = {
     "art/sprites/simms.png",
     "art/sprites/among.png",
     "art/sprites/duck.png",

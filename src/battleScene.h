@@ -8,6 +8,7 @@
 #include "healthBar.h"
 
 #include <iostream>
+#include <random>
 
 enum battle_options {
     attack = 0,

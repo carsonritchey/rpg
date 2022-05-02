@@ -1,8 +1,5 @@
 #include "battleScene.h"
 
-Monster fortnite("art/sprites/battle/gay.png", 0.5f);
-Monster twentyone("art/sprites/battle/nineplusten.png");
-
 BattleScene::BattleScene(sf::RenderWindow* window) : Scene(window) {
     this->window = window;
 
@@ -15,8 +12,8 @@ BattleScene::BattleScene(sf::RenderWindow* window) : Scene(window) {
     const int v_padding = 50, h_padding = 300, v_offset = 30, h_offset = 30;
 
     // adding monsters to player and enemy party
-    player_party.push_back(fortnite);
-    enemy_party.push_back(twentyone);
+    player_party.push_back(*new Monster(0, 0.5f));
+    enemy_party.push_back(*new Monster(1));
     enemy_party[0].sprite.setPosition(sf::Vector2f(WINDOW_WIDTH / 2 - enemy_party[current_enemy].slice_size * ZOOM_FACTOR / 2, v_offset));
     player_party[0].sprite.setPosition(sf::Vector2f(WINDOW_WIDTH - player_party[current_player].slice_size / player_scale_down * ZOOM_FACTOR - h_offset, WINDOW_HEIGHT - player_party[current_player].slice_size / player_scale_down * ZOOM_FACTOR - v_offset));
 
@@ -70,6 +67,9 @@ BattleScene::BattleScene(sf::RenderWindow* window) : Scene(window) {
 BattleScene::~BattleScene() {
     delete player_health;
     delete enemy_health;
+
+    player_party.clear();
+    enemy_party.clear();
 }
 
 void BattleScene::box(int x, int y, int w, int h) {

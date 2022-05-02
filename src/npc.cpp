@@ -4,13 +4,13 @@
 std::map<int, std::vector<std::vector<int>>> NPC::animation_frames;
 bool NPC::once = true;
 
-NPC::NPC(int id, int x, int y) : Entity(texture_paths[id]) {
+NPC::NPC(int id, int x, int y) : Entity(npc_texture_paths[id]) {
     this->id = id;
 
     sprite.setPosition(sf::Vector2f(x * TILE_SIZE * ZOOM_FACTOR, y * TILE_SIZE * ZOOM_FACTOR));
     initAnimationFrames(); 
 }
-NPC::NPC(int id, int x, int y, std::string text) : Entity(texture_paths[id]) {
+NPC::NPC(int id, int x, int y, std::string text) : Entity(npc_texture_paths[id]) {
     this->id = id;
     this->text = text;
 
