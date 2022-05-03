@@ -1,5 +1,9 @@
 #include "battleScene.h"
 
+const int font_size = TILE_SIZE * ZOOM_FACTOR / 2;
+const int name_font_size = TILE_SIZE * 2;
+const int v_padding = 50, h_padding = MAX_ATTACK_LENGTH / 2 * font_size, v_offset = 30, h_offset = 30;
+
 BattleScene::BattleScene(sf::RenderWindow* window) : Scene(window) {
     this->window = window;
     old_view = &window->getView();
@@ -7,12 +11,7 @@ BattleScene::BattleScene(sf::RenderWindow* window) : Scene(window) {
     window->setView(window->getDefaultView());
 
     font.loadFromFile("art/PressStart2P.ttf");
-
-    const int font_size = TILE_SIZE * ZOOM_FACTOR / 2;
-    const int name_font_size = TILE_SIZE * 2;
     const_cast<sf::Texture&>(font.getTexture(font_size)).setSmooth(false);
-
-    const int v_padding = 50, h_padding = MAX_ATTACK_LENGTH / 2 * font_size, v_offset = 30, h_offset = 30;
 
     // adding monsters to player and enemy party
     player_party.push_back(*new Monster(1, 0.5f));
@@ -20,23 +19,7 @@ BattleScene::BattleScene(sf::RenderWindow* window) : Scene(window) {
     enemy_party[0].sprite.setPosition(sf::Vector2f(WINDOW_WIDTH / 2 - enemy_party[current_enemy].slice_size * ZOOM_FACTOR / 2, v_offset));
     player_party[0].sprite.setPosition(sf::Vector2f(WINDOW_WIDTH - player_party[current_player].slice_size / player_scale_down * ZOOM_FACTOR - h_offset, WINDOW_HEIGHT - player_party[current_player].slice_size / player_scale_down * ZOOM_FACTOR - v_offset));
 
-    // creating options text
-    for(int i = 0; i < 4; i++) {
-        texts[i].setFont(font);
-        texts[i].setCharacterSize(font_size);
-        texts[i].setFillColor(base_color);
-    }
-    texts[0].setString("0");
-    texts[0].setPosition(sf::Vector2f(h_offset, WINDOW_HEIGHT - v_padding * 2 - v_offset));
-
-    texts[1].setString("1");
-    texts[1].setPosition(sf::Vector2f(h_offset + h_padding, WINDOW_HEIGHT - v_padding * 2 - v_offset));
-
-    texts[2].setString("2");
-    texts[2].setPosition(sf::Vector2f(h_offset, WINDOW_HEIGHT - v_padding - v_offset));
-
-    texts[3].setString("3");
-    texts[3].setPosition(sf::Vector2f(h_offset + h_padding, WINDOW_HEIGHT - v_padding - v_offset));
+    initOptionsText();
 
     sf::Vector2f pPos = player_party[current_player].sprite.getPosition();
     sf::Vector2f ePos = enemy_party[current_enemy].sprite.getPosition();
@@ -124,6 +107,35 @@ void BattleScene::drawText() {
     }
 }
 
+void BattleScene::initAttackText() {
+    for(int i = 0; i < 4; i++) {
+        texts[i].setCharacterSize(font_size / 2);
+    }
+    texts[0].setString(player_party[current_player].attacks[0]);
+    texts[1].setString(player_party[current_player].attacks[1]);
+    texts[2].setString(player_party[current_player].attacks[2]);
+    texts[3].setString(player_party[current_player].attacks[3]);
+}
+
+void BattleScene::initOptionsText() {
+    for(int i = 0; i < 4; i++) {
+        texts[i].setFont(font);
+        texts[i].setCharacterSize(font_size);
+        texts[i].setFillColor(base_color);
+    }
+    texts[0].setString("ATTACK");
+    texts[0].setPosition(sf::Vector2f(h_offset, WINDOW_HEIGHT - v_padding * 2 - v_offset));
+
+    texts[1].setString("PARTY");
+    texts[1].setPosition(sf::Vector2f(h_offset + h_padding, WINDOW_HEIGHT - v_padding * 2 - v_offset));
+
+    texts[2].setString("ITEM");
+    texts[2].setPosition(sf::Vector2f(h_offset, WINDOW_HEIGHT - v_padding - v_offset));
+
+    texts[3].setString("RUN");
+    texts[3].setPosition(sf::Vector2f(h_offset + h_padding, WINDOW_HEIGHT - v_padding - v_offset));
+}
+
 int BattleScene::update(const float& dt, const sf::Event* event) {
 
     return RETURN_CODE_NOTHING;
@@ -131,40 +143,29 @@ int BattleScene::update(const float& dt, const sf::Event* event) {
 
 void BattleScene::processEvent(const sf::Event* event) {
     if(event->type == sf::Event::KeyPressed) {
-        if(event->key.code == sf::Keyboard::Space) { // bruh 
-                switch(current_text) {
-                    case 0:
-                        texts[0].setString(player_party[current_player].attacks[0]);
-                        texts[2].setString(player_party[current_player].attacks[1]);
-                        texts[1].setString(player_party[current_player].attacks[2]);
-                        texts[3].setString(player_party[current_player].attacks[3]);
-                        std::cout << "attack chose" << std::endl;
+        if((event->key.code == sf::Keyboard::Space || event->key.code == sf::Keyboard::Enter) && option == options::none) { 
+            switch(current_text) {
+                case 0:
+                    initAttackText();
 
-                        option = battle_options::attack;
-                        break;
-                    case 1:
-                        std::cout << "party chose" << std::endl;
-
-                        option = battle_options::party;
-
-                        break;
-                    case 2:
-                        std::cout << "item chose" << std::endl;
-
-                        option = battle_options::item;
-
-                        break;
-                    case 3:
-                        std::cout << "run chose" << std::endl;
-
-                        option = battle_options::run;
-
-                        if(!canRun()) {}
-
-                        break;
-                }
+                    option = options::attack;
+                    break;
+                case 1:
+                    option = options::party;
+                    break;
+                case 2:
+                    option = options::item;
+                    break;
+                case 3:
+                    option = options::run;
+                    break;
             }
+        }
+        else if((event->key.code == sf::Keyboard::Escape || event->key.code == sf::Keyboard::BackSpace) && option != options::none) {
+            initOptionsText();
 
+            option = options::none;
+        }
         else if(event->key.code == sf::Keyboard::Up) {
             if(current_text == 2 || current_text == 3) current_text -= 2;
         }
@@ -175,7 +176,7 @@ void BattleScene::processEvent(const sf::Event* event) {
             if(current_text == 1 || current_text == 3) current_text -= 1;
         }
         else if(event->key.code == sf::Keyboard::Right) {
-            if(current_text == 0 || current_text == 0) current_text += 1;
+            if(current_text == 0 || current_text == 2) current_text += 1;
         }
     }
 }
