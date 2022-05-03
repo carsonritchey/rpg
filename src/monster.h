@@ -84,7 +84,7 @@ const std::string attack_names[][4] = {
     {"add", "\"you stupid\"", "", ""},
     {"blow bubble", "swing spatula", "", ""},
     {"punch", "craft", "", ""},
-    {"", "", "", ""},
+    {"pray on children", "", "", ""},
     {"", "", "", ""},
     {"drive", "", "", ""},
     {"PUNCH", "SMACK", "THROW", "SHOCK"},
@@ -95,12 +95,12 @@ const std::string attack_names[][4] = {
     {"integrate", "", "", ""},
     {"shock", "reboot", "", ""},
     {"impale", "preach", "", ""},
-    {"", "", "", ""},
+    {"wind blast", "", "", ""},
     {"blabble", "stammer", "tomfoolery", "take the piss"},
     {"play in G", "play in c#", "play in Eb", "play in a"},
     {"BUY!!", "SELL!!", "INVEST!!", ""},
     {"compose", "", "", ""},
-    {"", "", "", ""},
+    {"rubuttal", "objection", "", ""},
     {"alpha decay", "beta decay", "gamma decay", "radiate"},
 };
 

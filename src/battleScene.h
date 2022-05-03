@@ -10,6 +10,7 @@
 #include <random>
 
 enum battle_options {
+    none = -1,
     attack = 0,
     item = 1,
     party = 2,
@@ -28,6 +29,7 @@ class BattleScene : public Scene {
         sf::Font font;
 
         sf::Text texts[4];
+        int current_text = 0;
 
         sf::Text playername_text;
         sf::Text enemyname_text;
@@ -54,7 +56,7 @@ class BattleScene : public Scene {
         // variables
         sf::RenderWindow* window;
         const sf::View* old_view;
-        battle_options option = battle_options::attack; 
+        battle_options option = battle_options::none; 
 
         int current_player = 0, current_enemy = 0;
         std::vector<Monster> player_party;
