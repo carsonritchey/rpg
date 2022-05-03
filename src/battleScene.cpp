@@ -21,29 +21,22 @@ BattleScene::BattleScene(sf::RenderWindow* window) : Scene(window) {
     player_party[0].sprite.setPosition(sf::Vector2f(WINDOW_WIDTH - player_party[current_player].slice_size / player_scale_down * ZOOM_FACTOR - h_offset, WINDOW_HEIGHT - player_party[current_player].slice_size / player_scale_down * ZOOM_FACTOR - v_offset));
 
     // creating options text
-    attack_text.setFont(font);
-    attack_text.setString("ATTACK");
-    attack_text.setCharacterSize(font_size);
-    attack_text.setFillColor(base_color);
-    attack_text.setPosition(sf::Vector2f(h_offset, WINDOW_HEIGHT - v_padding * 2 - v_offset));
+    for(int i = 0; i < 4; i++) {
+        texts[i].setFont(font);
+        texts[i].setCharacterSize(font_size);
+        texts[i].setFillColor(base_color);
+    }
+    texts[0].setString("ATTACK");
+    texts[0].setPosition(sf::Vector2f(h_offset, WINDOW_HEIGHT - v_padding * 2 - v_offset));
 
-    item_text.setFont(font);
-    item_text.setString("ITEM");
-    item_text.setCharacterSize(font_size);
-    item_text.setFillColor(base_color);
-    item_text.setPosition(sf::Vector2f(h_offset, WINDOW_HEIGHT - v_padding - v_offset));
+    texts[1].setString("ITEM");
+    texts[1].setPosition(sf::Vector2f(h_offset, WINDOW_HEIGHT - v_padding - v_offset));
 
-    party_text.setFont(font);
-    party_text.setString("PARTY");
-    party_text.setCharacterSize(font_size);
-    party_text.setFillColor(base_color);
-    party_text.setPosition(sf::Vector2f(h_offset + h_padding, WINDOW_HEIGHT - v_padding * 2 - v_offset));
+    texts[2].setString("PARTY");
+    texts[2].setPosition(sf::Vector2f(h_offset + h_padding, WINDOW_HEIGHT - v_padding * 2 - v_offset));
 
-    run_text.setFont(font);
-    run_text.setString("RUN");
-    run_text.setCharacterSize(font_size);
-    run_text.setFillColor(base_color);
-    run_text.setPosition(sf::Vector2f(h_offset + h_padding, WINDOW_HEIGHT - v_padding - v_offset));
+    texts[3].setString("RUN");
+    texts[3].setPosition(sf::Vector2f(h_offset + h_padding, WINDOW_HEIGHT - v_padding - v_offset));
 
     sf::Vector2f pPos = player_party[current_player].sprite.getPosition();
     sf::Vector2f ePos = enemy_party[current_enemy].sprite.getPosition();
@@ -114,62 +107,60 @@ void BattleScene::drawBackground() {
 }
 
 void BattleScene::drawText() {
-    window->draw(attack_text); 
-    window->draw(item_text); 
-    window->draw(party_text); 
-    window->draw(run_text); 
+    for(int i = 0; i < 4; i++)
+        window->draw(texts[i]); 
 
     window->draw(playername_text);
     window->draw(enemyname_text);
 
     switch(option) {
         case attack:
-            attack_text.setFillColor(selected_color);
+            texts[0].setFillColor(selected_color);
 
-            item_text.setFillColor(base_color);
-            party_text.setFillColor(base_color);
-            run_text.setFillColor(base_color);
+            texts[1].setFillColor(base_color);
+            texts[2].setFillColor(base_color);
+            texts[3].setFillColor(base_color);
 
-            attack_text.setStyle(sf::Text::Italic);
-            party_text.setStyle(sf::Text::Regular);
-            item_text.setStyle(sf::Text::Regular);
-            run_text.setStyle(sf::Text::Regular);
+            texts[0].setStyle(sf::Text::Italic);
+            texts[2].setStyle(sf::Text::Regular);
+            texts[1].setStyle(sf::Text::Regular);
+            texts[3].setStyle(sf::Text::Regular);
             break;
         case item:
-            item_text.setFillColor(selected_color);
+            texts[1].setFillColor(selected_color);
 
-            attack_text.setFillColor(base_color);
-            party_text.setFillColor(base_color);
-            run_text.setFillColor(base_color);
+            texts[0].setFillColor(base_color);
+            texts[2].setFillColor(base_color);
+            texts[3].setFillColor(base_color);
 
-            item_text.setStyle(sf::Text::Italic);
-            attack_text.setStyle(sf::Text::Regular);
-            party_text.setStyle(sf::Text::Regular);
-            run_text.setStyle(sf::Text::Regular);
+            texts[1].setStyle(sf::Text::Italic);
+            texts[0].setStyle(sf::Text::Regular);
+            texts[2].setStyle(sf::Text::Regular);
+            texts[3].setStyle(sf::Text::Regular);
             break;
         case party:
-            party_text.setFillColor(selected_color);
+            texts[2].setFillColor(selected_color);
 
-            attack_text.setFillColor(base_color);
-            item_text.setFillColor(base_color);
-            run_text.setFillColor(base_color);
+            texts[0].setFillColor(base_color);
+            texts[1].setFillColor(base_color);
+            texts[3].setFillColor(base_color);
 
-            party_text.setStyle(sf::Text::Italic);
-            attack_text.setStyle(sf::Text::Regular);
-            item_text.setStyle(sf::Text::Regular);
-            run_text.setStyle(sf::Text::Regular);
+            texts[2].setStyle(sf::Text::Italic);
+            texts[0].setStyle(sf::Text::Regular);
+            texts[1].setStyle(sf::Text::Regular);
+            texts[3].setStyle(sf::Text::Regular);
             break;
         case run:
-            run_text.setFillColor(selected_color);
+            texts[3].setFillColor(selected_color);
 
-            attack_text.setFillColor(base_color);
-            item_text.setFillColor(base_color);
-            party_text.setFillColor(base_color);
+            texts[0].setFillColor(base_color);
+            texts[1].setFillColor(base_color);
+            texts[2].setFillColor(base_color);
 
-            run_text.setStyle(sf::Text::Italic);
-            attack_text.setStyle(sf::Text::Regular);
-            item_text.setStyle(sf::Text::Regular);
-            party_text.setStyle(sf::Text::Regular);
+            texts[3].setStyle(sf::Text::Italic);
+            texts[0].setStyle(sf::Text::Regular);
+            texts[1].setStyle(sf::Text::Regular);
+            texts[2].setStyle(sf::Text::Regular);
             break;
     }
 }
@@ -184,6 +175,13 @@ void BattleScene::processEvent(const sf::Event* event) {
         if(event->key.code == sf::Keyboard::Space) { // bruh 
                 switch(option) {
                     case battle_options::attack:
+
+                        std::cout << player_party[current_player].attacks[0] << std::endl;
+
+                        texts[0].setString(player_party[current_player].attacks[0]);
+                        texts[2].setString(player_party[current_player].attacks[1]);
+                        texts[1].setString(player_party[current_player].attacks[2]);
+                        texts[3].setString(player_party[current_player].attacks[3]);
                         std::cout << "attack chose" << std::endl;
                         break;
                     case battle_options::item:

@@ -27,10 +27,7 @@ class BattleScene : public Scene {
          */
         sf::Font font;
 
-        sf::Text attack_text;
-        sf::Text item_text;
-        sf::Text party_text;
-        sf::Text run_text;
+        sf::Text texts[4];
 
         sf::Text playername_text;
         sf::Text enemyname_text;
