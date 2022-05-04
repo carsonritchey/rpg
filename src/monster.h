@@ -27,7 +27,7 @@ class Monster : public Entity {
         int id;
 
         std::string attacks[4];
-        float attack1_damage, attack2_damage, attack3_damage, attack4_damage;
+        float attack_value[4][2];
 
         // functions
 };
@@ -107,7 +107,7 @@ const std::string attack_names[][4] = {
 // (damage, PP) for each 4 moves
 const float attack_values[][4][2] = {
     {{0, 0}, {0, 0}, {0, 0}, {0, 0}},
-    {{0, 0}, {0, 0}, {0, 0}, {0, 0}},
+    {{2.5, 15}, {0, 0}, {0, 0}, {0, 0}},
     {{0, 0}, {0, 0}, {0, 0}, {0, 0}},
     {{0, 0}, {0, 0}, {0, 0}, {0, 0}},
     {{0, 0}, {0, 0}, {0, 0}, {0, 0}},

@@ -69,8 +69,8 @@ class BattleScene : public Scene {
         std::vector<Monster> player_party;
         std::vector<Monster> enemy_party;
 
-        HealthBar* player_health;
-        HealthBar* enemy_health;
+        HealthBar* player_healthbar;
+        HealthBar* enemy_healthbar;
 };
 
 #endif

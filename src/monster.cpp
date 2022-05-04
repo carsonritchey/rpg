@@ -1,10 +1,14 @@
 #include "monster.h"
 
 void Monster::init(int _id) {
-    health = rand() % (int)max_health;
+    //health = rand() % (int)max_health;
     id = _id;
 
     name = names[id];
+    for(int i = 0; i < 4; i++) {
+        attack_value[i][0] = attack_values[id][i][0];
+        attack_value[i][1] = attack_values[id][i][1];
+    }  
 
     for(int i = 0; i < 4; i++) {
         if(attack_names[id][i].size() == 0) break;

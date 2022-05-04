@@ -2,7 +2,7 @@
 
 HealthBar::HealthBar() {}
 
-HealthBar::HealthBar(sf::RenderWindow* window, int x, int y, int w, int h, float max_health, float current_health) {
+HealthBar::HealthBar(sf::RenderWindow* window, int x, int y, int w, int h, float max_health, float* current_health) {
     this->window = window;
 
     this->x = x;
@@ -40,13 +40,15 @@ HealthBar::~HealthBar() {
 void HealthBar::draw() {
     window->draw(bg);
 
-    sf::RectangleShape health(sf::Vector2f(w / max_health * current_health, h));
+    sf::RectangleShape health(sf::Vector2f(w / max_health * *current_health, h));
     health.setPosition(sf::Vector2f(x, y));
-    if(current_health / max_health > bad_threshold)
+    if(*current_health / max_health > bad_threshold)
         health.setFillColor(health_good_color);
     else
         health.setFillColor(health_bad_color);
-    window->draw(health);
+
+    if(*current_health > 0)
+        window->draw(health);
 
     window->draw(top);
     window->draw(bottom);

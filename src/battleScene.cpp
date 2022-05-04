@@ -24,16 +24,16 @@ BattleScene::BattleScene(sf::RenderWindow* window) : Scene(window) {
 
     sf::Vector2f pPos = player_party[current_player].sprite.getPosition();
     sf::FloatRect pSize = player_party[current_player].sprite.getGlobalBounds();
-    player_health = new HealthBar(window, pPos.x, pPos.y + pSize.height, pSize.width, 15, player_party[current_player].max_health, player_party[current_player].health);
+    player_healthbar = new HealthBar(window, pPos.x, pPos.y + pSize.height, pSize.width, 15, player_party[current_player].max_health, &player_party[current_player].health);
 
     sf::Vector2f ePos = enemy_party[current_enemy].sprite.getPosition();
     sf::FloatRect eSize = enemy_party[current_enemy].sprite.getGlobalBounds();
-    enemy_health = new HealthBar(window, ePos.x, ePos.y + eSize.height, eSize.width, 15, enemy_party[current_enemy].max_health, enemy_party[current_enemy].health);
+    enemy_healthbar = new HealthBar(window, ePos.x, ePos.y + eSize.height, eSize.width, 15, enemy_party[current_enemy].max_health, &enemy_party[current_enemy].health);
 }
 
 BattleScene::~BattleScene() {
-    delete player_health;
-    delete enemy_health;
+    delete player_healthbar;
+    delete enemy_healthbar;
 
     player_party.clear();
     enemy_party.clear();
@@ -158,24 +158,29 @@ void BattleScene::processEvent(const sf::Event* event) {
                 textbox = nullptr;
             }
         }
-        // choosing option from menu
-        else if((event->key.code == sf::Keyboard::Space || event->key.code == sf::Keyboard::Enter) && option == options::none) { 
-            switch(current_text) {
-                case 0:
-                    initAttackText();
+        else if(event->key.code == sf::Keyboard::Space || event->key.code == sf::Keyboard::Enter) { 
+            // if on main menu
+            if(option == options::none) {
+                switch(current_text) {
+                    case 0:
+                        initAttackText();
 
-                    option = options::attack;
-                    break;
-                case 1:
-                    option = options::party;
-                    break;
-                case 2:
-                    option = options::item;
-                    break;
-                case 3:
-                    //option = options::run;
-                    textbox = new TextBox("bruhhhhh yuhhuusdf");
-                    break;
+                        option = options::attack;
+                        break;
+                    case 1:
+                        option = options::party;
+                        break;
+                    case 2:
+                        option = options::item;
+                        break;
+                    case 3:
+                        //option = options::run;
+                        textbox = new TextBox("bruhhhhh yuhhuusdf");
+                        break;
+                }
+            }
+            else if(option == options::attack) {
+                enemy_party[current_enemy].health -= player_party[current_player].attack_value[current_text][0];
             }
         }
         // returning to menu
@@ -206,8 +211,8 @@ void BattleScene::render() {
     window->draw(enemy_party[current_enemy].sprite);
     window->draw(player_party[current_player].sprite);
 
-    enemy_health->draw();
-    player_health->draw();
+    enemy_healthbar->draw();
+    player_healthbar->draw();
 
     if(textbox != nullptr) {
         textbox->drawBox(window);
