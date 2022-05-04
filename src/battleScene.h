@@ -5,6 +5,7 @@
 #include "scene.h"
 #include "monster.h"
 #include "healthBar.h"
+#include "textBox.h"
 
 #include <iostream>
 #include <random>
@@ -60,6 +61,8 @@ class BattleScene : public Scene {
         sf::RenderWindow* window;
         const sf::View* old_view;
         options option = options::none; 
+
+        TextBox* textbox = nullptr;
 
         int current_player = 0, current_enemy = 0;
         std::vector<Monster> player_party;

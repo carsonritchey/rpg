@@ -14,6 +14,31 @@ Game::Game() {
     //this->scenes.push(new TitleScene(this->window));
     //this->scenes.push(new GameScene(this->window, this->view));
     this->scenes.push(new BattleScene(this->window));
+    this->scenes.push(new BattleScene(this->window));
+    this->scenes.push(new BattleScene(this->window));
+    this->scenes.push(new BattleScene(this->window));
+    this->scenes.push(new BattleScene(this->window));
+    this->scenes.push(new BattleScene(this->window));
+    this->scenes.push(new BattleScene(this->window));
+    this->scenes.push(new BattleScene(this->window));
+    this->scenes.push(new BattleScene(this->window));
+    this->scenes.push(new BattleScene(this->window));
+    this->scenes.push(new BattleScene(this->window));
+    this->scenes.push(new BattleScene(this->window));
+    this->scenes.push(new BattleScene(this->window));
+    this->scenes.push(new BattleScene(this->window));
+    this->scenes.push(new BattleScene(this->window));
+    this->scenes.push(new BattleScene(this->window));
+    this->scenes.push(new BattleScene(this->window));
+    this->scenes.push(new BattleScene(this->window));
+    this->scenes.push(new BattleScene(this->window));
+    this->scenes.push(new BattleScene(this->window));
+    this->scenes.push(new BattleScene(this->window));
+    this->scenes.push(new BattleScene(this->window));
+    this->scenes.push(new BattleScene(this->window));
+    this->scenes.push(new BattleScene(this->window));
+    this->scenes.push(new BattleScene(this->window));
+    this->scenes.push(new BattleScene(this->window));
 }
 
 // frees memory

@@ -143,7 +143,15 @@ int BattleScene::update(const float& dt, const sf::Event* event) {
 
 void BattleScene::processEvent(const sf::Event* event) {
     if(event->type == sf::Event::KeyPressed) {
-        if((event->key.code == sf::Keyboard::Space || event->key.code == sf::Keyboard::Enter) && option == options::none) { 
+        // using textbox
+        if(textbox != nullptr && event->key.code == sf::Keyboard::Space) {
+            if(textbox->progressText()) {
+                delete textbox;
+                textbox = nullptr;
+            }
+        }
+        // choosing option from menu
+        else if((event->key.code == sf::Keyboard::Space || event->key.code == sf::Keyboard::Enter) && option == options::none) { 
             switch(current_text) {
                 case 0:
                     initAttackText();
@@ -158,9 +166,11 @@ void BattleScene::processEvent(const sf::Event* event) {
                     break;
                 case 3:
                     option = options::run;
+                    textbox = new TextBox("bruhhhhh yuhhuusdf");
                     break;
             }
         }
+        // returning to menu
         else if((event->key.code == sf::Keyboard::Escape || event->key.code == sf::Keyboard::BackSpace) && option != options::none) {
             initOptionsText();
 
@@ -182,6 +192,8 @@ void BattleScene::processEvent(const sf::Event* event) {
 }
 
 void BattleScene::render() {
+    std::cout << ((textbox == nullptr) ? "no text" : "text") << std::endl;
+
     drawBackground();
     drawText();
 
@@ -190,6 +202,11 @@ void BattleScene::render() {
 
     enemy_health->draw();
     player_health->draw();
+
+    if(textbox != nullptr) {
+        textbox->drawBox(window);
+        textbox->drawText(window);
+    }
 }
 
 void BattleScene::close_scene() {
