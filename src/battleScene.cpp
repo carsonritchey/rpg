@@ -15,30 +15,18 @@ BattleScene::BattleScene(sf::RenderWindow* window) : Scene(window) {
 
     // adding monsters to player and enemy party
     player_party.push_back(*new Monster(1, 0.5f));
-    enemy_party.push_back(*new Monster(0));
+    enemy_party.push_back(*new Monster(5));
     enemy_party[0].sprite.setPosition(sf::Vector2f(WINDOW_WIDTH / 2 - enemy_party[current_enemy].slice_size * ZOOM_FACTOR / 2, v_offset));
     player_party[0].sprite.setPosition(sf::Vector2f(WINDOW_WIDTH - player_party[current_player].slice_size / player_scale_down * ZOOM_FACTOR - h_offset, WINDOW_HEIGHT - player_party[current_player].slice_size / player_scale_down * ZOOM_FACTOR - v_offset));
 
     initOptionsText();
+    initNameText(); 
 
     sf::Vector2f pPos = player_party[current_player].sprite.getPosition();
-    sf::Vector2f ePos = enemy_party[current_enemy].sprite.getPosition();
-
-    playername_text.setFont(font);
-    playername_text.setString(player_party[current_player].name);
-    playername_text.setCharacterSize(name_font_size / player_scale_down);
-    playername_text.setFillColor(base_color);
-    playername_text.setPosition(sf::Vector2f(pPos.x, pPos.y - name_font_size / player_scale_down));
-
-    enemyname_text.setFont(font);
-    enemyname_text.setString(enemy_party[current_enemy].name);
-    enemyname_text.setCharacterSize(name_font_size);
-    enemyname_text.setFillColor(base_color);
-    enemyname_text.setPosition(sf::Vector2f(ePos.x, ePos.y - name_font_size));
-
     sf::FloatRect pSize = player_party[current_player].sprite.getGlobalBounds();
     player_health = new HealthBar(window, pPos.x, pPos.y + pSize.height, pSize.width, 15, player_party[current_player].max_health, player_party[current_player].health);
 
+    sf::Vector2f ePos = enemy_party[current_enemy].sprite.getPosition();
     sf::FloatRect eSize = enemy_party[current_enemy].sprite.getGlobalBounds();
     enemy_health = new HealthBar(window, ePos.x, ePos.y + eSize.height, eSize.width, 15, enemy_party[current_enemy].max_health, enemy_party[current_enemy].health);
 }
@@ -136,6 +124,26 @@ void BattleScene::initOptionsText() {
     texts[3].setPosition(sf::Vector2f(h_offset + h_padding, WINDOW_HEIGHT - v_padding - v_offset));
 }
 
+void BattleScene::initNameText() {
+    sf::Vector2f pPos = player_party[current_player].sprite.getPosition();
+    sf::FloatRect pSize = player_party[current_player].sprite.getGlobalBounds();
+
+    sf::Vector2f ePos = enemy_party[current_enemy].sprite.getPosition();
+    sf::FloatRect eSize = enemy_party[current_enemy].sprite.getGlobalBounds();
+
+    playername_text.setFont(font);
+    playername_text.setString(player_party[current_player].name);
+    playername_text.setCharacterSize(name_font_size / player_scale_down);
+    playername_text.setFillColor(base_color);
+    playername_text.setPosition(sf::Vector2f(pPos.x - (float)player_party[current_player].name.size() * name_font_size / 2 / 2 + pSize.width / 2, pPos.y - name_font_size / player_scale_down));
+
+    enemyname_text.setFont(font);
+    enemyname_text.setString(enemy_party[current_enemy].name);
+    enemyname_text.setCharacterSize(name_font_size);
+    enemyname_text.setFillColor(base_color);
+    enemyname_text.setPosition(sf::Vector2f(ePos.x - (float)enemy_party[current_enemy].name.size() * name_font_size / 2 + eSize.width / 2, ePos.y - name_font_size));
+}
+
 int BattleScene::update(const float& dt, const sf::Event* event) {
 
     return RETURN_CODE_NOTHING;
@@ -165,7 +173,7 @@ void BattleScene::processEvent(const sf::Event* event) {
                     option = options::item;
                     break;
                 case 3:
-                    option = options::run;
+                    //option = options::run;
                     textbox = new TextBox("bruhhhhh yuhhuusdf");
                     break;
             }
@@ -192,8 +200,6 @@ void BattleScene::processEvent(const sf::Event* event) {
 }
 
 void BattleScene::render() {
-    std::cout << ((textbox == nullptr) ? "no text" : "text") << std::endl;
-
     drawBackground();
     drawText();
 

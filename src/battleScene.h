@@ -23,8 +23,9 @@ class BattleScene : public Scene {
         void drawBackground();
         void drawText();
 
-        void initOptionsText();
         void initAttackText();
+        void initOptionsText();
+        void initNameText();
 
         /*
          * attack party 
