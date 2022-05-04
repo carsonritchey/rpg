@@ -27,6 +27,8 @@ class BattleScene : public Scene {
         void initOptionsText();
         void initNameText();
 
+        void turn();
+
         /*
          * attack party 
          * item   run 

@@ -159,7 +159,7 @@ void BattleScene::processEvent(const sf::Event* event) {
             }
         }
         else if(event->key.code == sf::Keyboard::Space || event->key.code == sf::Keyboard::Enter) { 
-            // if on main menu
+            // selecting option on main menu
             if(option == options::none) {
                 switch(current_text) {
                     case 0:
@@ -179,8 +179,10 @@ void BattleScene::processEvent(const sf::Event* event) {
                         break;
                 }
             }
+            // selecting move in attack 
             else if(option == options::attack) {
-                enemy_party[current_enemy]->health -= player_party[current_player]->attack_value[current_text][0];
+                //enemy_party[current_enemy]->health -= player_party[current_player]->attack_values[current_text][0];
+                turn();
             }
         }
         // returning to menu
@@ -204,6 +206,22 @@ void BattleScene::processEvent(const sf::Event* event) {
     }
 }
 
+void BattleScene::turn() {
+    // if player is faster or they tie 
+    if(player_party[current_player]->speed >= enemy_party[current_enemy]->speed) {
+        enemy_party[current_enemy]->health -= player_party[current_player]->attack_values[current_text][0];
+        player_party[current_player]->health -= enemy_party[current_enemy]->attack_values[rand() % enemy_party[current_enemy]->move_count][0];
+    }
+    // if enemy is faster
+    else {
+        player_party[current_player]->health -= enemy_party[current_enemy]->attack_values[rand() % enemy_party[current_enemy]->move_count][0];
+
+        textbox = new TextBox("player used bruh!!!"); 
+
+        enemy_party[current_enemy]->health -= player_party[current_player]->attack_values[current_text][0];
+    }
+}
+
 void BattleScene::render() {
     drawBackground();
     drawText();
@@ -213,6 +231,8 @@ void BattleScene::render() {
 
     enemy_healthbar->draw();
     player_healthbar->draw();
+
+    //std::cout << (textbox == nullptr ? "none" : "one") << std::endl;
 
     if(textbox != nullptr) {
         textbox->drawBox(window);
