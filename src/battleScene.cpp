@@ -216,7 +216,7 @@ void BattleScene::turn() {
     else {
         player_party[current_player]->health -= enemy_party[current_enemy]->attack_values[rand() % enemy_party[current_enemy]->move_count][0];
 
-        textbox = new TextBox("player used bruh!!!"); 
+        textbox = new TextBox(player_party[current_player]->name + " used '" + player_party[current_player]->attacks[current_text] + "'!"); 
 
         enemy_party[current_enemy]->health -= player_party[current_player]->attack_values[current_text][0];
     }
