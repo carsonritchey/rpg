@@ -85,7 +85,7 @@ const std::string attack_names[][4] = {
     {"add", "\"you stupid\"", "", ""},
     {"blow bubble", "swing spatula", "", ""},
     {"punch", "craft", "", ""},
-    {"pray on children", "", "", ""},
+    {"pray on children", "make sandwhich", "", ""},
     {"", "", "", ""},
     {"drive", "", "", ""},
     {"PUNCH", "SMACK", "THROW", "SHOCK"},

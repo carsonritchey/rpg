@@ -6,6 +6,7 @@
 #include "monster.h"
 #include "healthBar.h"
 #include "textBox.h"
+#include "partyDisplay.h"
 
 #include <iostream>
 #include <random>
@@ -66,6 +67,7 @@ class BattleScene : public Scene {
         options option = options::none; 
 
         TextBox* textbox = nullptr;
+        PartyDisplay* party_display = nullptr;
 
         int current_player = 0, current_enemy = 0;
         std::vector<Monster*> player_party;

@@ -29,11 +29,14 @@ BattleScene::BattleScene(sf::RenderWindow* window) : Scene(window) {
     sf::Vector2f ePos = enemy_party[current_enemy]->sprite.getPosition();
     sf::FloatRect eSize = enemy_party[current_enemy]->sprite.getGlobalBounds();
     enemy_healthbar = new HealthBar(window, ePos.x, ePos.y + eSize.height, eSize.width, 15, enemy_party[current_enemy]->max_health, enemy_party[current_enemy]->health);
+
+    party_display = new PartyDisplay(window);
 }
 
 BattleScene::~BattleScene() {
     delete player_healthbar;
     delete enemy_healthbar;
+    delete party_display; 
 
     player_party.clear();
     enemy_party.clear();
@@ -258,6 +261,8 @@ void BattleScene::render() {
         textbox->drawBox(window);
         textbox->drawText(window);
     }
+
+    party_display->draw();
 }
 
 void BattleScene::close_scene() {

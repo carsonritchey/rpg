@@ -22,9 +22,8 @@ class PartyDisplay {
         const sf::Color bg_color{0xff, 0xff, 0xff, 0xff};
         const sf::Color outline_color{0x32, 0x32, 0x32};
 
-        const float bad_threshold = .2; 
-
-        const int box_outline_width = 2;
+        const int padding = TILE_SIZE * ZOOM_FACTOR;
+        const int outline_width = 4;
         sf::RectangleShape top;
         sf::RectangleShape bottom;
         sf::RectangleShape left;
