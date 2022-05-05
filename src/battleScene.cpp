@@ -24,11 +24,11 @@ BattleScene::BattleScene(sf::RenderWindow* window) : Scene(window) {
 
     sf::Vector2f pPos = player_party[current_player]->sprite.getPosition();
     sf::FloatRect pSize = player_party[current_player]->sprite.getGlobalBounds();
-    player_healthbar = new HealthBar(window, pPos.x, pPos.y + pSize.height, pSize.width, 15, player_party[current_player]->max_health, &player_party[current_player]->health);
+    player_healthbar = new HealthBar(window, pPos.x, pPos.y + pSize.height, pSize.width, 15, player_party[current_player]->max_health, player_party[current_player]->health);
 
     sf::Vector2f ePos = enemy_party[current_enemy]->sprite.getPosition();
     sf::FloatRect eSize = enemy_party[current_enemy]->sprite.getGlobalBounds();
-    enemy_healthbar = new HealthBar(window, ePos.x, ePos.y + eSize.height, eSize.width, 15, enemy_party[current_enemy]->max_health, &enemy_party[current_enemy]->health);
+    enemy_healthbar = new HealthBar(window, ePos.x, ePos.y + eSize.height, eSize.width, 15, enemy_party[current_enemy]->max_health, enemy_party[current_enemy]->health);
 }
 
 BattleScene::~BattleScene() {
@@ -207,19 +207,41 @@ void BattleScene::processEvent(const sf::Event* event) {
 }
 
 void BattleScene::turn() {
+    std::string tb_text = "";
+    int enemy_move = rand() % enemy_party[current_enemy]->move_count;
+
     // if player is faster or they tie 
     if(player_party[current_player]->speed >= enemy_party[current_enemy]->speed) {
         enemy_party[current_enemy]->health -= player_party[current_player]->attack_values[current_text][0];
-        player_party[current_player]->health -= enemy_party[current_enemy]->attack_values[rand() % enemy_party[current_enemy]->move_count][0];
+        tb_text += player_party[current_player]->name + " used '" + player_party[current_player]->attacks[current_text] + "'!\n";
+
+        if(enemy_party[current_enemy]->health <= 0) {
+            tb_text += enemy_party[current_enemy]->name + " fainted!";
+        }
+        else {
+            player_party[current_player]->health -= enemy_party[current_enemy]->attack_values[enemy_move][0];
+            tb_text += enemy_party[current_enemy]->name + " used '" + enemy_party[current_enemy]->attacks[enemy_move] + "'!";
+        }
+
     }
     // if enemy is faster
     else {
-        player_party[current_player]->health -= enemy_party[current_enemy]->attack_values[rand() % enemy_party[current_enemy]->move_count][0];
+        player_party[current_player]->health -= enemy_party[current_enemy]->attack_values[enemy_move][0];
+        tb_text += enemy_party[current_enemy]->name + " used '" + enemy_party[current_enemy]->attacks[enemy_move] + "'!\n";
 
-        textbox = new TextBox(player_party[current_player]->name + " used '" + player_party[current_player]->attacks[current_text] + "'!"); 
-
-        enemy_party[current_enemy]->health -= player_party[current_player]->attack_values[current_text][0];
+        if(player_party[current_player]->health <= 0) {
+            tb_text += player_party[current_player]->name + " fainted!";
+        }
+        else {
+            enemy_party[current_enemy]->health -= player_party[current_player]->attack_values[current_text][0];
+            tb_text += player_party[current_player]->name + " used '" + player_party[current_player]->attacks[current_text] + "'!";
+        }
     }
+
+    textbox = new TextBox(tb_text); 
+
+    player_healthbar->current_health = player_party[current_player]->health;
+    enemy_healthbar->current_health = enemy_party[current_enemy]->health;
 }
 
 void BattleScene::render() {
@@ -231,8 +253,6 @@ void BattleScene::render() {
 
     enemy_healthbar->draw();
     player_healthbar->draw();
-
-    //std::cout << (textbox == nullptr ? "none" : "one") << std::endl;
 
     if(textbox != nullptr) {
         textbox->drawBox(window);

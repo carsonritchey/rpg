@@ -14,7 +14,7 @@ class HealthBar {
     public:
         // constructors and deconstructors 
         HealthBar();
-        HealthBar(sf::RenderWindow* window, int x, int y, int w, int h, float max_health, float* current_health);
+        HealthBar(sf::RenderWindow* window, int x, int y, int w, int h, float max_health, float current_health);
         virtual ~HealthBar();
 
         // variables
@@ -22,7 +22,7 @@ class HealthBar {
 
         int x, y, w, h;
         float max_health;
-        float* current_health;
+        float current_health;
 
         const sf::Color bg_color{0xff, 0xff, 0xff, 0xff};
         const sf::Color outline_color{0x32, 0x32, 0x32};
