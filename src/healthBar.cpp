@@ -1,6 +1,6 @@
 #include "healthBar.h"
 
-HealthBar::HealthBar() {}
+HealthBar::HealthBar() { std::cout << "if you're seeing this the healthbar default constructor (no arguments) is being called, which it shouldn't" << std::endl; }
 
 HealthBar::HealthBar(sf::RenderWindow* window, int x, int y, int w, int h, float max_health, float current_health) {
     this->window = window;
