@@ -15,6 +15,9 @@ BattleScene::BattleScene(sf::RenderWindow* window) : Scene(window) {
 
     // adding monsters to player and enemy party
     player_party.push_back(new Monster(1, 0.5f));
+    player_party.push_back(new Monster(2, 0.5f));
+    player_party.push_back(new Monster(3, 0.5f));
+    player_party.push_back(new Monster(4, 0.5f));
     enemy_party.push_back(new Monster(5));
     enemy_party[0]->sprite.setPosition(sf::Vector2f(WINDOW_WIDTH / 2 - enemy_party[current_enemy]->slice_size * ZOOM_FACTOR / 2, v_offset));
     player_party[0]->sprite.setPosition(sf::Vector2f(WINDOW_WIDTH - player_party[current_player]->slice_size / player_scale_down * ZOOM_FACTOR - h_offset, WINDOW_HEIGHT - player_party[current_player]->slice_size / player_scale_down * ZOOM_FACTOR - v_offset));
@@ -30,7 +33,7 @@ BattleScene::BattleScene(sf::RenderWindow* window) : Scene(window) {
     sf::FloatRect eSize = enemy_party[current_enemy]->sprite.getGlobalBounds();
     enemy_healthbar = new HealthBar(window, ePos.x, ePos.y + eSize.height, eSize.width, 15, enemy_party[current_enemy]->max_health, enemy_party[current_enemy]->health);
 
-    party_display = new PartyDisplay(window);
+    party_display = new PartyDisplay(window, player_party);
 }
 
 BattleScene::~BattleScene() {
@@ -184,7 +187,6 @@ void BattleScene::processEvent(const sf::Event* event) {
             }
             // selecting move in attack 
             else if(option == options::attack) {
-                //enemy_party[current_enemy]->health -= player_party[current_player]->attack_values[current_text][0];
                 turn();
             }
         }
@@ -219,6 +221,7 @@ void BattleScene::turn() {
         tb_text += player_party[current_player]->name + " used '" + player_party[current_player]->attacks[current_text] + "'!\n";
 
         if(enemy_party[current_enemy]->health <= 0) {
+            enemy_party[current_enemy]->sprite.setColor(fainted_color);
             tb_text += enemy_party[current_enemy]->name + " fainted!";
         }
         else {
@@ -233,6 +236,7 @@ void BattleScene::turn() {
         tb_text += enemy_party[current_enemy]->name + " used '" + enemy_party[current_enemy]->attacks[enemy_move] + "'!\n";
 
         if(player_party[current_player]->health <= 0) {
+            player_party[current_player]->sprite.setColor(fainted_color);
             tb_text += player_party[current_player]->name + " fainted!";
         }
         else {
@@ -261,8 +265,9 @@ void BattleScene::render() {
         textbox->drawBox(window);
         textbox->drawText(window);
     }
-
-    party_display->draw();
+    else if(option == options::party) {
+        party_display->draw();
+    }
 }
 
 void BattleScene::close_scene() {

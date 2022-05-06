@@ -46,6 +46,7 @@ class BattleScene : public Scene {
 
         sf::Color selected_color{0x40, 0x90, 0xff, 0xff};
         sf::Color base_color{0x0, 0x0, 0x0, 0xff};
+        sf::Color fainted_color{0x30, 0x30, 0x30, 0xff};
 
     public:
         // constructors and deconstructors 

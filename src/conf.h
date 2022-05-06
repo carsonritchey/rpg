@@ -34,6 +34,7 @@
 #define RETURN_CODE_START   1
 #define RETURN_CODE_BATTLESCENE 2 
 
+#define MAX_PARTY_SIZE 6
 #define MAX_ATTACK_LENGTH 26
 
 enum directions {
