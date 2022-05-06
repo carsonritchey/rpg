@@ -36,12 +36,12 @@ PartyDisplay::PartyDisplay(sf::RenderWindow* window, std::vector<Monster*> party
         name_texts[i].setCharacterSize(font_size / 2);
         name_texts[i].setFillColor(outline_color);
 
-        name_texts[i].setPosition(sf::Vector2f(font_size + padding + outline_width * 2, padding + outline_width * 2 + (font_size * i) + font_size / 4));
+        name_texts[i].setPosition(sf::Vector2f(font_size + padding + outline_width * 2 + outline_width, padding + outline_width * 2 + (font_size * i) + font_size / 4 + (outline_width * i)));
 
         icons[i].setTexture(*party[i]->sprite.getTexture());
         const float scale = MONSTER_TILE_SIZE / font_size;
         icons[i].setScale(scale, scale);
-        icons[i].setPosition(sf::Vector2f(padding + outline_width * 2, padding + outline_width * 2 + (font_size * i)));
+        icons[i].setPosition(sf::Vector2f(padding + outline_width * 2, padding + outline_width * 2 + (font_size * i) + (outline_width * i)));
     }
 }
 
