@@ -53,14 +53,6 @@ class BattleScene : public Scene {
         BattleScene(sf::RenderWindow* window);
         virtual ~BattleScene();
 
-        // functions
-        int update(const float& dt, const sf::Event* event);
-        void render();
-
-        void box(int, int, int, int);
-        bool canRun();
-        void close_scene();
-        void processEvent(const sf::Event* event);
 
         // variables
         sf::RenderWindow* window;
@@ -76,6 +68,16 @@ class BattleScene : public Scene {
 
         HealthBar* player_healthbar;
         HealthBar* enemy_healthbar;
+
+        // functions
+        int update(const float& dt, const sf::Event* event);
+        void render();
+
+        void box(int, int, int, int);
+        bool canRun();
+        void close_scene();
+        void processEvent(const sf::Event* event);
+        void updateCurrentMember();
 };
 
 #endif

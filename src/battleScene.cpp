@@ -20,9 +20,9 @@ BattleScene::BattleScene(sf::RenderWindow* window) : Scene(window) {
     player_party.push_back(new Monster(4, 0.5f));
     player_party.push_back(new Monster(5, 0.5f));
     player_party.push_back(new Monster(6, 0.5f));
-    enemy_party.push_back(new Monster(7));
-    enemy_party[0]->sprite.setPosition(sf::Vector2f(WINDOW_WIDTH / 2 - enemy_party[current_enemy]->slice_size * ZOOM_FACTOR / 2, v_offset));
-    player_party[0]->sprite.setPosition(sf::Vector2f(WINDOW_WIDTH - player_party[current_player]->slice_size / player_scale_down * ZOOM_FACTOR - h_offset, WINDOW_HEIGHT - player_party[current_player]->slice_size / player_scale_down * ZOOM_FACTOR - v_offset));
+    enemy_party.push_back(new Monster(0));
+    enemy_party[current_enemy]->sprite.setPosition(sf::Vector2f(WINDOW_WIDTH / 2 - enemy_party[current_enemy]->slice_size * ZOOM_FACTOR / 2, v_offset));
+    player_party[current_player]->sprite.setPosition(sf::Vector2f(WINDOW_WIDTH - player_party[current_player]->slice_size / player_scale_down * ZOOM_FACTOR - h_offset, WINDOW_HEIGHT - player_party[current_player]->slice_size / player_scale_down * ZOOM_FACTOR - v_offset));
 
     initOptionsText();
     initNameText(); 
@@ -195,20 +195,23 @@ void BattleScene::processEvent(const sf::Event* event) {
         // returning to menu
         else if((event->key.code == sf::Keyboard::Escape || event->key.code == sf::Keyboard::BackSpace) && option != options::none) {
             initOptionsText();
+            updateCurrentMember();
 
             option = options::none;
         }
-        else if(event->key.code == sf::Keyboard::Up) {
-            if(current_text == 2 || current_text == 3) current_text -= 2;
-        }
-        else if(event->key.code == sf::Keyboard::Down) {
-            if(current_text == 0 || current_text == 1) current_text += 2;
-        }
-        else if(event->key.code == sf::Keyboard::Left) {
-            if(current_text == 1 || current_text == 3) current_text -= 1;
-        }
-        else if(event->key.code == sf::Keyboard::Right) {
-            if(current_text == 0 || current_text == 2) current_text += 1;
+        else if(option == options::none || option == options::attack) {
+            if(event->key.code == sf::Keyboard::Up) {
+                if(current_text == 2 || current_text == 3) current_text -= 2;
+            }
+            else if(event->key.code == sf::Keyboard::Down) {
+                if(current_text == 0 || current_text == 1) current_text += 2;
+            }
+            else if(event->key.code == sf::Keyboard::Left) {
+                if(current_text == 1 || current_text == 3) current_text -= 1;
+            }
+            else if(event->key.code == sf::Keyboard::Right) {
+                if(current_text == 0 || current_text == 2) current_text += 1;
+            }
         }
     }
 
@@ -272,6 +275,12 @@ void BattleScene::render() {
     else if(option == options::party) {
         party_display->draw();
     }
+}
+
+void BattleScene::updateCurrentMember() {
+    current_player = party_display->current_member; 
+    player_party[current_player]->sprite.setPosition(sf::Vector2f(WINDOW_WIDTH - player_party[current_player]->slice_size / player_scale_down * ZOOM_FACTOR - h_offset, WINDOW_HEIGHT - player_party[current_player]->slice_size / player_scale_down * ZOOM_FACTOR - v_offset));
+    initNameText();
 }
 
 void BattleScene::close_scene() {

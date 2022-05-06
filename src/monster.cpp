@@ -22,7 +22,7 @@ void Monster::init(int _id) {
         attacks[i] = attack_names[id][i];
     }
 
-    std::cout << "'" << name << "' loaded with a:" << attack << ", d:" << defense << ", s:" << speed << std::endl;
+    //std::cout << "'" << name << "' loaded with a:" << attack << ", d:" << defense << ", s:" << speed << std::endl;
 }
 Monster::Monster(int _id) : Entity(texture_paths[_id], MONSTER_TILE_SIZE) {
     init(_id);

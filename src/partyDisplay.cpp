@@ -70,29 +70,16 @@ void PartyDisplay::draw() {
 void PartyDisplay::processEvent(const sf::Event* event) {
     if(event->type == sf::Event::KeyPressed) {
         bool changed = false;
-        if(event->key.code == sf::Keyboard::Num1) {
-            current_member = 0;
+
+        if(event->key.code == sf::Keyboard::Up) {
             changed = true;
+            if(current_member > 0)
+                current_member -= 1;
         }
-        else if(event->key.code == sf::Keyboard::Num2) {
-            current_member = 1;
+        else if(event->key.code == sf::Keyboard::Down) {
             changed = true;
-        }
-        else if(event->key.code == sf::Keyboard::Num3) {
-            current_member = 2;
-            changed = true;
-        }
-        else if(event->key.code == sf::Keyboard::Num4) {
-            current_member = 3;
-            changed = true;
-        }
-        else if(event->key.code == sf::Keyboard::Num5) {
-            current_member = 4;
-            changed = true;
-        }
-        else if(event->key.code == sf::Keyboard::Num6) {
-            current_member = 5;
-            changed = true;
+            if(current_member < MAX_PARTY_SIZE)
+                current_member = (current_member + 1) % MAX_PARTY_SIZE;
         }
 
         if(changed) {
