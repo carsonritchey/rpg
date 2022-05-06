@@ -21,8 +21,12 @@ class PartyDisplay {
 
         std::vector<Monster*> party;
 
+        int current_member = 0;
+
         const sf::Color bg_color{0xff, 0xff, 0xff, 0xff};
         const sf::Color outline_color{0x32, 0x32, 0x32};
+        const sf::Color text_color{0x0, 0x0, 0x0, 0xff};
+        const sf::Color select_color{0x40, 0x90, 0xff, 0xff};
 
         const int padding = TILE_SIZE * ZOOM_FACTOR * 2;
         const int outline_width = 4;
@@ -40,7 +44,7 @@ class PartyDisplay {
 
         // functions
         void draw();
-
+        void processEvent(const sf::Event* event);
 };
 
 #endif

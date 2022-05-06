@@ -211,6 +211,8 @@ void BattleScene::processEvent(const sf::Event* event) {
             if(current_text == 0 || current_text == 2) current_text += 1;
         }
     }
+
+    party_display->processEvent(event);
 }
 
 void BattleScene::turn() {

@@ -34,7 +34,11 @@ PartyDisplay::PartyDisplay(sf::RenderWindow* window, std::vector<Monster*> party
         name_texts[i].setFont(font);
         name_texts[i].setString(party[i]->name);
         name_texts[i].setCharacterSize(font_size / 2);
-        name_texts[i].setFillColor(outline_color);
+
+        if((int)i == current_member)
+            name_texts[i].setFillColor(select_color);
+        else
+            name_texts[i].setFillColor(text_color);
 
         name_texts[i].setPosition(sf::Vector2f(font_size + padding + outline_width * 2 + outline_width, padding + outline_width * 2 + (font_size * i) + font_size / 4 + (outline_width * i)));
 
@@ -60,5 +64,44 @@ void PartyDisplay::draw() {
     for(std::size_t i = 0; i < party.size(); i++) {
         window->draw(icons[i]);
         window->draw(name_texts[i]);
+    }
+}
+
+void PartyDisplay::processEvent(const sf::Event* event) {
+    if(event->type == sf::Event::KeyPressed) {
+        bool changed = false;
+        if(event->key.code == sf::Keyboard::Num1) {
+            current_member = 0;
+            changed = true;
+        }
+        else if(event->key.code == sf::Keyboard::Num2) {
+            current_member = 1;
+            changed = true;
+        }
+        else if(event->key.code == sf::Keyboard::Num3) {
+            current_member = 2;
+            changed = true;
+        }
+        else if(event->key.code == sf::Keyboard::Num4) {
+            current_member = 3;
+            changed = true;
+        }
+        else if(event->key.code == sf::Keyboard::Num5) {
+            current_member = 4;
+            changed = true;
+        }
+        else if(event->key.code == sf::Keyboard::Num6) {
+            current_member = 5;
+            changed = true;
+        }
+
+        if(changed) {
+            for(std::size_t i = 0; i < party.size(); i++) {
+                if((int)i == current_member)
+                    name_texts[i].setFillColor(select_color);
+                else
+                    name_texts[i].setFillColor(text_color);
+            }
+        }
     }
 }
