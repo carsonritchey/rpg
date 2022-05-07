@@ -47,7 +47,8 @@ PartyDisplay::PartyDisplay(sf::RenderWindow* window, std::vector<Monster*> party
         icons[i].setScale(scale, scale);
         icons[i].setPosition(sf::Vector2f(padding + outline_width * 2, padding + outline_width * 2 + (font_size * i) + (outline_width * i)));
 
-        health_bars.push_back(new HealthBar(window, padding + outline_width * 3 + font_size, padding + outline_width * 2 + ((font_size * i) + (outline_width * i), 300, font_size / 6, party[i]->max_health, party[i]->health));
+        const int bar_width = 300;
+        health_bars.push_back(new HealthBar(window, padding + outline_width * 3 + font_size, padding + outline_width * 2 + (font_size * i) + (outline_width * i), bar_width, font_size / 6, party[i]->max_health, party[i]->health));
     }
 }
 
