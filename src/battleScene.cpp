@@ -20,7 +20,7 @@ BattleScene::BattleScene(sf::RenderWindow* window) : Scene(window) {
     player_party.push_back(new Monster(4, 0.5f));
     player_party.push_back(new Monster(5, 0.5f));
     player_party.push_back(new Monster(6, 0.5f));
-    enemy_party.push_back(new Monster(0));
+    enemy_party.push_back(new Monster(5));
     enemy_party[current_enemy]->sprite.setPosition(sf::Vector2f(WINDOW_WIDTH / 2 - enemy_party[current_enemy]->slice_size * ZOOM_FACTOR / 2, v_offset));
     player_party[current_player]->sprite.setPosition(sf::Vector2f(WINDOW_WIDTH - player_party[current_player]->slice_size / player_scale_down * ZOOM_FACTOR - h_offset, WINDOW_HEIGHT - player_party[current_player]->slice_size / player_scale_down * ZOOM_FACTOR - v_offset));
 

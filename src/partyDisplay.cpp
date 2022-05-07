@@ -46,11 +46,13 @@ PartyDisplay::PartyDisplay(sf::RenderWindow* window, std::vector<Monster*> party
         const float scale = MONSTER_TILE_SIZE / font_size;
         icons[i].setScale(scale, scale);
         icons[i].setPosition(sf::Vector2f(padding + outline_width * 2, padding + outline_width * 2 + (font_size * i) + (outline_width * i)));
+
+        health_bars.push_back(new HealthBar(window, padding + outline_width * 3 + font_size, padding + outline_width * 2 + ((font_size * i) + (outline_width * i), 300, font_size / 6, party[i]->max_health, party[i]->health));
     }
 }
 
 PartyDisplay::~PartyDisplay() {
-
+    health_bars.clear();
 }
 
 void PartyDisplay::draw() {
@@ -64,6 +66,9 @@ void PartyDisplay::draw() {
     for(std::size_t i = 0; i < party.size(); i++) {
         window->draw(icons[i]);
         window->draw(name_texts[i]);
+
+        health_bars[i]->current_health = party[i]->health;
+        health_bars[i]->draw(); 
     }
 }
 

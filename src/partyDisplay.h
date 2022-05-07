@@ -3,6 +3,7 @@
 
 #include "conf.h"
 #include "monster.h"
+#include "healthBar.h"
 
 #include <iostream>
 
@@ -20,6 +21,7 @@ class PartyDisplay {
         sf::RenderWindow* window;
 
         std::vector<Monster*> party;
+        std::vector<HealthBar*> health_bars;
 
         int current_member = 0;
 
