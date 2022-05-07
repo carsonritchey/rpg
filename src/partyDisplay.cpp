@@ -34,7 +34,6 @@ PartyDisplay::PartyDisplay(sf::RenderWindow* window, std::vector<Monster*> party
         name_texts[i].setFont(font);
         name_texts[i].setString(party[i]->name);
         name_texts[i].setCharacterSize(font_size / 2);
-
         if((int)i == current_member)
             name_texts[i].setFillColor(select_color);
         else
@@ -42,13 +41,19 @@ PartyDisplay::PartyDisplay(sf::RenderWindow* window, std::vector<Monster*> party
 
         name_texts[i].setPosition(sf::Vector2f(font_size + padding + outline_width * 2 + outline_width, padding + outline_width * 2 + (font_size * i) + font_size / 4 + (outline_width * i)));
 
+        level_texts[i].setFont(font);
+        level_texts[i].setString("lvl." + std::to_string(party[i]->level));
+        level_texts[i].setCharacterSize(font_size / 6);
+        level_texts[i].setFillColor(text_color);
+        level_texts[i].setPosition(sf::Vector2f(WINDOW_WIDTH - padding - outline_width * 3 - bar_width, padding + outline_width * 2 + (font_size * i) + font_size / 4 + (outline_width * i)));
+
+
         icons[i].setTexture(*party[i]->sprite.getTexture());
         const float scale = MONSTER_TILE_SIZE / font_size;
         icons[i].setScale(scale, scale);
         icons[i].setPosition(sf::Vector2f(padding + outline_width * 2, padding + outline_width * 2 + (font_size * i) + (outline_width * i)));
 
-        const int bar_width = 300;
-        health_bars.push_back(new HealthBar(window, padding + outline_width * 3 + font_size, padding + outline_width * 2 + (font_size * i) + (outline_width * i), bar_width, font_size / 6, party[i]->max_health, party[i]->health));
+        health_bars.push_back(new HealthBar(window, WINDOW_WIDTH - padding - outline_width * 2 - bar_width, padding + outline_width * 2 + (font_size * i) + (outline_width * i), bar_width, font_size / 6, party[i]->max_health, party[i]->health));
     }
 }
 
@@ -67,6 +72,7 @@ void PartyDisplay::draw() {
     for(std::size_t i = 0; i < party.size(); i++) {
         window->draw(icons[i]);
         window->draw(name_texts[i]);
+        window->draw(level_texts[i]);
 
         health_bars[i]->current_health = party[i]->health;
         health_bars[i]->draw(); 

@@ -32,6 +32,7 @@ class PartyDisplay {
 
         const int padding = TILE_SIZE * ZOOM_FACTOR * 2;
         const int outline_width = 4;
+        const int bar_width = 300;
         sf::RectangleShape top;
         sf::RectangleShape bottom;
         sf::RectangleShape left;
@@ -42,6 +43,7 @@ class PartyDisplay {
         const int font_size = MONSTER_TILE_SIZE;
         sf::Font font;
         sf::Text name_texts[MAX_PARTY_SIZE];
+        sf::Text level_texts[MAX_PARTY_SIZE];
         sf::Sprite icons[MAX_PARTY_SIZE];
 
         // functions
