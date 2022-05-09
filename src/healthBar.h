@@ -14,12 +14,10 @@ class HealthBar {
     public:
         // constructors and deconstructors 
         HealthBar();
-        HealthBar(sf::RenderWindow* window, int x, int y, int w, int h, float max_health, float current_health);
+        HealthBar(int x, int y, int w, int h, float max_health, float current_health);
         virtual ~HealthBar();
 
         // variables
-        sf::RenderWindow* window;
-
         int x, y, w, h;
         float max_health;
         float current_health;
@@ -40,7 +38,7 @@ class HealthBar {
         sf::RectangleShape bg;
 
         // functions
-        void draw();
+        void draw(sf::RenderWindow* window);
 
 };
 

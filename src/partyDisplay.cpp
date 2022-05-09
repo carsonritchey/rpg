@@ -1,7 +1,6 @@
 #include "partyDisplay.h"
 
-PartyDisplay::PartyDisplay(sf::RenderWindow* window, std::vector<Monster*> party) {
-    this->window = window;
+PartyDisplay::PartyDisplay(std::vector<Monster*> party) {
     this->party  = party;
 
     // outline stuff 
@@ -53,7 +52,7 @@ PartyDisplay::PartyDisplay(sf::RenderWindow* window, std::vector<Monster*> party
         icons[i].setScale(scale, scale);
         icons[i].setPosition(sf::Vector2f(padding + outline_width * 2, padding + outline_width * 2 + (font_size * i) + (outline_width * i)));
 
-        health_bars.push_back(new HealthBar(window, WINDOW_WIDTH - padding - outline_width * 2 - bar_width, padding + outline_width * 2 + (font_size * i) + (outline_width * i), bar_width, font_size / 6, party[i]->max_health, party[i]->health));
+        health_bars.push_back(new HealthBar(WINDOW_WIDTH - padding - outline_width * 2 - bar_width, padding + outline_width * 2 + (font_size * i) + (outline_width * i), bar_width, font_size / 6, party[i]->max_health, party[i]->health));
     }
 }
 
@@ -61,7 +60,7 @@ PartyDisplay::~PartyDisplay() {
     health_bars.clear();
 }
 
-void PartyDisplay::draw() {
+void PartyDisplay::draw(sf::RenderWindow* window) {
     window->draw(bg);
 
     window->draw(top);
@@ -75,7 +74,7 @@ void PartyDisplay::draw() {
         window->draw(level_texts[i]);
 
         health_bars[i]->current_health = party[i]->health;
-        health_bars[i]->draw(); 
+        health_bars[i]->draw(window); 
     }
 }
 

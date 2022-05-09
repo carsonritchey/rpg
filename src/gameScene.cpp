@@ -36,6 +36,9 @@ void GameScene::render() {
         this->player.textbox->drawBox(window);
         this->player.textbox->drawText(window);
     }
+    else if(this->player.party_display_on) {
+        this->player.party_display->draw(window);
+    }
     else if(this->player.interactable)
         this->window->draw(this->player.interactSprite.sprite);
 }

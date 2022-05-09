@@ -29,13 +29,13 @@ BattleScene::BattleScene(sf::RenderWindow* window) : Scene(window) {
 
     sf::Vector2f pPos = player_party[current_player]->sprite.getPosition();
     sf::FloatRect pSize = player_party[current_player]->sprite.getGlobalBounds();
-    player_healthbar = new HealthBar(window, pPos.x, pPos.y + pSize.height, pSize.width, 15, player_party[current_player]->max_health, player_party[current_player]->health);
+    player_healthbar = new HealthBar(pPos.x, pPos.y + pSize.height, pSize.width, 15, player_party[current_player]->max_health, player_party[current_player]->health);
 
     sf::Vector2f ePos = enemy_party[current_enemy]->sprite.getPosition();
     sf::FloatRect eSize = enemy_party[current_enemy]->sprite.getGlobalBounds();
-    enemy_healthbar = new HealthBar(window, ePos.x, ePos.y + eSize.height, eSize.width, 15, enemy_party[current_enemy]->max_health, enemy_party[current_enemy]->health);
+    enemy_healthbar = new HealthBar(ePos.x, ePos.y + eSize.height, eSize.width, 15, enemy_party[current_enemy]->max_health, enemy_party[current_enemy]->health);
 
-    party_display = new PartyDisplay(window, player_party);
+    party_display = new PartyDisplay(player_party);
 }
 
 BattleScene::~BattleScene() {
@@ -265,15 +265,15 @@ void BattleScene::render() {
     window->draw(enemy_party[current_enemy]->sprite);
     window->draw(player_party[current_player]->sprite);
 
-    enemy_healthbar->draw();
-    player_healthbar->draw();
+    enemy_healthbar->draw(window);
+    player_healthbar->draw(window);
 
     if(textbox != nullptr) {
         textbox->drawBox(window);
         textbox->drawText(window);
     }
     else if(option == options::party) {
-        party_display->draw();
+        party_display->draw(window);
     }
 }
 

@@ -4,10 +4,15 @@
 
 Player::Player(std::string texture_path) : Entity(texture_path) {
     sprite.setPosition(2 * TILE_SIZE * ZOOM_FACTOR, 3.5f * TILE_SIZE * ZOOM_FACTOR);
+
+    party.push_back(new Monster(1));
+    party_display = new PartyDisplay(party);
 }
 
 Player::~Player() {
+    delete party_display;
 
+    party.clear();
 }
 
 void Player::animate() {
@@ -57,6 +62,9 @@ void Player::checkInput(const sf::Event* event) {
 
             if(event->key.code == sf::Keyboard::Space) {
                 interacting = true;
+            }
+            else if(event->key.code == sf::Keyboard::P) {
+                party_display_on = !party_display_on;
             }
         }
     }

@@ -14,12 +14,10 @@ class PartyDisplay {
 
     public:
         // constructors and deconstructors 
-        PartyDisplay(sf::RenderWindow* window, std::vector<Monster*> party);
+        PartyDisplay(std::vector<Monster*> party);
         virtual ~PartyDisplay();
 
         // variables
-        sf::RenderWindow* window;
-
         std::vector<Monster*> party;
         std::vector<HealthBar*> health_bars;
 
@@ -47,7 +45,7 @@ class PartyDisplay {
         sf::Sprite icons[MAX_PARTY_SIZE];
 
         // functions
-        void draw();
+        void draw(sf::RenderWindow* window);
         void processEvent(const sf::Event* event);
 };
 

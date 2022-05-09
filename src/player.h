@@ -7,6 +7,7 @@
 #include "map.h"
 #include "textBox.h"
 #include "inventory.h"
+#include "partyDisplay.h"
 
 class Player : public Entity {
     private:
@@ -30,6 +31,8 @@ class Player : public Entity {
 		bool left  = false;
 		bool right = false;
 
+        bool party_display_on = false;
+
         bool interacting = false;
         bool interactable = false;
         Entity interactSprite{"art/sprites/space.png"};
@@ -46,6 +49,9 @@ class Player : public Entity {
         maps current_map = maps::overworld;
 
         Inventory inventory;
+
+        std::vector<Monster*> party;
+        PartyDisplay* party_display = nullptr;
 
         // functions
         void processEvent(const sf::Event*);
