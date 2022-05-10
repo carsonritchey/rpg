@@ -4,7 +4,7 @@ const int font_size = TILE_SIZE * ZOOM_FACTOR / 2;
 const int name_font_size = TILE_SIZE * 2;
 const int v_padding = 50, h_padding = MAX_ATTACK_LENGTH / 2 * font_size, v_offset = 30, h_offset = 30;
 
-BattleScene::BattleScene(sf::RenderWindow* window) : Scene(window) {
+BattleScene::BattleScene(sf::RenderWindow* window, std::vector<Monster*>* _player_party) : Scene(window) {
     this->window = window;
     old_view = &window->getView();
 
@@ -14,12 +14,8 @@ BattleScene::BattleScene(sf::RenderWindow* window) : Scene(window) {
     const_cast<sf::Texture&>(font.getTexture(font_size)).setSmooth(false);
 
     // adding monsters to player and enemy party
-    player_party.push_back(new Monster(1, 0.5f));
-    player_party.push_back(new Monster(2, 0.5f));
-    player_party.push_back(new Monster(3, 0.5f));
-    player_party.push_back(new Monster(4, 0.5f));
-    player_party.push_back(new Monster(5, 0.5f));
-    player_party.push_back(new Monster(6, 0.5f));
+    //player_party = *_player_party;
+
     enemy_party.push_back(new Monster(5));
     enemy_party[current_enemy]->sprite.setPosition(sf::Vector2f(WINDOW_WIDTH / 2 - enemy_party[current_enemy]->slice_size * ZOOM_FACTOR / 2, v_offset));
     player_party[current_player]->sprite.setPosition(sf::Vector2f(WINDOW_WIDTH - player_party[current_player]->slice_size / player_scale_down * ZOOM_FACTOR - h_offset, WINDOW_HEIGHT - player_party[current_player]->slice_size / player_scale_down * ZOOM_FACTOR - v_offset));

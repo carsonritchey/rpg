@@ -50,7 +50,7 @@ class BattleScene : public Scene {
 
     public:
         // constructors and deconstructors 
-        BattleScene(sf::RenderWindow* window);
+        BattleScene(sf::RenderWindow* window, std::vector<Monster*>* _player_party);
         virtual ~BattleScene();
 
 
