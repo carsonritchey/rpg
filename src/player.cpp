@@ -5,14 +5,16 @@
 Player::Player(std::string texture_path) : Entity(texture_path) {
     sprite.setPosition(2 * TILE_SIZE * ZOOM_FACTOR, 3.5f * TILE_SIZE * ZOOM_FACTOR);
 
-    party.push_back(new Monster(1));
+    party = new std::vector<Monster*>;
+    party->push_back(new Monster(14, 0.5f));
     party_display = new PartyDisplay(party);
 }
 
 Player::~Player() {
     delete party_display;
 
-    party.clear();
+    party->clear();
+    delete party;
 }
 
 void Player::animate() {

@@ -14,18 +14,18 @@ BattleScene::BattleScene(sf::RenderWindow* window, std::vector<Monster*>* _playe
     const_cast<sf::Texture&>(font.getTexture(font_size)).setSmooth(false);
 
     // adding monsters to player and enemy party
-    //player_party = *_player_party;
+    player_party = _player_party;
 
     enemy_party.push_back(new Monster(5));
     enemy_party[current_enemy]->sprite.setPosition(sf::Vector2f(WINDOW_WIDTH / 2 - enemy_party[current_enemy]->slice_size * ZOOM_FACTOR / 2, v_offset));
-    player_party[current_player]->sprite.setPosition(sf::Vector2f(WINDOW_WIDTH - player_party[current_player]->slice_size / player_scale_down * ZOOM_FACTOR - h_offset, WINDOW_HEIGHT - player_party[current_player]->slice_size / player_scale_down * ZOOM_FACTOR - v_offset));
+    (*player_party)[current_player]->sprite.setPosition(sf::Vector2f(WINDOW_WIDTH - (*player_party)[current_player]->slice_size / player_scale_down * ZOOM_FACTOR - h_offset, WINDOW_HEIGHT - (*player_party)[current_player]->slice_size / player_scale_down * ZOOM_FACTOR - v_offset));
 
     initOptionsText();
     initNameText(); 
 
-    sf::Vector2f pPos = player_party[current_player]->sprite.getPosition();
-    sf::FloatRect pSize = player_party[current_player]->sprite.getGlobalBounds();
-    player_healthbar = new HealthBar(pPos.x, pPos.y + pSize.height, pSize.width, 15, player_party[current_player]->max_health, player_party[current_player]->health);
+    sf::Vector2f pPos = (*player_party)[current_player]->sprite.getPosition();
+    sf::FloatRect pSize = (*player_party)[current_player]->sprite.getGlobalBounds();
+    player_healthbar = new HealthBar(pPos.x, pPos.y + pSize.height, pSize.width, 15, (*player_party)[current_player]->max_health, (*player_party)[current_player]->health);
 
     sf::Vector2f ePos = enemy_party[current_enemy]->sprite.getPosition();
     sf::FloatRect eSize = enemy_party[current_enemy]->sprite.getGlobalBounds();
@@ -39,7 +39,7 @@ BattleScene::~BattleScene() {
     delete enemy_healthbar;
     delete party_display; 
 
-    player_party.clear();
+    player_party->clear();
     enemy_party.clear();
 
     window->setView(*old_view);
@@ -103,10 +103,10 @@ void BattleScene::initAttackText() {
     for(int i = 0; i < 4; i++) {
         texts[i].setCharacterSize(font_size / 2);
     }
-    texts[0].setString(player_party[current_player]->attacks[0]);
-    texts[1].setString(player_party[current_player]->attacks[1]);
-    texts[2].setString(player_party[current_player]->attacks[2]);
-    texts[3].setString(player_party[current_player]->attacks[3]);
+    texts[0].setString((*player_party)[current_player]->attacks[0]);
+    texts[1].setString((*player_party)[current_player]->attacks[1]);
+    texts[2].setString((*player_party)[current_player]->attacks[2]);
+    texts[3].setString((*player_party)[current_player]->attacks[3]);
 }
 
 void BattleScene::initOptionsText() {
@@ -129,17 +129,17 @@ void BattleScene::initOptionsText() {
 }
 
 void BattleScene::initNameText() {
-    sf::Vector2f pPos = player_party[current_player]->sprite.getPosition();
-    sf::FloatRect pSize = player_party[current_player]->sprite.getGlobalBounds();
+    sf::Vector2f pPos = (*player_party)[current_player]->sprite.getPosition();
+    sf::FloatRect pSize = (*player_party)[current_player]->sprite.getGlobalBounds();
 
     sf::Vector2f ePos = enemy_party[current_enemy]->sprite.getPosition();
     sf::FloatRect eSize = enemy_party[current_enemy]->sprite.getGlobalBounds();
 
     playername_text.setFont(font);
-    playername_text.setString(player_party[current_player]->name);
+    playername_text.setString((*player_party)[current_player]->name);
     playername_text.setCharacterSize(name_font_size / player_scale_down);
     playername_text.setFillColor(base_color);
-    playername_text.setPosition(sf::Vector2f(pPos.x - (float)player_party[current_player]->name.size() * name_font_size / 2 / 2 + pSize.width / 2, pPos.y - name_font_size / player_scale_down));
+    playername_text.setPosition(sf::Vector2f(pPos.x - (float)(*player_party)[current_player]->name.size() * name_font_size / 2 / 2 + pSize.width / 2, pPos.y - name_font_size / player_scale_down));
 
     enemyname_text.setFont(font);
     enemyname_text.setString(enemy_party[current_enemy]->name);
@@ -219,38 +219,38 @@ void BattleScene::turn() {
     int enemy_move = rand() % enemy_party[current_enemy]->move_count;
 
     // if player is faster or they tie 
-    if(player_party[current_player]->speed >= enemy_party[current_enemy]->speed) {
-        enemy_party[current_enemy]->health -= player_party[current_player]->attack_values[current_text][0];
-        tb_text += player_party[current_player]->name + " used '" + player_party[current_player]->attacks[current_text] + "'!\n";
+    if((*player_party)[current_player]->speed >= enemy_party[current_enemy]->speed) {
+        enemy_party[current_enemy]->health -= (*player_party)[current_player]->attack_values[current_text][0];
+        tb_text += (*player_party)[current_player]->name + " used '" + (*player_party)[current_player]->attacks[current_text] + "'!\n";
 
         if(enemy_party[current_enemy]->health <= 0) {
             enemy_party[current_enemy]->sprite.setColor(fainted_color);
             tb_text += enemy_party[current_enemy]->name + " fainted!";
         }
         else {
-            player_party[current_player]->health -= enemy_party[current_enemy]->attack_values[enemy_move][0];
+            (*player_party)[current_player]->health -= enemy_party[current_enemy]->attack_values[enemy_move][0];
             tb_text += enemy_party[current_enemy]->name + " used '" + enemy_party[current_enemy]->attacks[enemy_move] + "'!";
         }
 
     }
     // if enemy is faster
     else {
-        player_party[current_player]->health -= enemy_party[current_enemy]->attack_values[enemy_move][0];
+        (*player_party)[current_player]->health -= enemy_party[current_enemy]->attack_values[enemy_move][0];
         tb_text += enemy_party[current_enemy]->name + " used '" + enemy_party[current_enemy]->attacks[enemy_move] + "'!\n";
 
-        if(player_party[current_player]->health <= 0) {
-            player_party[current_player]->sprite.setColor(fainted_color);
-            tb_text += player_party[current_player]->name + " fainted!";
+        if((*player_party)[current_player]->health <= 0) {
+            (*player_party)[current_player]->sprite.setColor(fainted_color);
+            tb_text += (*player_party)[current_player]->name + " fainted!";
         }
         else {
-            enemy_party[current_enemy]->health -= player_party[current_player]->attack_values[current_text][0];
-            tb_text += player_party[current_player]->name + " used '" + player_party[current_player]->attacks[current_text] + "'!";
+            enemy_party[current_enemy]->health -= (*player_party)[current_player]->attack_values[current_text][0];
+            tb_text += (*player_party)[current_player]->name + " used '" + (*player_party)[current_player]->attacks[current_text] + "'!";
         }
     }
 
     textbox = new TextBox(tb_text); 
 
-    player_healthbar->current_health = player_party[current_player]->health;
+    player_healthbar->current_health = (*player_party)[current_player]->health;
     enemy_healthbar->current_health = enemy_party[current_enemy]->health;
 }
 
@@ -259,7 +259,7 @@ void BattleScene::render() {
     drawText();
 
     window->draw(enemy_party[current_enemy]->sprite);
-    window->draw(player_party[current_player]->sprite);
+    window->draw((*player_party)[current_player]->sprite);
 
     enemy_healthbar->draw(window);
     player_healthbar->draw(window);
@@ -275,7 +275,7 @@ void BattleScene::render() {
 
 void BattleScene::updateCurrentMember() {
     current_player = party_display->current_member; 
-    player_party[current_player]->sprite.setPosition(sf::Vector2f(WINDOW_WIDTH - player_party[current_player]->slice_size / player_scale_down * ZOOM_FACTOR - h_offset, WINDOW_HEIGHT - player_party[current_player]->slice_size / player_scale_down * ZOOM_FACTOR - v_offset));
+    (*player_party)[current_player]->sprite.setPosition(sf::Vector2f(WINDOW_WIDTH - (*player_party)[current_player]->slice_size / player_scale_down * ZOOM_FACTOR - h_offset, WINDOW_HEIGHT - (*player_party)[current_player]->slice_size / player_scale_down * ZOOM_FACTOR - v_offset));
     initNameText();
 }
 

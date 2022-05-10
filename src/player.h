@@ -50,7 +50,7 @@ class Player : public Entity {
 
         Inventory inventory;
 
-        std::vector<Monster*> party;
+        std::vector<Monster*>* party;
         PartyDisplay* party_display = nullptr;
 
         // functions

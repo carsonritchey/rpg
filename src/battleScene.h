@@ -63,7 +63,7 @@ class BattleScene : public Scene {
         PartyDisplay* party_display = nullptr;
 
         int current_player = 0, current_enemy = 0;
-        std::vector<Monster*> player_party;
+        std::vector<Monster*>* player_party;
         std::vector<Monster*> enemy_party;
 
         HealthBar* player_healthbar;

@@ -14,11 +14,11 @@ class PartyDisplay {
 
     public:
         // constructors and deconstructors 
-        PartyDisplay(std::vector<Monster*> party);
+        PartyDisplay(std::vector<Monster*>* party);
         virtual ~PartyDisplay();
 
         // variables
-        std::vector<Monster*> party;
+        std::vector<Monster*>* party;
         std::vector<HealthBar*> health_bars;
 
         int current_member = 0;

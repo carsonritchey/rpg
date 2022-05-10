@@ -97,8 +97,8 @@ void Game::update() {
                 need_view = false;
             }
 
-            if(event.key.code == sf::Keyboard::B)
-                this->scenes.push(new BattleScene(this->window, &gamescene_ref->player.party));
+            if(event.key.code == sf::Keyboard::B && gamescene_ref != nullptr)
+                this->scenes.push(new BattleScene(this->window, gamescene_ref->player.party));
         }
 	}
 
