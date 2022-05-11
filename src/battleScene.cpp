@@ -10,7 +10,7 @@ BattleScene::BattleScene(sf::RenderWindow* window, std::vector<Monster*>* _playe
 
     window->setView(window->getDefaultView());
 
-    font.loadFromFile("art/PressStart2P.ttf");
+    font.loadFromFile(FONT_PATH);
     const_cast<sf::Texture&>(font.getTexture(font_size)).setSmooth(false);
 
     // adding monsters to player and enemy party
