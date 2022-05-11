@@ -215,6 +215,13 @@ void BattleScene::processEvent(const sf::Event* event) {
 }
 
 void BattleScene::turn() {
+    if(!turn_playing) {
+        turn_playing = true;
+        turn_start = global_tick;
+
+        std::cout << "turn start @ " + std::to_string(turn_start) << std::endl;
+    }
+
     std::string tb_text = "";
     int enemy_move = rand() % enemy_party[current_enemy]->move_count;
 
@@ -252,6 +259,9 @@ void BattleScene::turn() {
 
     player_healthbar->current_health = (*player_party)[current_player]->health;
     enemy_healthbar->current_health = enemy_party[current_enemy]->health;
+
+    turn_playing = false;
+    turn_start = -1; 
 }
 
 void BattleScene::render() {

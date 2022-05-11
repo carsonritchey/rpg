@@ -53,7 +53,6 @@ class BattleScene : public Scene {
         BattleScene(sf::RenderWindow* window, std::vector<Monster*>* _player_party);
         virtual ~BattleScene();
 
-
         // variables
         sf::RenderWindow* window;
         const sf::View* old_view;
@@ -68,6 +67,9 @@ class BattleScene : public Scene {
 
         HealthBar* player_healthbar;
         HealthBar* enemy_healthbar;
+
+        int turn_start = -1;
+        bool turn_playing = false;
 
         // functions
         int update(const float& dt, const sf::Event* event);
