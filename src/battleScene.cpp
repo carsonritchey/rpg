@@ -149,6 +149,9 @@ void BattleScene::initNameText() {
 }
 
 int BattleScene::update(const float& dt, const sf::Event* event) {
+    if(turn_playing) {
+        turn();
+    }
 
     return RETURN_CODE_NOTHING;
 }
@@ -183,7 +186,7 @@ void BattleScene::processEvent(const sf::Event* event) {
                         break;
                 }
             }
-            // selecting move in attack 
+            // selecting move in attack
             else if(option == options::attack) {
                 turn();
             }
@@ -214,54 +217,71 @@ void BattleScene::processEvent(const sf::Event* event) {
     party_display->processEvent(event);
 }
 
+std::string tb_text;
 void BattleScene::turn() {
+    //std::cout << "turn called @ " << std::to_string(global_tick) << " (start:" << std::to_string(turn_start) << ")" << std::endl;
+
+    int enemy_move;
+    // runs once at start of turn
     if(!turn_playing) {
         turn_playing = true;
         turn_start = global_tick;
 
+        enemy_move = rand() % enemy_party[current_enemy]->move_count;
+        tb_text = "";
+
         std::cout << "turn start @ " + std::to_string(turn_start) << std::endl;
-    }
 
-    std::string tb_text = "";
-    int enemy_move = rand() % enemy_party[current_enemy]->move_count;
+        // if player is faster or they tie 
+        if((*player_party)[current_player]->speed >= enemy_party[current_enemy]->speed) {
+            std::cout << "player faster" << std::endl;
 
-    // if player is faster or they tie 
-    if((*player_party)[current_player]->speed >= enemy_party[current_enemy]->speed) {
-        enemy_party[current_enemy]->health -= (*player_party)[current_player]->attack_values[current_text][0];
-        tb_text += (*player_party)[current_player]->name + " used '" + (*player_party)[current_player]->attacks[current_text] + "'!\n";
-
-        if(enemy_party[current_enemy]->health <= 0) {
-            enemy_party[current_enemy]->sprite.setColor(fainted_color);
-            tb_text += enemy_party[current_enemy]->name + " fainted!";
-        }
-        else {
-            (*player_party)[current_player]->health -= enemy_party[current_enemy]->attack_values[enemy_move][0];
-            tb_text += enemy_party[current_enemy]->name + " used '" + enemy_party[current_enemy]->attacks[enemy_move] + "'!";
-        }
-
-    }
-    // if enemy is faster
-    else {
-        (*player_party)[current_player]->health -= enemy_party[current_enemy]->attack_values[enemy_move][0];
-        tb_text += enemy_party[current_enemy]->name + " used '" + enemy_party[current_enemy]->attacks[enemy_move] + "'!\n";
-
-        if((*player_party)[current_player]->health <= 0) {
-            (*player_party)[current_player]->sprite.setColor(fainted_color);
-            tb_text += (*player_party)[current_player]->name + " fainted!";
-        }
-        else {
             enemy_party[current_enemy]->health -= (*player_party)[current_player]->attack_values[current_text][0];
-            tb_text += (*player_party)[current_player]->name + " used '" + (*player_party)[current_player]->attacks[current_text] + "'!";
+            tb_text += (*player_party)[current_player]->name + " used '" + (*player_party)[current_player]->attacks[current_text] + "'!\n";
+
+            if(enemy_party[current_enemy]->health <= 0) {
+                enemy_party[current_enemy]->sprite.setColor(fainted_color);
+                tb_text += enemy_party[current_enemy]->name + " fainted!";
+            }
+            else {
+                (*player_party)[current_player]->health -= enemy_party[current_enemy]->attack_values[enemy_move][0];
+                tb_text += enemy_party[current_enemy]->name + " used '" + enemy_party[current_enemy]->attacks[enemy_move] + "'!";
+            }
+        }
+        // if enemy is faster
+        else {
+            std::cout << "enemy faster" << std::endl;
+
+            (*player_party)[current_player]->health -= enemy_party[current_enemy]->attack_values[enemy_move][0];
+            tb_text += enemy_party[current_enemy]->name + " used '" + enemy_party[current_enemy]->attacks[enemy_move] + "'!\n";
+
+            if((*player_party)[current_player]->health <= 0) {
+                (*player_party)[current_player]->sprite.setColor(fainted_color);
+                tb_text += (*player_party)[current_player]->name + " fainted!";
+            }
+            else {
+                enemy_party[current_enemy]->health -= (*player_party)[current_player]->attack_values[current_text][0];
+                tb_text += (*player_party)[current_player]->name + " used '" + (*player_party)[current_player]->attacks[current_text] + "'!";
+            }
         }
     }
-
-    textbox = new TextBox(tb_text); 
 
     player_healthbar->current_health = (*player_party)[current_player]->health;
     enemy_healthbar->current_health = enemy_party[current_enemy]->health;
 
-    turn_playing = false;
-    turn_start = -1; 
+    const int timeout = 100; 
+    // runs once at end of turn
+    if(global_tick - turn_start >= timeout) {
+
+        textbox = new TextBox(tb_text); 
+
+        turn_playing = false;
+        turn_start = -1; 
+        current_text = 0;
+
+        initOptionsText();
+        std::cout << "turn killed @ " << std::to_string(global_tick) << std::endl;
+    }
 }
 
 void BattleScene::render() {
