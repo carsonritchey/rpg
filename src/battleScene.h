@@ -50,12 +50,15 @@ class BattleScene : public Scene {
 
     public:
         // constructors and deconstructors 
-        BattleScene(sf::RenderWindow* window, std::vector<Monster*>* _player_party);
+        BattleScene(sf::RenderWindow* window, sf::View* old_view, std::vector<Monster*>* _player_party);
         virtual ~BattleScene();
 
         // variables
         sf::RenderWindow* window;
-        const sf::View* old_view;
+
+        sf::View* old_view;
+        sf::Vector2f old_view_center;
+
         options option = options::none; 
 
         TextBox* textbox = nullptr;

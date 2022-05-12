@@ -64,7 +64,10 @@ void Game::update() {
             }
 
             if(event.key.code == sf::Keyboard::B && gamescene_ref != nullptr)
-                this->scenes.push(new BattleScene(this->window, gamescene_ref->player.party));
+                this->scenes.push(new BattleScene(this->window, this->view, gamescene_ref->player.party));
+
+            if(event.key.code == sf::Keyboard::P && this->scenes.size() != 1)
+                this->scenes.pop();
         }
 	}
 

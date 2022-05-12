@@ -4,11 +4,12 @@ const int font_size = TILE_SIZE * ZOOM_FACTOR / 2;
 const int name_font_size = TILE_SIZE * 2;
 const int v_padding = 50, h_padding = MAX_ATTACK_LENGTH / 2 * font_size, v_offset = 30, h_offset = 30;
 
-BattleScene::BattleScene(sf::RenderWindow* window, std::vector<Monster*>* _player_party) : Scene(window) {
+BattleScene::BattleScene(sf::RenderWindow* window, sf::View* old_view, std::vector<Monster*>* _player_party) : Scene(window) {
     this->window = window;
-    old_view = &window->getView();
 
-    window->setView(window->getDefaultView());
+    this->old_view = old_view;
+    this->old_view_center = old_view->getCenter();
+    old_view->setCenter(sf::Vector2f(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2));
 
     font.loadFromFile(FONT_PATH);
     const_cast<sf::Texture&>(font.getTexture(font_size)).setSmooth(false);
@@ -42,7 +43,7 @@ BattleScene::~BattleScene() {
     player_party->clear();
     enemy_party.clear();
 
-    window->setView(*old_view);
+    old_view->setCenter(old_view_center);
 }
 
 void BattleScene::box(int x, int y, int w, int h) {
