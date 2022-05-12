@@ -165,6 +165,7 @@ void BattleScene::processEvent(const sf::Event* event) {
                 textbox = nullptr;
             }
         }
+        else if(turn_playing) { return; }
         else if(event->key.code == sf::Keyboard::Space || event->key.code == sf::Keyboard::Enter) { 
             // selecting option on main menu
             if(option == options::none) {
@@ -278,6 +279,7 @@ void BattleScene::turn() {
         turn_playing = false;
         turn_start = -1; 
         current_text = 0;
+        option = options::none;
 
         initOptionsText();
         std::cout << "turn killed @ " << std::to_string(global_tick) << std::endl;

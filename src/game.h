@@ -16,7 +16,6 @@ class Game {
 
         // variables 
         bool running   = true;
-        bool debug     = false;
         bool need_view = true;
 
         sf::RenderWindow* window;
@@ -29,7 +28,6 @@ class Game {
 
         // functions
         void close();
-        void drawDebugInfo();
         void update();
         void render();
         void tick_dt();
