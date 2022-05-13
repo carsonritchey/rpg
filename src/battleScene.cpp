@@ -150,11 +150,23 @@ void BattleScene::initNameText() {
 }
 
 int BattleScene::update(const float& dt, const sf::Event* event) {
+    if(headCount(player_party) == 0) {
+
+    }
+
     if(turn_playing) {
         turn();
     }
 
     return RETURN_CODE_NOTHING;
+}
+
+int BattleScene::headCount(std::vector<Monster*>* party) {
+    int t = 0;
+    for(std::size_t i = 0; i < party->size(); i++)
+        if((*party)[i]->health > 0) t++;
+
+    return t;
 }
 
 void BattleScene::processEvent(const sf::Event* event) {
@@ -172,6 +184,7 @@ void BattleScene::processEvent(const sf::Event* event) {
             if(option == options::none) {
                 switch(current_text) {
                     case 0:
+                        if((*player_party)[current_player]->health <= 0) break;
                         initAttackText();
 
                         option = options::attack;
@@ -246,9 +259,9 @@ void BattleScene::turn() {
 
                 if((*player_party)[current_player]->health <= 0) {
                     tb_text += (*player_party)[current_player]->name + " fainted!";
+                    player_dead = true;
                 }
             }
-
         }
         // if enemy is faster
         else {
@@ -257,6 +270,7 @@ void BattleScene::turn() {
 
             if((*player_party)[current_player]->health <= 0) {
                 tb_text += (*player_party)[current_player]->name + " fainted!";
+                player_dead = true; 
             }
             else {
                 enemy_party[current_enemy]->health -= (*player_party)[current_player]->attack_values[current_text][0];

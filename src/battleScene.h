@@ -72,7 +72,7 @@ class BattleScene : public Scene {
         HealthBar* enemy_healthbar;
 
         int turn_start = -1;
-        bool turn_playing = false;
+        bool turn_playing = false, player_dead;
 
         // functions
         int update(const float& dt, const sf::Event* event);
@@ -81,6 +81,7 @@ class BattleScene : public Scene {
         void box(int, int, int, int);
         bool canRun();
         void close_scene();
+        int headCount(std::vector<Monster*>*);
         void processEvent(const sf::Event* event);
         void updateCurrentMember();
 };
