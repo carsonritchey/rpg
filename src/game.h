@@ -3,10 +3,13 @@
 
 #include <SFML/Graphics.hpp>
 #include <stack>
+#include <string>
 
 #include "titleScene.h"
 #include "gameScene.h"
 #include "battleScene.h"
+
+#include <iostream>
 
 class Game {
     public:
@@ -16,7 +19,6 @@ class Game {
 
         // variables 
         bool running   = true;
-        bool need_view = true;
 
         sf::RenderWindow* window;
         sf::View* view;
@@ -25,6 +27,9 @@ class Game {
         float dt;
 
         std::stack<Scene*> scenes;
+        TitleScene* titlescene = nullptr;
+        GameScene* gamescene = nullptr;
+        BattleScene* battlescene = nullptr;
 
         // functions
         void close();

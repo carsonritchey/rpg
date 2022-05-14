@@ -75,15 +75,27 @@ void Player::checkInput(const sf::Event* event) {
         if(textbox == nullptr) {
             if(event->key.code == sf::Keyboard::Left) {
                 left = false; 
+
+                if(right)
+                    h_dir = directions::right;
             }
             else if(event->key.code == sf::Keyboard::Right) {
                 right = false;
+
+                if(left)
+                    h_dir = directions::left;
             }
             else if(event->key.code == sf::Keyboard::Up) {
                 up = false;
+
+                if(down)
+                    v_dir = directions::down;
             }
             else if(event->key.code == sf::Keyboard::Down) {
                 down = false;
+
+                if(up)
+                    v_dir = directions::up;
             }
         }
 
