@@ -55,7 +55,7 @@ class Player : public Entity {
 
         // functions
         void processEvent(const sf::Event*);
-		void update(const float, Map* map);
+		int update(const float, Map* map);
 };
 
 #endif

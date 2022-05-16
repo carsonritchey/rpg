@@ -75,7 +75,7 @@ void BattleScene::box(int x, int y, int w, int h) {
 }
 
 bool BattleScene::canRun() {
-    return false;
+    return true;
 }
 
 void BattleScene::drawBackground() {
@@ -158,7 +158,7 @@ int BattleScene::update(const float& dt, const sf::Event* event) {
         turn();
     }
 
-    return RETURN_CODE_NOTHING;
+    return (running) ? RETURN_CODE_BATTLESCENE_RUN : RETURN_CODE_NOTHING;
 }
 
 int BattleScene::headCount(std::vector<Monster*>* party) {
@@ -197,8 +197,10 @@ void BattleScene::processEvent(const sf::Event* event) {
                         break;
                     case 3:
                         //option = options::run;
-                        if(canRun())
-                            textbox = new TextBox("we outta here");
+                        if(canRun()) {
+                            //textbox = new TextBox("we outta here");
+                            running = true;
+                        }
                         else
                             textbox = new TextBox("lol you're not going anywhere");
 

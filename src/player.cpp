@@ -263,7 +263,7 @@ void Player::processEvent(const sf::Event* event) {
     checkInput(event);
 }
 
-void Player::update(const float dt, Map* map) {
+int Player::update(const float dt, Map* map) {
     // actually move player
     sprite.move(movePlayer(dt, map));
 
@@ -276,4 +276,11 @@ void Player::update(const float dt, Map* map) {
         if(global_tick % interactSprite_animation_speed == 0)
             interactSprite.cycleTexture(2);
     }
+
+    if(sprite.getPosition().x <= 16) {
+        std::cout << "bruh we gaming (battling)" << std::endl;
+        return RETURN_CODE_BATTLESCENE;
+    }
+
+    return RETURN_CODE_NOTHING;
 }

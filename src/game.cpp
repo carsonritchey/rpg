@@ -70,6 +70,7 @@ void Game::update() {
         if(code == RETURN_CODE_EXIT) this->close(); 
         else if(code == RETURN_CODE_START) this->scenes.push((this->gamescene = new GameScene(this->window, this->view)));
         else if(code == RETURN_CODE_BATTLESCENE) this->scenes.push((this->battlescene = new BattleScene(this->window, this->view, this->gamescene->player.party)));
+        else if(code == RETURN_CODE_BATTLESCENE_RUN && battlescene != nullptr) this->scenes.pop();
     }
 
     global_tick++;

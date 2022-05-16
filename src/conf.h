@@ -12,7 +12,7 @@
 #define EMPTY -1
 #define WINDOW_NAME "rpg filler"
 #define FONT_PATH "art/PressStart2P.ttf"
-#define VERSION "version 0.1"
+#define VERSION "version 0.5"
 
 #define LAYERS 3
 #define BG 0 

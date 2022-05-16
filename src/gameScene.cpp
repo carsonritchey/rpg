@@ -11,7 +11,7 @@ GameScene::~GameScene() {
 }
 
 int GameScene::update(const float& dt, const sf::Event* event) {
-    this->player.update(dt, this->current_map);
+    int player_return_code = this->player.update(dt, this->current_map);
 
     // updates ALL npcs on map
     // needs to be optimized to only update npcs on screen later 
@@ -23,7 +23,7 @@ int GameScene::update(const float& dt, const sf::Event* event) {
     else if(player.current_map == maps::subworld)
         current_map = &subworld_map;
 
-    return RETURN_CODE_NOTHING;
+    return (player_return_code != RETURN_CODE_NOTHING) ? player_return_code : RETURN_CODE_NOTHING;
 }
 
 void GameScene::render() {

@@ -73,6 +73,7 @@ class BattleScene : public Scene {
 
         int turn_start = -1;
         bool turn_playing = false, player_dead;
+        bool running = false;
 
         // functions
         int update(const float& dt, const sf::Event* event);
