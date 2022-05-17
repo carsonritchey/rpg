@@ -184,6 +184,27 @@ void Player::cycleCurrentMap() {
     }
 }
 
+int Player::getCurrentTileTexture(Map* map, sf::Vector2f pos, int layer) {
+    pos.x += TILE_SIZE * ZOOM_FACTOR / 2.0;
+    pos.x += TILE_SIZE * ZOOM_FACTOR / 2.0;
+    int tile_x = (int)(pos.x / TILE_SIZE / ZOOM_FACTOR);
+    int tile_y = (int)(pos.y / TILE_SIZE / ZOOM_FACTOR);
+
+    const sf::Texture* tile_texture;
+    if(layer == BG)
+        tile_texture = map->bg_sprites[map->map_w * tile_x + tile_y].getTexture();
+    if(layer == FG)
+        tile_texture = map->fg_sprites[map->map_w * tile_x + tile_y].getTexture();
+
+    for(std::size_t i = 0; i < map->textures.size(); i++) {
+        if(tile_texture == &map->textures[i]) {
+            return i;
+        }
+    }
+
+    return -1;
+}
+
 void Player::killItemBox() {
     delete itembox;
     itembox = nullptr;
@@ -226,6 +247,10 @@ sf::Vector2f Player::movePlayer(const float dt, Map* map) {
         dPos.y = 0;
 
     animate();
+
+    if(rand() % battle_odds == 0 && getCurrentTileTexture(map, sprite.getPosition(), FG) == TALL_GRASS_TEXTURE) {
+        need_battle = true;
+    }
 
     return dPos;
 }
@@ -277,8 +302,9 @@ int Player::update(const float dt, Map* map) {
             interactSprite.cycleTexture(2);
     }
 
-    if(sprite.getPosition().x <= 16) {
-        std::cout << "bruh we gaming (battling)" << std::endl;
+    if(need_battle) {
+        need_battle = up = down = left = right = false;
+
         return RETURN_CODE_BATTLESCENE;
     }
 

@@ -15,6 +15,7 @@ class Player : public Entity {
         void checkInput(const sf::Event*);
         bool checkForInteractables(Map* map); 
         void cycleCurrentMap();
+        int getCurrentTileTexture(Map* map, sf::Vector2f pos, int layer);
         void killItemBox();
         void killTextBox();
         sf::Vector2f movePlayer(const float dt, Map*);
@@ -52,6 +53,9 @@ class Player : public Entity {
 
         std::vector<Monster*>* party;
         PartyDisplay* party_display = nullptr;
+
+        bool need_battle = false;
+        int battle_odds = 150; // 1 in 100 chance of battle every frame on grass
 
         // functions
         void processEvent(const sf::Event*);

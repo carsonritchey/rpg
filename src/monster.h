@@ -26,6 +26,8 @@ class Monster : public Entity {
 
         int id;
 
+        static const int highest_dex = 21;
+
         std::string attacks[4];
         int move_count = 0;
         float attack_values[4][2];
@@ -104,7 +106,7 @@ const std::string names[] {
     "France",
     "Integral",
     "iPhone 3",
-    "jesus",
+    "Jesus Christ",
     "Boeing 747",
     "Boris Johnson",
     "The Lick",
