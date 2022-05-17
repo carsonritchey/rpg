@@ -6,6 +6,9 @@
 #define OUTLINE_WIDTH 5
 #define LINE_SPACING 1.5
 
+#include <string>
+#include <regex>
+
 #include <SFML/Graphics.hpp>
 #include "entity.h"
 

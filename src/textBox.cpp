@@ -5,6 +5,7 @@
 
 TextBox::TextBox(std::string content) {
     this->content = content;
+    //content = std::regex_replace(content, std::regex("NEWLINE"), "\n");
     tail = 0;
     std::size_t found = content.find("\n");
     head = (found != std::string::npos) ? found : content.length();
