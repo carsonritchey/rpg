@@ -8,6 +8,7 @@
 
 #include <string>
 #include <regex>
+#include <vector>
 
 #include <SFML/Graphics.hpp>
 #include "entity.h"
@@ -26,6 +27,9 @@ class TextBox {
         sf::Text text;
         std::string title;
         std::string content;
+
+        const std::string enter_marker = "PRESSENTER";
+        const std::string newline_marker = "NEWLINE";
 
         int head; // last character to be drawn (i.e. final character before line break or end of string)
         int tail; // start of text to be drawn to screen 

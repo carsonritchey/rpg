@@ -1,4 +1,4 @@
-3,23|--item|key|You found a key!NEWLINEThis can certainly be used forNEWLINEnon-nefarious reasons.
+3,23|--item|key|You found a key!PRESSENTERThis can certainly be used forNEWLINEnon-nefarious reasons.
 30,6|--door|7,8
-31,10|Press space to read signs!NEWLINEOh... you already figured that out.
-33,1|You probably shouldn't be back here.
+31,10|Press space to read signs!PRESSENTEROh... you already figured that out.
+33,1|You probably shouldn't be backNEWLINEhere.

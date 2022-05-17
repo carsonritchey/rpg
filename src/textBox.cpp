@@ -5,12 +5,16 @@
 
 TextBox::TextBox(std::string content) {
     this->content = content;
-    //content = std::regex_replace(content, std::regex("NEWLINE"), "\n");
-    tail = 0;
-    std::size_t found = content.find("\n");
-    head = (found != std::string::npos) ? found : content.length();
 
-    //cout << tail << " " << head << " " << content.subtring(tail, head + 1) << std::endl;
+    this->content = std::regex_replace(this->content, std::regex(enter_marker), "\n");
+    this->content = std::regex_replace(this->content, std::regex(newline_marker), "\t");
+    //std::cout << "textbox loaded with: " << this->content << std::endl;
+
+    tail = 0;
+    std::size_t found = this->content.find("\n");
+    head = (found != std::string::npos) ? found : this->content.length();
+
+    //cout << tail << " " << head << " " << this->content.subtring(tail, head + 1) << std::endl;
 
     font.loadFromFile(FONT_PATH);
 
@@ -47,7 +51,9 @@ void TextBox::drawBox(sf::RenderWindow* window) {
 }
 
 void TextBox::drawText(sf::RenderWindow* window) {
-    text.setString(content.substr(tail, head + 1));
+    // text is stored with \n as line breaks that require enter to be pressed to progress and \t for a line break that doesn't need enter 
+    // when drawing text \t is replaced with \n
+    text.setString(std::regex_replace(content.substr(tail, head + 1), std::regex("\t"), "\n"));
 
     window->draw(text);
 }
