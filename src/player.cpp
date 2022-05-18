@@ -249,7 +249,7 @@ sf::Vector2f Player::movePlayer(const float dt, Map* map) {
 
     animate();
 
-    if(rand() % battle_odds == 0 && getCurrentTileTexture(map, sprite.getPosition(), FG) == TALL_GRASS_TEXTURE) {
+    if((dPos.x != 0 && dPos.y != 0) &&rand() % battle_odds == 0 && getCurrentTileTexture(map, sprite.getPosition(), FG) == TALL_GRASS_TEXTURE) {
         need_battle = true;
     }
 

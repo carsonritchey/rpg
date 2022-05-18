@@ -163,7 +163,7 @@ int BattleScene::update(const float& dt, const sf::Event* event) {
         turn();
     }
 
-    return (running) ? RETURN_CODE_BATTLESCENE_RUN : RETURN_CODE_NOTHING;
+    return (running && textbox == nullptr) ? RETURN_CODE_BATTLESCENE_RUN : RETURN_CODE_NOTHING;
 }
 
 int BattleScene::headCount(std::vector<Monster*>* party) {
@@ -203,7 +203,7 @@ void BattleScene::processEvent(const sf::Event* event) {
                     case 3:
                         //option = options::run;
                         if(canRun()) {
-                            //textbox = new TextBox("we outta here");
+                            textbox = new TextBox("we outta here");
                             running = true;
                         }
                         else
@@ -255,6 +255,7 @@ void BattleScene::turn() {
         // if player is faster or they tie 
         if((*player_party)[current_player]->speed >= enemy_party[current_enemy]->speed) {
             enemy_party[current_enemy]->health -= (*player_party)[current_player]->attack_values[current_text][0];
+            (*player_party)[current_player]->attack_values[current_text][1] -= 1;
             tb_text += (*player_party)[current_player]->name + " used '" + (*player_party)[current_player]->attacks[current_text] + "'!\n";
 
             if(enemy_party[current_enemy]->health <= 0) {
@@ -262,6 +263,7 @@ void BattleScene::turn() {
             }
             else {
                 (*player_party)[current_player]->health -= enemy_party[current_enemy]->attack_values[enemy_move][0];
+                enemy_party[current_enemy]->attack_values[enemy_move][1] -= 1;
                 tb_text += enemy_party[current_enemy]->name + " used '" + enemy_party[current_enemy]->attacks[enemy_move] + "'!";
 
                 if((*player_party)[current_player]->health <= 0) {
@@ -273,6 +275,7 @@ void BattleScene::turn() {
         // if enemy is faster
         else {
             (*player_party)[current_player]->health -= enemy_party[current_enemy]->attack_values[enemy_move][0];
+            enemy_party[current_enemy]->attack_values[enemy_move][1] -= 1;
             tb_text += enemy_party[current_enemy]->name + " used '" + enemy_party[current_enemy]->attacks[enemy_move] + "'!\n";
 
             if((*player_party)[current_player]->health <= 0) {
@@ -281,6 +284,7 @@ void BattleScene::turn() {
             }
             else {
                 enemy_party[current_enemy]->health -= (*player_party)[current_player]->attack_values[current_text][0];
+                (*player_party)[current_player]->attack_values[current_text][1] -= 1;
                 tb_text += (*player_party)[current_player]->name + " used '" + (*player_party)[current_player]->attacks[current_text] + "'!\n";
 
                 if(enemy_party[current_enemy]->health <= 0) {
