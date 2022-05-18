@@ -15,6 +15,7 @@ void Monster::init(int _id) {
     for(int i = 0; i < 4; i++) {
         attack_values[i][0] = attack_values_matrix[id][i][0];
         attack_values[i][1] = attack_values_matrix[id][i][1];
+        max_pps[i]          = attack_values_matrix[id][i][1];
     }  
 
     for(int i = 0; i < 4; i++) {

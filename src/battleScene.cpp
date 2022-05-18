@@ -103,11 +103,16 @@ void BattleScene::drawText() {
 void BattleScene::initAttackText() {
     for(int i = 0; i < 4; i++) {
         texts[i].setCharacterSize(font_size / 2);
+
+        std::string text;
+        if((*player_party)[current_player]->attacks[i].size() != 0) {
+            text = (*player_party)[current_player]->attacks[i] + "\n" + std::to_string((int)(*player_party)[current_player]->attack_values[i][1]) + "/" + std::to_string((*player_party)[current_player]->max_pps[i]);
+        }
+        else {
+            text = "";
+        }
+        texts[i].setString(text);
     }
-    texts[0].setString((*player_party)[current_player]->attacks[0]);
-    texts[1].setString((*player_party)[current_player]->attacks[1]);
-    texts[2].setString((*player_party)[current_player]->attacks[2]);
-    texts[3].setString((*player_party)[current_player]->attacks[3]);
 }
 
 void BattleScene::initOptionsText() {

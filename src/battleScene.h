@@ -10,6 +10,7 @@
 
 #include <iostream>
 #include <random>
+#include <string>
 
 enum options {
     none = -1,

@@ -21,6 +21,7 @@ class Monster : public Entity {
         bool default_name = true;
         std::string name;
         int level = 1, xp = 0, level_up_threshold = 25; 
+        int max_pps[4];
         float max_health = 20.f, health = max_health;
         float attack, defense, speed;
 
