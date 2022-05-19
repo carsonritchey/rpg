@@ -20,7 +20,8 @@ class Monster : public Entity {
         // variables 
         bool default_name = true;
         std::string name;
-        int level = 1, xp = 0, level_up_threshold = 25; 
+        int level = 1, xp = 0, level_up_threshold = 10; 
+        const float level_up_multiplier = 1.15;
         int max_pps[4];
         float max_health = 20.f, health = max_health;
         float attack, defense, speed;
@@ -34,6 +35,7 @@ class Monster : public Entity {
         float attack_values[4][2];
 
         // functions
+        void giveXP(int);
 };
 
 const std::string texture_paths[] = {

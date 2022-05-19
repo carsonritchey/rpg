@@ -30,6 +30,7 @@ class BattleScene : public Scene {
         void initNameText();
 
         void turn();
+        int getXP();
 
         /*
          * attack party 

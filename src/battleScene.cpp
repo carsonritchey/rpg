@@ -100,6 +100,16 @@ void BattleScene::drawText() {
     }
 }
 
+int BattleScene::getXP() {
+    int amount;
+
+    do {
+        amount = rand() % (enemy_party[current_enemy]->level * 10);
+    } while(amount < enemy_party[current_enemy]->level * 0.75);
+
+    return amount;
+}
+
 void BattleScene::initAttackText() {
     for(int i = 0; i < 4; i++) {
         texts[i].setCharacterSize(font_size / 2);
@@ -260,6 +270,8 @@ void BattleScene::turn() {
 
             if(enemy_party[current_enemy]->health <= 0) {
                 tb_text += enemy_party[current_enemy]->name + " fainted!";
+
+                (*player_party)[current_player]->giveXP(getXP());
             }
             else {
                 (*player_party)[current_player]->health -= enemy_party[current_enemy]->attack_values[enemy_move][0];

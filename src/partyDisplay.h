@@ -20,6 +20,7 @@ class PartyDisplay {
         // variables
         std::vector<Monster*>* party;
         std::vector<HealthBar*> health_bars;
+        std::vector<HealthBar*> xp_bars;
 
         int current_member = 0;
 

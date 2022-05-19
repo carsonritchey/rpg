@@ -54,7 +54,7 @@ void Game::update() {
                 battlescene->processEvent(&event); 
             }
 
-            if(event.key.code == sf::Keyboard::B && gamescene != nullptr)
+            if(event.key.code == sf::Keyboard::B && gamescene != nullptr && battlescene == nullptr)
                 this->scenes.push((this->battlescene = new BattleScene(this->window, this->view, gamescene->player.party)));
 
             if(event.key.code == sf::Keyboard::P && this->scenes.size() != 1)

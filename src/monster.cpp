@@ -37,3 +37,27 @@ Monster::Monster(int _id, float scale_down_factor) : Entity(texture_paths[_id], 
 Monster::~Monster() {
 
 }
+
+void Monster::giveXP(int amount) {
+    if(xp + amount < level_up_threshold) {
+        xp += amount;
+    }
+    else {
+        xp = (xp + amount) % level_up_threshold;
+
+        level += 1;
+
+        max_health *= level_up_multiplier;
+        health *= level_up_multiplier;
+        attack *= level_up_multiplier;
+        defense *= level_up_multiplier;
+        speed *= level_up_multiplier;
+        level_up_threshold *= level_up_multiplier;
+
+        for(int i = 0; i < 4; i++) {
+            if(attacks[i].size() == 0) break;
+
+            attack_values[i][1] = max_pps[i];
+        }
+    }
+}
