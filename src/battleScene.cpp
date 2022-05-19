@@ -264,7 +264,7 @@ void BattleScene::turn() {
 
         // if player is faster or they tie 
         if((*player_party)[current_player]->speed >= enemy_party[current_enemy]->speed) {
-            enemy_party[current_enemy]->health -= (*player_party)[current_player]->attack_values[current_text][0];
+            enemy_party[current_enemy]->health -= (*player_party)[current_player]->attack_values[current_text][0] * (*player_party)[current_player]->attack;
             (*player_party)[current_player]->attack_values[current_text][1] -= 1;
             tb_text += (*player_party)[current_player]->name + " used '" + (*player_party)[current_player]->attacks[current_text] + "'!\n";
 
@@ -274,7 +274,7 @@ void BattleScene::turn() {
                 (*player_party)[current_player]->giveXP(getXP());
             }
             else {
-                (*player_party)[current_player]->health -= enemy_party[current_enemy]->attack_values[enemy_move][0];
+                (*player_party)[current_player]->health -= enemy_party[current_enemy]->attack_values[enemy_move][0] * enemy_party[current_enemy]->attack;
                 enemy_party[current_enemy]->attack_values[enemy_move][1] -= 1;
                 tb_text += enemy_party[current_enemy]->name + " used '" + enemy_party[current_enemy]->attacks[enemy_move] + "'!";
 
@@ -286,7 +286,7 @@ void BattleScene::turn() {
         }
         // if enemy is faster
         else {
-            (*player_party)[current_player]->health -= enemy_party[current_enemy]->attack_values[enemy_move][0];
+            (*player_party)[current_player]->health -= enemy_party[current_enemy]->attack_values[enemy_move][0] * enemy_party[current_enemy]->attack;
             enemy_party[current_enemy]->attack_values[enemy_move][1] -= 1;
             tb_text += enemy_party[current_enemy]->name + " used '" + enemy_party[current_enemy]->attacks[enemy_move] + "'!\n";
 
@@ -295,7 +295,7 @@ void BattleScene::turn() {
                 player_dead = true; 
             }
             else {
-                enemy_party[current_enemy]->health -= (*player_party)[current_player]->attack_values[current_text][0];
+                enemy_party[current_enemy]->health -= (*player_party)[current_player]->attack_values[current_text][0] * (*player_party)[current_player]->attack;
                 (*player_party)[current_player]->attack_values[current_text][1] -= 1;
                 tb_text += (*player_party)[current_player]->name + " used '" + (*player_party)[current_player]->attacks[current_text] + "'!\n";
 

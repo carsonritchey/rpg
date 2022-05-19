@@ -7,9 +7,11 @@ void Monster::init(int _id) {
     name = names[id];
 
     // loading base stats
-    attack  = stats[id][0];
-    defense = stats[id][1];
-    speed   = stats[id][2];
+    attack     = stats[id][0];
+    defense    = stats[id][1];
+    speed      = stats[id][2];
+    max_health = stats[id][3];
+    health = max_health;
 
     // loading attack data
     for(int i = 0; i < 4; i++) {
@@ -23,7 +25,7 @@ void Monster::init(int _id) {
         attacks[i] = attack_names[id][i];
     }
 
-    //std::cout << "'" << name << "' loaded with a:" << attack << ", d:" << defense << ", s:" << speed << std::endl;
+    std::cout << "'" << name << "' loaded with a:" << attack << ", d:" << defense << ", s:" << speed << ", h:" << health << std::endl;
 }
 Monster::Monster(int _id) : Entity(texture_paths[_id], MONSTER_TILE_SIZE) {
     init(_id);
