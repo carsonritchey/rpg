@@ -47,6 +47,7 @@ class PartyDisplay {
 
         // functions
         void draw(sf::RenderWindow* window);
+        void update();
         void processEvent(const sf::Event* event);
 };
 

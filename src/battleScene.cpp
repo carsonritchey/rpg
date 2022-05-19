@@ -107,6 +107,9 @@ int BattleScene::getXP() {
         amount = rand() % (enemy_party[current_enemy]->level * 10);
     } while(amount < enemy_party[current_enemy]->level * 0.75);
 
+
+    std::cout << "giving " << amount << " xp" << std::endl;
+
     return amount;
 }
 
@@ -272,6 +275,8 @@ void BattleScene::turn() {
                 tb_text += enemy_party[current_enemy]->name + " fainted!";
 
                 (*player_party)[current_player]->giveXP(getXP());
+                // resises hp bar w player's max health value for when the player levels up and gains more health
+                player_healthbar->max_health = (*player_party)[current_player]->max_health;
             }
             else {
                 (*player_party)[current_player]->health -= enemy_party[current_enemy]->attack_values[enemy_move][0] * enemy_party[current_enemy]->attack;
@@ -301,6 +306,10 @@ void BattleScene::turn() {
 
                 if(enemy_party[current_enemy]->health <= 0) {
                     tb_text += enemy_party[current_enemy]->name + " fainted!";
+
+                    (*player_party)[current_player]->giveXP(getXP());
+                    // resises hp bar w player's max health value for when the player levels up and gains more health
+                    player_healthbar->max_health = (*player_party)[current_player]->max_health;
                 }
             }
         }

@@ -61,7 +61,17 @@ PartyDisplay::~PartyDisplay() {
     health_bars.clear();
 }
 
+void PartyDisplay::update() {
+    for(std::size_t i = 0; i < party->size(); i++) {
+        level_texts[i].setString("lvl." + std::to_string((*party)[i]->level));
+
+        health_bars[i]->max_health = (*party)[i]->max_health;
+    }
+}
+
 void PartyDisplay::draw(sf::RenderWindow* window) {
+    update();
+
     window->draw(bg);
 
     window->draw(top);
